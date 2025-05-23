@@ -1,0 +1,82 @@
+Package: tidysynthesis
+Title: A Common API for Synthesizing Data
+Version: 0.1.0
+Authors@R: 
+    c(person(given = "Aaron", 
+             family = "Williams", 
+             email = "awilliams@urban.org", 
+             role = c("aut", "cre"),
+             comment = c(ORCID = "0000-0001-5564-1938")),
+      person(given = "Kyle", 
+             family = "Ueyama", 
+             email = "kueyama@urban.org", 
+             role = "aut"), 
+      person(given = "Gabe", 
+             family = "Morrison", 
+             email = "gmorrison@urban.org", 
+             role = "aut",
+             comment = c(ORCID = "0009-0008-1815-5920")),  
+      person(given = "Jeremy",
+             family = "Seeman", 
+             email = "jseeman@urban.org",
+             role = "aut",
+             comment = c(ORCID = "0000-0003-3526-3209")),
+      person(given = "Elyse", 
+             family = "McFalls", 
+             email = "emcfalls@urban.org", 
+             role = "ctb"),               
+      person(given = "Claire", 
+             family = "Morton", 
+             email = "cmorton@urban.org", 
+             role = "ctb"),              
+      person(given = "Livia", 
+             family = "Mucciolo", 
+             email = "lmucciolo@urban.org", 
+             role = "ctb"),             
+      person(given = "Madeline", 
+             family = "Pickens", 
+             email = "mpickens@urban.org", 
+             role = "ctb"),             
+      person(given = "Noah", 
+             family = "Zwiefel", 
+             email = "nzwiefel@urban.org", 
+             role = "ctb"))
+Maintainer: Aaron R. Williams <awilliams@urban.org>
+Description: A comprehensive set of tools for generating synthetic data built on top of tidymodels.
+URL: https://ui-research.github.io/tidysynthesis-documentation/
+BugReports: https://github.com/UI-Research/tidysynthesis/issues
+Depends: R (>= 4.1.0)
+Imports:
+    dplyr,
+    forcats,
+    magrittr,
+    parsnip,
+    pillar,
+    purrr,
+    progressr,
+    recipes,
+    rlang,
+    rsample,
+    stringr,
+    tibble,
+    tidyr (>= 1.0.0),
+    tune,
+    vctrs,
+    workflows,
+    yardstick,
+    ExtDist
+Suggests:
+    hardhat,
+    palmerpenguins,
+    poissonreg,
+    randomForest,
+    ranger,
+    rpart,
+    rpart.LAD (>= 0.1.2),
+    testthat (>= 2.1.0),
+    usethis    
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2

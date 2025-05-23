@@ -1,0 +1,331 @@
+---
+format: gfm
+editor_options: 
+  chunk_output_type: console
+---
+
+# tidysynthesis
+
+This repository contains the tidysynthesis R package for generating synthetic data. Complete documentation is available is available at the [tidysynthesis documentation website](https://ui-research.github.io/tidysynthesis-documentation/). 
+
+## Installation:
+
+tidysynthesis is not currently on [CRAN](https://cran.r-project.org/), so it cannot be installed with `install.packages()`. Please install tidysynthesis with the following code:
+
+```
+devtools::install_github("UI-Research/tidysynthesis")
+```
+After doing this, you can use the traditional `library(tidysynthesis)` command. 
+
+## Overview
+
+`tidysynthesis` is a "metapackage" for creating synthetic data sets for statistical disclosure limitation that shares the underlying design philosophy, grammar, and data structures of the [tidyverse](https://www.tidyverse.org/) and [tidymodels](https://www.tidymodels.org/). `tidysynthesis` flexibly supports sequential synthesis modeling and sampling specifications with different formal and empirical privacy properties. 
+
+Note that the privacy and security properties of tidysynthesis's outputs rely on many different technical assumptions. Our goal is to make the package agnostic to many of these assumptions, which places greater responsibility on users to evaluate synthetic data prior to dissemination. For more information, see our notes on [security principles](https://ui-research.github.io/tidysynthesis-documentation/security-principles.html) from our documentation.
+
+### `presynth`
+
+Syntheses ultimately depend on a `presynth` object with two main components: a `roadmap` that outlines the macroscopic workflow (i.e., what order to synthesize variables, how variables are defined and relate to one another, etc.) and a `synth_spec` that details how individual variables are synthesized (i.e. how are specific output variable modeling workflows specified, how are new synthetic samples generated, etc.). Here is the general workflow, with required objects in blue and optional objects in magenta.
+
+```mermaid
+flowchart TD
+  A[conf_data]:::required --> B[roadmap]:::required
+  C[start_data]:::required --> B
+  D[start_method]:::optional --> B
+  E[schema]:::optional --> B 
+  F[visit_sequence]:::optional --> B
+  G[replicates]:::optional --> B
+  H[constraints]:::optional --> B
+  I[models]:::required --> J[synth_spec]:::required
+  K[samplers]:::required --> J
+  L[steps]:::optional --> J
+  M[noise]:::optional --> J
+  N[tuners]:::optional --> J
+  O[extractors]:::optional --> J
+  B --> P[presynth]:::required 
+  J --> P
+  P --> Q[postsynth]:::required
+  classDef required fill:#1696d2,stroke:#1696d2;
+  classDef optional fill:#ec008b,stroke:#ec008b;
+```
+
+### `roadmap` Components
+
+`roadmap` objects require data inputs. All other inputs can be optionally supplied as S3 objects or constructed by default. `roadmap`s also have a `tidymodels`-style API that lets you update objects, for example: 
+```{r}
+#| eval: false
+# create an example roadmap
+roadmap(conf_data = example_conf_data, 
+        start_data = example_start_data) %>%
+  # add an example visit_sequence using the API
+  add_sequence_manual(var1, var2) %>%
+  # update the example schema using the API
+  update_schema(col_schema = list("var1" = list("dtype" = "fct")))
+```
+See the documentation website for more API examples.
+
+Required `roadmap` objects: 
+
+* `conf_data`: the `data.frame` of confidential data to synthesize.
+* `start_data` the `data.frame` of starting data to initialize sequential models.
+
+Optional `roadmap` objects:
+
+* `start_method()`: S3 object that specifies randomized transformations on the
+  `start_data`, such as resampling, noise infusion, or joint modeling. Defaults to no transformation.
+* `schema()`: S3 column schema with specifications describing variables, such as data types and `NA` values. Defaults to inferred types from the provided `conf_data`. 
+* `visit_sequence()`: S3 object that specifies the order in which variables get synthesized. Defaults to the same order they appear in the confidential data. 
+* `contraints()`: S3 object that controls imposed constraints during the synthesis process, such as maxima and minima for numeric variables. Defaults to no constraints.
+* `replicates()`: S3 object controlling the synthesis component repetition for producing multiple synthetic datasets. Defaults to one synthetic dataset.
+
+### `synth_spec` Components
+
+`synth_spec` S3 objects allow you to specify different components using default versions for regression and classification models, or custom models mapping individual variables to components. Here is an example: 
+
+```{r}
+#| eval: false
+synth_spec(
+  default_regression_sampler = tidysynthesis::sample_lm,
+  default_classification_sampler = tidysynthesis::sample_rpart,
+  custom_samplers = list(
+    list("vars" = c("var1", "var2"), "sampler" = sample_ranger)
+  ),
+  ...
+)
+```
+
+These components also support updating via a `tidymodels`-style API; see the documentation website for more API examples. 
+
+Required `synth_spec` components: 
+
+* `models`: `parsnip` model specifications
+* `samplers`: sampler functions (many provided in `tidysynthesis`)
+
+Optional `synth_spec` components: 
+
+* `steps`: functions that transform predictors using `recipe::steps_*` functions.
+* `noise`: S3 object for specifying additive noise for synthesis outputs.
+* `tuners`: list specifications for cross-validating hyperparameter tuning
+* `extractors`: `parsnip` functions for extracting fit model information. 
+
+## Examples
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  fig.path = "man/figures/README-"
+)
+knitr::opts_chunk$set(warning = FALSE)
+```
+
+Code in the following set of examples synthesizes the palmerpenguins data set with missing values removed. 
+
+```{r}
+#| warning: false
+#| message: false
+library(palmerpenguins)
+library(tidyverse)
+library(tidysynthesis)
+
+penguins_complete <- penguins %>%
+  select(-year) %>%
+  filter(complete.cases(.)) %>%
+  mutate(
+    flipper_length_mm = as.numeric(flipper_length_mm),
+    body_mass_g = as.numeric(body_mass_g)
+  )
+
+```
+
+All of the examples use the same starting data and visit sequence, as specified
+by the roadmap below.
+
+```{r}
+set.seed(20220218)
+
+# create "starting data"
+starting_data <- penguins_complete %>% 
+  group_by(island) %>%
+  slice_sample(n = 5) %>%
+  select(species, island, sex) %>%
+  ungroup()
+
+# create roadmap
+roadmap <- roadmap(
+  conf_data = penguins_complete,
+  start_data = starting_data
+) %>% 
+  add_sequence_numeric(
+    dplyr::where(is.numeric), 
+    method = "correlation", 
+    cor_var = "bill_length_mm"
+  )
+
+```
+
+## Example 1
+
+Example 1 uses linear regression to synthesize the numeric data in the penguins data set. `sample_lm()` samples from normal distributions centered on the regression line with standard deviation equal to the residual standard error.  
+
+```{r}
+# synth_spec
+
+lm_mod <- parsnip::linear_reg() %>% 
+  parsnip::set_engine(engine = "lm") %>%
+  parsnip::set_mode(mode = "regression")
+
+synth_spec1 <- synth_spec(
+  default_regression_model = lm_mod,
+  default_regression_sampler = tidysynthesis::sample_lm
+)
+
+# create a presynth object
+# use defaults for noise, constraints, and replicates
+presynth1 <- presynth(
+  roadmap = roadmap,
+  synth_spec = synth_spec1
+)
+
+# synthesize!
+set.seed(1)
+postsynth1 <- synthesize(presynth = presynth1)
+
+postsynth1$synthetic_data
+
+```
+
+## Example 2
+
+`synth_spec()` can accept different model types. The example below is a regression tree model. Notice how all of the other objects from example 1 can be reused. 
+
+```{r}
+dt_mod <- parsnip::decision_tree() %>%
+  parsnip::set_engine(engine = "rpart") %>%
+  parsnip::set_mode(mode = "regression")
+
+synth_spec2 <- synth_spec(
+  default_regression_model = dt_mod,
+  default_regression_sampler = tidysynthesis::sample_rpart
+)
+
+# create a presynth object
+presynth2 <- presynth(
+  roadmap = roadmap,
+  synth_spec = synth_spec2
+)
+
+# synthesize!
+set.seed(1)
+postsynth2 <- synthesize(presynth = presynth2)
+
+postsynth2$synthetic_data
+
+```
+
+## Example 3
+
+Sometimes prediction error is not enough and additional noise is added to predictions. `noise` controls adding additional noise to predicted values. `add_noise` toggles on/off which variables will receive additional noise. Here, we use the function `add_noise_kde()` with additional arguments `exclusions` and `n_ntiles` passed to this function (see the documentation `?add_noise_kde` for details.) 
+
+```{r}
+# noise
+# this turns on noise for all variables and adds 0 as an exclusion for body_mass_g
+noise_spec <- noise(
+  add_noise = TRUE,
+  noise_func = add_noise_kde,
+  exclusions = 0,
+  n_ntiles = 20
+)
+
+synth_spec3 <- synth_spec2 %>%
+  update_synth_spec(
+    default_regression_noise = noise_spec
+  )
+
+presynth3 <- presynth(
+  roadmap = roadmap,
+  synth_spec = synth_spec3
+)
+
+# synthesize!
+set.seed(1)
+postsynth3 <- synthesize(presynth = presynth3)
+
+postsynth3$synthetic_data
+
+```
+
+## Example 4
+
+`tidysynthesis` contains a system for specifying constraints during this synthesis process. This means constraints imposed on earlier variables are realized before later variables are synthesized. The constraints can be unconditional (e.g. penguin weight must be positive) or conditional (e.g. a Gentoo penguin must weigh at least 6,000 grams).
+
+Constraints can be specified for numeric and/or categorical variables. Depending on the variable type, two different `constraint_df_*` can be specified, either `constraints_df_num` or `constraints_df_cat` (see the documentation `?constraints` for examples.)
+`max_z_num` and `max_z_cat` controls the number of times a value should be resampled if it violates a constraint before enforcing the constraints by modifying synthesized values.
+
+Below is an example using `constraints_df_num` and `max_df_num`.
+
+```{r}
+# create a tibble of constraints
+# skipped variables will have a minimum of -Inf and a maximum of Inf
+constraints_df_num <- 
+  tibble::tribble(
+    ~var, ~min, ~max, ~conditions,
+    "bill_length_mm", 0, Inf, "TRUE",
+    "bill_length_mm", 0, Inf, "TRUE",
+    "flipper_length_mm", 0, Inf, "TRUE",
+    "body_mass_g", 0, Inf, "TRUE",
+    "body_mass_g", 4000, 10000, "flipper_length_mm > 190",
+    "body_mass_g", 6000, Inf, "species == 'Gentoo'"
+  ) 
+
+# create a constraints object
+constraints4 <- constraints(
+  schema = roadmap$schema,
+  constraints_df_num = constraints_df_num,
+  max_z_num = list(0, 1, 2, 3)
+)
+
+presynth4 <- presynth(
+  roadmap = roadmap %>%
+    add_constraints(constraints4),
+  synth_spec = synth_spec3
+)
+
+# synthesize!
+set.seed(1)
+postsynth4 <- synthesize(presynth = presynth4)
+
+postsynth4$synthetic_data
+
+```
+
+## Example 5
+
+`tidysynthesis` can generate multiple replicates. This means that all input conditions are the same, but, due to random sampling, the syntheses themselves differ. The `replicates()` functionality allows for the creation of these replicates (see the documentation `?replicates()` for different kinds of replicate specification).
+
+```{r}
+replicates5 <- replicates(model_sample_replicates = 5)
+
+presynth5 <- presynth(
+  roadmap = roadmap %>%
+    add_replicates(replicates5),
+  synth_spec = synth_spec2
+)
+
+# synthesize!
+set.seed(1)
+suppressMessages(synth5 <- synthesize(presynth = presynth5))
+
+glimpse(synth5[[1]]$synthetic_data)
+glimpse(synth5[[2]]$synthetic_data)
+glimpse(synth5[[3]]$synthetic_data)
+```
+
+## Getting help
+
+Contact [Aaron R. Williams](awilliams@urban.org) with feedback or questions. 
+
+## Code of conduct
+
+Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
+
+

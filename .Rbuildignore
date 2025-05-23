@@ -1,0 +1,11 @@
+^renv$
+^renv\.lock$
+^tidysynthesis\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
+^README\.Rmd$
+^project-standards\.md$
+^/figures/
+^examples/
+^data-raw/
+README.qmd
