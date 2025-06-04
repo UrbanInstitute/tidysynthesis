@@ -146,7 +146,7 @@ synthesize <- function(presynth, progress = FALSE) {
     
     for (var_j in seq_along(models)) {
       
-      message(paste("Synthesizing", vs_names[[var_j]], "..."))
+      message(paste0("Synthesizing ", var_j, "/", length(vs_names), " ", vs_names[[var_j]], " ... "))
       
       jth_variable <- synthesize_j(
         conf_data = conf_data,
