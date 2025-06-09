@@ -23,6 +23,30 @@ construct_noise <- function(
     
   }
   
+  if (
+    is.null(default_regression_noise) & 
+    is.null(default_classification_noise) & 
+    is.null(custom_noise)
+  ) {
+    
+    warning("No noise specified, using default noise() object.")
+    
+  }
+  
+  if (is.null(default_regression_noise)) { 
+  
+    default_regression_noise <- noise(add_noise = FALSE, 
+                                      mode = "regression")
+      
+  }
+  
+  if (is.null(default_classification_noise)) { 
+    
+    default_classification_noise <- noise(add_noise = FALSE, 
+                                          mode = "classification")
+    
+  }
+  
   # create vectors that we will use below
   visit_sequence <- roadmap[["visit_sequence"]][["visit_sequence"]]
   mode <- .extract_mode(roadmap)
@@ -36,20 +60,6 @@ construct_noise <- function(
     type_check_func = .is_noise,
     obj_name = "noise(s)"
   )
-  
-  if (
-    is.null(default_regression_noise) & 
-    is.null(default_classification_noise) & 
-    is.null(custom_noise)
-  ) {
-    
-    warning("No noise specified, using default noise() object.")
-    return(
-      purrr::map(purrr::set_names(visit_sequence), \(x) { noise() })
-    )
-    
-    
-  }
   
   # create list of default noise according to regression / classification
   synth_noise <- purrr::map(
