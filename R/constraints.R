@@ -603,18 +603,35 @@ reset_constraints <- function(roadmap) {
 #' @export 
 print.constraints <- function(x, ...) {
   
-  constraint_conditions <- purrr::map_int(x$constraints_num, .f = \(z) { 
+  # print numeric constraint conditions
+  constraint_conditions_num <- purrr::map_int(x$constraints_num, .f = \(z) { 
     
     if (is.data.frame(z)) { return( base::nrow(z)) } else { return(0) }
     
   }) %>%
     stats::setNames(names(x$constraints_num))
   
-  cat("Constraints specified per variable: \n")
+  cat("Numeric constraints specified per variable: \n")
   
-  for (n in names(constraint_conditions)) {
+  for (n in names(constraint_conditions_num)) {
     
-    cat(paste0(n, ": ", constraint_conditions[[n]], "\n"))
+    cat(paste0(n, ": ", constraint_conditions_num[[n]], "\n"))
+    
+  }
+  
+  # print categorical constraint conditions
+  constraint_conditions_cat <- purrr::map_int(x$constraints_cat, .f = \(z) { 
+    
+    if (is.data.frame(z)) { return( base::nrow(z)) } else { return(0) }
+    
+  }) %>%
+    stats::setNames(names(x$constraints_cat))
+  
+  cat("Categorical constraints specified per variable: \n")
+  
+  for (n in names(constraint_conditions_cat)) {
+    
+    cat(paste0(n, ": ", constraint_conditions_cat[[n]], "\n"))
     
   }
   
