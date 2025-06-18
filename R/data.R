@@ -63,7 +63,7 @@
 #' American Community Survey starting microdata (with weights)
 #'
 #' An extract constructed from the 2019 American Community Survey containing a 
-#' survey sample of n = 1500 Nebraska respondents, with survey weights included.
+#' survey sample of n = 500 Nebraska respondents, with survey weights included.
 #'
 #' Original data source:
 #' Steven Ruggles, Sarah Flood, Matthew Sobek, Daniel Backman, Annie Chen, 
@@ -72,7 +72,7 @@
 #' https://doi.org/10.18128/D010.V15.0
 #'
 #' @format ## `acs_start`
-#' A data frame with 1,500 rows and 5 columns:
+#' A data frame with 500 rows and 5 columns:
 #' \describe{
 #'   \item{county}{fct, county}
 #'   \item{gq}{fct, group quarter kind}
@@ -86,7 +86,7 @@
 #' American Community Survey starting microdata (without weights)
 #'
 #' An extract constructed from the 2019 American Community Survey containing a 
-#' survey sample of n = 1500 Nebraska respondents, with survey weights included.
+#' survey sample of n = 500 Nebraska respondents, with survey weights included.
 #'
 #' Original data source:
 #' Steven Ruggles, Sarah Flood, Matthew Sobek, Daniel Backman, Annie Chen, 
@@ -95,7 +95,7 @@
 #' https://doi.org/10.18128/D010.V15.0
 #'
 #' @format ## `acs_start_nw`
-#' A data frame with 1,500 rows and 4 columns:
+#' A data frame with 500 rows and 4 columns:
 #' \describe{
 #'   \item{county}{fct, county}
 #'   \item{gq}{fct, group quarter kind}

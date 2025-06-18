@@ -147,7 +147,7 @@ test_that("start_resample observed support", {
     dplyr::group_by(county, gq) %>% 
     dplyr::tally()
   
-  expect_true(nrow(samples) == 11)
+  expect_true(nrow(samples) == 10)
   
   # expect only observed support 
   expected_value <- 1000 * 100 / nrow(samples)
@@ -181,7 +181,7 @@ test_that("start_resample uniform observed support", {
     dplyr::tally()
   
   # expect only observed support 
-  expect_true(nrow(samples) == 11)
+  expect_true(nrow(samples) == 10)
   
   expected_value <- 1000 * 100 / nrow(samples)
   

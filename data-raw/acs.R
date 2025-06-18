@@ -88,7 +88,7 @@ acs <- data %>%
 acs_conf <- acs[1:1500, ]
 acs_conf_nw <- acs[1:1500, ] %>% dplyr::select(-wgt)
 acs_start <- acs[1501:2000, c("county", "gq", "sex", "marst", "wgt")]
-acs_start_nw <- acs[1:1500, c("county", "gq", "sex", "marst")]
+acs_start_nw <- acs[1501:2000, c("county", "gq", "sex", "marst")]
 
 usethis::use_data(acs_conf, overwrite = TRUE)
 usethis::use_data(acs_conf_nw, overwrite = TRUE)
