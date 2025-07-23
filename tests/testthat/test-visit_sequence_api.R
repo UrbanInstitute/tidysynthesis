@@ -477,7 +477,7 @@ test_that("visit_sequence with factors and keeping weight (gini)", {
 })
 
 # sequence_factor (entropy) ------------------------------------------------
-test_that("visit_sequence with factor sequence", {
+test_that("visit_sequence with factor sequence (entropy)", {
   
   nr <- acs_roadmap_nw %>%
     add_sequence_factor(dplyr::where(is.factor), method = "entropy")
@@ -497,7 +497,7 @@ test_that("visit_sequence with factors and dropping weight", {
   nr <- acs_roadmap_nw %>%
     update_visit_sequence(synthesize_weight = FALSE, 
                           weight_var = wgt) %>%
-    add_sequence_factor(dplyr::where(is.factor), method = "entropy")
+    add_sequence_factor(dplyr::where(is.factor))
   
   expect_equal(
     nr[["visit_sequence"]][["visit_sequence"]][1:3], 
@@ -508,12 +508,12 @@ test_that("visit_sequence with factors and dropping weight", {
   
 })
 
-test_that("visit_sequence with factors and keeping weight ", {
+test_that("visit_sequence with factors and keeping weight (entropy)", {
   
   nr <- acs_roadmap_w %>%
     update_visit_sequence(synthesize_weight = FALSE, 
                           weight_var = wgt) %>%
-    add_sequence_factor(dplyr::where(is.factor), method = "entropy")
+    add_sequence_factor(dplyr::where(is.factor))
   
   expect_equal(
     nr[["visit_sequence"]][["visit_sequence"]][1:3], 
