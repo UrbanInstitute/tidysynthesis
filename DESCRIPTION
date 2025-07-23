@@ -64,7 +64,8 @@ Imports:
     vctrs,
     workflows,
     yardstick,
-    ExtDist
+    ExtDist,
+    dapper
 Suggests:
     hardhat,
     palmerpenguins,
