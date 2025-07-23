@@ -448,6 +448,22 @@ test_that("visit_sequence with factors and dropping weight", {
   
 })
 
+test_that("visit_sequence with factors and keeping weight ", {
+  
+  nr <- acs_roadmap_w %>%
+    update_visit_sequence(synthesize_weight = FALSE, 
+                          weight_var = wgt) %>%
+    add_sequence_factor(dplyr::where(is.factor), method = "entropy")
+  
+  expect_equal(
+    nr[["visit_sequence"]][["visit_sequence"]][1:3], 
+    c("empstat", "hcovany", "classwkr") 
+  )
+  
+  expect_false("wgt" %in% nr[["visit_sequence"]][["visit_sequence"]])
+  
+})
+
 test_that("visit_sequence weighted method with weight_var = NULL throws error", {
   expect_error(
     acs_roadmap_w %>%
