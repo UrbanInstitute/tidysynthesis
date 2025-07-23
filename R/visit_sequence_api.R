@@ -402,7 +402,8 @@ add_sequence_numeric <- function(
 #' @param ... <tidy-select> One or more unquoted expressions separated by 
 #' commas. Variable names can be used as if they were positions in the data 
 #' frame, so expressions like x:y can be used to select a range of variables.
-#' @param method A quoted name for the method used to sort the visit_sequence
+#' @param method A quoted name for the method used to sort the visit_sequence.
+#' Current methods include "entropy" and "gini".
 #'
 #' @return An updated visit_sequence
 #' 
@@ -411,7 +412,7 @@ add_sequence_numeric <- function(
 add_sequence_factor <- function(
     roadmap, 
     ..., 
-    method = c("entropy")
+    method = c("entropy", "gini")
 ) {
   
   stopifnot("`roadmap` must be a roadmap object" = { is_roadmap(roadmap) })
@@ -456,8 +457,13 @@ add_sequence_factor <- function(
     
     calc_entropy <- function(x) {
       
+      # create a relative frequency table
       p_i <- unname(prop.table(table(x)))
       
+      # drop empty classes
+      p_i <- p_i[p_i > 0]
+      
+      # calculate entropy
       -sum(p_i * log(p_i, base = 2))
       
     }
@@ -471,6 +477,26 @@ add_sequence_factor <- function(
     # add prop sequence to existing built sequence
     visit_sequence[["built_sequence"]] <- 
       c(visit_sequence[["built_sequence"]], entropy_order)
+    
+  } else if (method == "gini") {
+    
+    calc_gini <- function(x) {
+      
+      p_i <- unname(prop.table(table(x)))
+      
+      1 - sum(p_i ^ 2)
+      
+    }
+    
+    gini <- purrr::map_dbl(edit_data, .f = calc_gini)
+    
+    gini <- sort(gini)
+    
+    gini_order <- names(gini)
+    
+    # add prop sequence to existing built sequence
+    visit_sequence[["built_sequence"]] <- 
+      c(visit_sequence[["built_sequence"]], gini_order)
     
   }
   
