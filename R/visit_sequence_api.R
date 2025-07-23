@@ -462,7 +462,7 @@ add_sequence_factor <- function(
       
     }
     
-    entropy <- purrr::map_dbl(calc_data, .f = calc_entropy)
+    entropy <- purrr::map_dbl(edit_data, .f = calc_entropy)
     
     entropy <- sort(entropy)
     
