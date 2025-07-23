@@ -109,11 +109,11 @@ test_that("synthesize() runs with progress", {
   output <- quiet_progress()
 
   expected_output <- c(
-    "Synthesizing 1/5 mpg ... \n",
-    "Synthesizing 2/5 disp ... \n",
-    "Synthesizing 3/5 hp ... \n",
-    "Synthesizing 4/5 low_var ... \n",
-    "Synthesizing 5/5 identity_var ... \n"
+    "Synthesizing 1/5 mpg... \n",
+    "Synthesizing 2/5 disp... \n",
+    "Synthesizing 3/5 hp... \n",
+    "Synthesizing 4/5 low_var... \n",
+    "Synthesizing 5/5 identity_var... \n"
   )
   
   expect_identical(output$messages, expected_output)
