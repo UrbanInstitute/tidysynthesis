@@ -7,10 +7,10 @@
 #' @param outcome_var A string name representing the outcome variable
 #' @param col_schema A list of column schema specifications for the new variable
 #' @param pred A vector of values predicted by the model
-#' @param variance Sampling variance for additive noise
-#' @param epsilon Alternative privacy loss budget prescribed by the Laplace
+#' @param variance float, sampling variance for additive noise
+#' @param epsilon float, alternative privacy loss budget prescribed by the Laplace
 #' mechanism under epsilon differential privacy.
-#' @param sensitivity Alternative sample sensitivity prescribed by the Laplace
+#' @param sensitivity float, alternative sample sensitivity prescribed by the Laplace
 #' mechanism under epsilon differential privacy.
 #' @param increment Numeric indicating space between discrete noise samples, 
 #' defaults to 1. Note that this does not impact the noise sampling variance, as 
@@ -41,7 +41,7 @@ add_noise_disc_laplace <- function(
     
     if (!is.null(epsilon) | !is.null(sensitivity)) {
       
-      stop("Cannot use non-null variance with non-null epsilon or sensitivity.")
+      stop("If using variance, epsilon and sensitivity cannot be specified.")
       
     }
     
@@ -50,6 +50,10 @@ add_noise_disc_laplace <- function(
     
     # for different increments, rescale to normalize by the increment
     scale1_var <- variance / (increment**2)
+    
+    # see: https://dl.acm.org/doi/abs/10.1145/1536414.1536464
+    # variance formula inverts the expression from the "Variance" derivation 
+    # here: https://randorithms.com/2020/10/09/geometric-mechanism.html
     
     # inverse of discrete laplace variance as a function of scale param...
     scale_param <- log(1 + (1. + sqrt(2 * scale1_var + 1)) / scale1_var)

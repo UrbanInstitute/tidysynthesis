@@ -7,10 +7,10 @@
 #' @param outcome_var A string name representing the outcome variable
 #' @param col_schema A list of column schema specifications for the new variable
 #' @param pred A vector of values predicted by the model
-#' @param variance Sampling variance for additive noise
-#' @param rho Alternative privacy loss budget prescribed by the Gaussian
+#' @param variance float, sampling variance for additive noise
+#' @param rho float, alternative privacy loss budget prescribed by the Gaussian
 #' mechanism under rho-zero-concentrated differential privacy.
-#' @param sensitivity Alternative sample sensitivity prescribed by the Gaussian
+#' @param sensitivity float, alternative sample sensitivity prescribed by the Gaussian
 #' mechanism under rho-zero-concentrated differential privacy.
 #' @param increment Numeric indicating space between discrete noise samples, 
 #' defaults to 1. Note that this does not impact the noise sampling variance, as 
@@ -41,7 +41,7 @@ add_noise_disc_gaussian <- function(
     
     if (!is.null(rho) | !is.null(sensitivity)) {
       
-      stop("Cannot use non-null variance with non-null rho or sensitivity.")
+      stop("If using variance, rho and sensitivity cannot be specified.")
       
     }
     
@@ -64,11 +64,13 @@ add_noise_disc_gaussian <- function(
     stopifnot(is.numeric(rho))
     stopifnot(rho > 0)
     
+    # see: https://arxiv.org/abs/1605.02065, proposition 1.6
     sampling_var <- sensitivity^2 / (2 * rho)
     
   }
   
-  result <- pred + increment * dapper::rdnorm(n = length(pred), 
+  result <- pred + increment * dapper::rdnorm(n = length(pred),
+                                              mu = 0,
                                               sigma = sqrt(sampling_var))
 
   return(result)

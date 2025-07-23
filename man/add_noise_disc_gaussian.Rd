@@ -30,12 +30,12 @@ add_noise_disc_gaussian(
 
 \item{pred}{A vector of values predicted by the model}
 
-\item{variance}{Sampling variance for additive noise}
+\item{variance}{float, sampling variance for additive noise}
 
-\item{rho}{Alternative privacy loss budget prescribed by the Gaussian
+\item{rho}{float, alternative privacy loss budget prescribed by the Gaussian
 mechanism under rho-zero-concentrated differential privacy.}
 
-\item{sensitivity}{Alternative sample sensitivity prescribed by the Gaussian
+\item{sensitivity}{float, alternative sample sensitivity prescribed by the Gaussian
 mechanism under rho-zero-concentrated differential privacy.}
 
 \item{increment}{Numeric indicating space between discrete noise samples,

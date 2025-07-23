@@ -64,7 +64,7 @@ test_that("add_noise_disc_gaussian reproduces with either direct var or zCDP", {
   
 })
 
-test_that("add_noise_disc_laplace increment rescaling", {
+test_that("add_noise_disc_gaussian increment rescaling", {
   
   set.seed(1)
   noisy_preds1 <- add_noise_disc_gaussian(
@@ -74,7 +74,7 @@ test_that("add_noise_disc_laplace increment rescaling", {
     outcome_var = outcome_var,
     col_schema = col_schema,
     pred = pred,
-    variance = 1,
+    variance = 10,
     increment = 5
   )
   

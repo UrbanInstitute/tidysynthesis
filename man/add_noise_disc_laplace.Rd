@@ -30,12 +30,12 @@ add_noise_disc_laplace(
 
 \item{pred}{A vector of values predicted by the model}
 
-\item{variance}{Sampling variance for additive noise}
+\item{variance}{float, sampling variance for additive noise}
 
-\item{epsilon}{Alternative privacy loss budget prescribed by the Laplace
+\item{epsilon}{float, alternative privacy loss budget prescribed by the Laplace
 mechanism under epsilon differential privacy.}
 
-\item{sensitivity}{Alternative sample sensitivity prescribed by the Laplace
+\item{sensitivity}{float, alternative sample sensitivity prescribed by the Laplace
 mechanism under epsilon differential privacy.}
 
 \item{increment}{Numeric indicating space between discrete noise samples,
