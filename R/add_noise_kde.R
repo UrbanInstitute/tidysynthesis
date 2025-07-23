@@ -210,7 +210,7 @@
 #' @param exclusions Numeric values that should not receive extra noise
 #' @param n_ntiles The number of ntiles
 #' @param obs_per_ntile A numeric for the minimum number of observations to be 
-#' in an ntile. Cannot be used in conjunction with the `ntiles` argument.
+#' in an ntile. Cannot be used in conjunction with the `n_ntiles` argument.
 #' @param ties_method The ntiles approach to adding noise requires a one-to-one
 #' mapping from model-generated values to ntiles in the original data. The 
 #' methods "collapse", "random", and "exclusions" deal with situations where the
@@ -249,6 +249,12 @@ add_noise_kde <- function(model,
     
   }
   
+  if (is.null(n_ntiles)) {
+    
+    n_ntiles <- floor(nrow(conf_model_data) / obs_per_ntile)
+    
+  }
+  
   valid_ties_method <- c("collapse", "exclusions", "random")
   
   if (!ties_method %in% valid_ties_method) {
@@ -258,14 +264,14 @@ add_noise_kde <- function(model,
     )
   }
   
-
+  
   
   # 1 + 2: extract baseline data and calculate confidential KDE bandwidths
   baseline <- dplyr::pull(conf_model_data, outcome_var)
   
   bandwidths <- .calc_bandwidths(baseline = baseline, 
-                              n = n_ntiles, 
-                              ties_method = ties_method)
+                                 n = n_ntiles, 
+                                 ties_method = ties_method)
   
   # 3. find the ntiles of the predicted vector based on breaks from the baseline data
   ntiles <- .create_ntiles(
