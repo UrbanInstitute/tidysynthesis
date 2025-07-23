@@ -224,7 +224,7 @@ test_that("print.roadmap", {
   
   expect_output(
     print(roadmap(conf_data = acs_conf_nw, start_data = acs_start_nw)),
-    "start_data: 1500 observations, 4 variables"
+    "start_data: 500 observations, 4 variables"
   )
   
 })
