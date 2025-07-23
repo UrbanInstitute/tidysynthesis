@@ -4,7 +4,7 @@
 \alias{add_sequence_factor}
 \title{Add to visit sequence for factor variables}
 \usage{
-add_sequence_factor(roadmap, ..., method = c("entropy"))
+add_sequence_factor(roadmap, ..., method = c("entropy", "gini"))
 }
 \arguments{
 \item{roadmap}{A \code{roadmap} object}
@@ -13,7 +13,8 @@ add_sequence_factor(roadmap, ..., method = c("entropy"))
 commas. Variable names can be used as if they were positions in the data
 frame, so expressions like x:y can be used to select a range of variables.}
 
-\item{method}{A quoted name for the method used to sort the visit_sequence}
+\item{method}{A quoted name for the method used to sort the visit_sequence.
+Current methods include "entropy" and "gini".}
 }
 \value{
 An updated visit_sequence

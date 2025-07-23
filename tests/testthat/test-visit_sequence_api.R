@@ -1,19 +1,31 @@
+# add an empty factor level to test add_sequence_factor()
+levels <- c("No health insurance coverage", "With health insurance coverage", "empty")
+
+# create start roadmaps
 acs_roadmap_nw <- roadmap(
-  conf_data = acs_conf_nw %>% tidyr::replace_na(list(inctot = 0)), 
+  conf_data = acs_conf_nw %>% 
+    tidyr::replace_na(list(inctot = 0)) %>%
+    dplyr::mutate(hcovany = factor(hcovany, levels = levels)), 
   start_data = acs_start_nw
 )
 acs_roadmap_w <- roadmap(
-  conf_data = acs_conf %>% tidyr::replace_na(list(inctot = 0)), 
+  conf_data = acs_conf %>% 
+    tidyr::replace_na(list(inctot = 0)) %>%
+    dplyr::mutate(hcovany = factor(hcovany, levels = levels)), 
   start_data = acs_start_nw
 )
 acs_roadmap_w2 <- roadmap(
-  conf_data = acs_conf %>% tidyr::replace_na(list(inctot = 0)), 
+  conf_data = acs_conf %>% 
+    tidyr::replace_na(list(inctot = 0)) %>%
+    dplyr::mutate(hcovany = factor(hcovany, levels = levels)), 
   start_data = acs_start
 )
 
 acs_roadmap_na <- roadmap(
-  conf_data = acs_conf %>% dplyr::select(dplyr::where(is.numeric)),
-  start_data = acs_conf %>% dplyr::select(age, famsize, wgt)
+  conf_data = acs_conf %>% 
+    dplyr::select(dplyr::where(is.numeric)),
+  start_data = acs_conf %>% 
+    dplyr::select(age, famsize, wgt)
 )
 
 test_that("visit_sequence manual order", {
@@ -416,8 +428,56 @@ test_that("visit_sequence weighted absolute total with weight in start data", {
   
 })
 
-# sequence_factor ---------------------------------------------------------
-test_that("visit_sequence with factor sequence", {
+# sequence_factor (gini) --------------------------------------------------
+test_that("visit_sequence with factor sequence (gini)", {
+  
+  nr <- acs_roadmap_nw %>%
+    add_sequence_factor(dplyr::where(is.factor), method = "gini")
+  
+  expect_equal(
+    nr[["visit_sequence"]][["visit_sequence"]][1:3], 
+    c("empstat", "hcovany", "classwkr") 
+  )
+  
+  expect_true(all(
+    nr[["visit_sequence"]][["visit_method"]][1:3] == "gini"))
+  
+})
+
+test_that("visit_sequence with factors and dropping weight (gini)", {
+  
+  nr <- acs_roadmap_nw %>%
+    update_visit_sequence(synthesize_weight = FALSE, 
+                          weight_var = wgt) %>%
+    add_sequence_factor(dplyr::where(is.factor), method = "gini")
+  
+  expect_equal(
+    nr[["visit_sequence"]][["visit_sequence"]][1:3], 
+    c("empstat", "hcovany", "classwkr") 
+  )
+  
+  expect_false("wgt" %in% nr[["visit_sequence"]][["visit_sequence"]])
+  
+})
+
+test_that("visit_sequence with factors and keeping weight (gini)", {
+  
+  nr <- acs_roadmap_w %>%
+    update_visit_sequence(synthesize_weight = FALSE, 
+                          weight_var = wgt) %>%
+    add_sequence_factor(dplyr::where(is.factor), method = "gini")
+  
+  expect_equal(
+    nr[["visit_sequence"]][["visit_sequence"]][1:3], 
+    c("empstat", "hcovany", "classwkr") 
+  )
+  
+  expect_false("wgt" %in% nr[["visit_sequence"]][["visit_sequence"]])
+  
+})
+
+# sequence_factor (entropy) ------------------------------------------------
+test_that("visit_sequence with factor sequence (entropy)", {
   
   nr <- acs_roadmap_nw %>%
     add_sequence_factor(dplyr::where(is.factor), method = "entropy")
@@ -437,7 +497,7 @@ test_that("visit_sequence with factors and dropping weight", {
   nr <- acs_roadmap_nw %>%
     update_visit_sequence(synthesize_weight = FALSE, 
                           weight_var = wgt) %>%
-    add_sequence_factor(dplyr::where(is.factor), method = "entropy")
+    add_sequence_factor(dplyr::where(is.factor))
   
   expect_equal(
     nr[["visit_sequence"]][["visit_sequence"]][1:3], 
@@ -448,12 +508,12 @@ test_that("visit_sequence with factors and dropping weight", {
   
 })
 
-test_that("visit_sequence with factors and keeping weight ", {
+test_that("visit_sequence with factors and keeping weight (entropy)", {
   
   nr <- acs_roadmap_w %>%
     update_visit_sequence(synthesize_weight = FALSE, 
                           weight_var = wgt) %>%
-    add_sequence_factor(dplyr::where(is.factor), method = "entropy")
+    add_sequence_factor(dplyr::where(is.factor))
   
   expect_equal(
     nr[["visit_sequence"]][["visit_sequence"]][1:3], 
