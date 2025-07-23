@@ -251,7 +251,7 @@ add_noise_kde <- function(model,
   
   if (is.null(n_ntiles)) {
     
-    n_ntiles <- nrow(conf_model_data) / obs_per_ntile
+    n_ntiles <- floor(nrow(conf_model_data) / obs_per_ntile)
     
   }
   
