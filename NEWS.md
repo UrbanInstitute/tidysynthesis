@@ -1,3 +1,11 @@
+# tidysynthesis 0.1.1
+
+* Add rounding to `noise()` (#6) and fix `obs_per_ntile` in `noise()` (#3).
+* Add default noise mechanism in `synth_spec()` for when exactly one type of noise mechanism is specified (#2).
+* Update printing for `synthesize()` (#4) and constraints (#10).
+* Add a gini method to `add_sequence_factor()` and resolve minor bugs (#15, #16).
+* Update documentation for built-in data sets (#7).
+
 # tidysynthesis 0.1.0
 
 * Add `constraints()` support for generic conditions and categorical constraints.
