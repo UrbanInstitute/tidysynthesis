@@ -218,8 +218,6 @@
 #' one-to-one relationship; "random" adds a small random perturbation to the 
 #' derived boundaries; finally, "exclusions" treats ntile tie values as derived
 #' exclusions.
-#' @param sd_scale float, a positive number to scale the estimated KDE variance. 
-#' Defaults to 1.0
 #'
 #' @return A numeric vector with noise added to each prediction
 #' 
@@ -236,8 +234,7 @@ add_noise_kde <- function(model,
                           exclusions = NULL,
                           n_ntiles = NULL, 
                           obs_per_ntile = NULL,
-                          ties_method = "collapse",
-                          sd_scale = 1.0) {
+                          ties_method = "collapse") {
   
   # check args
   if (!is.null(n_ntiles) & !is.null(obs_per_ntile)) {
@@ -267,9 +264,6 @@ add_noise_kde <- function(model,
     )
   }
   
-  stopifnot("`sd_scale` must be a positive number" = {
-    sd_scale > 0
-  })
   
   
   # 1 + 2: extract baseline data and calculate confidential KDE bandwidths
@@ -310,21 +304,20 @@ add_noise_kde <- function(model,
     pred_with_noise <- dplyr::bind_cols(
       pred_ntiles,
       pred_with_noise = purrr::map2_dbl(.x = pred_ntiles$pred, 
-                                        .y = pred_ntiles$bandwidth * sd_scale, 
+                                        .y = pred_ntiles$bandwidth, 
                                         .f = ~ rnorm(n = 1, mean = .x, sd = .y))
     ) %>%
       dplyr::pull(pred_with_noise)
+    
   } else {
     
     pred_with_noise <- dplyr::bind_cols(
       pred_ntiles,
-      pred_with_noise = purrr::map2_dbl(
-        .x = pred_ntiles$pred, 
-        .y = pred_ntiles$bandwidth * sd_scale, 
-        .f = ~ dplyr::if_else(condition = .x %in% exclusions, 
-                              true = as.numeric(.x), 
-                              false = rnorm(n = 1, mean = .x, sd = .y))
-      )
+      pred_with_noise = purrr::map2_dbl(.x = pred_ntiles$pred, 
+                                        .y = pred_ntiles$bandwidth, 
+                                        .f = ~ dplyr::if_else(condition = .x %in% exclusions, 
+                                                              true = as.numeric(.x), 
+                                                              false = rnorm(n = 1, mean = .x, sd = .y)))
     ) %>%
       dplyr::pull(pred_with_noise)
     

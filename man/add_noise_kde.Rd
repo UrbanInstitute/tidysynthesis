@@ -15,8 +15,7 @@ add_noise_kde(
   exclusions = NULL,
   n_ntiles = NULL,
   obs_per_ntile = NULL,
-  ties_method = "collapse",
-  sd_scale = 1
+  ties_method = "collapse"
 )
 }
 \arguments{
@@ -37,7 +36,7 @@ add_noise_kde(
 \item{n_ntiles}{The number of ntiles}
 
 \item{obs_per_ntile}{A numeric for the minimum number of observations to be
-in an ntile. Cannot be used in conjunction with the \code{n_ntiles} argument.}
+in an ntile. Cannot be used in conjunction with the \code{ntiles} argument.}
 
 \item{ties_method}{The ntiles approach to adding noise requires a one-to-one
 mapping from model-generated values to ntiles in the original data. The
@@ -46,9 +45,6 @@ ntiles lack unique bounds. "collapse" collapses ntile breaks to preserve the
 one-to-one relationship; "random" adds a small random perturbation to the
 derived boundaries; finally, "exclusions" treats ntile tie values as derived
 exclusions.}
-
-\item{sd_scale}{float, a positive number to scale the estimated KDE variance.
-Defaults to 1.0}
 }
 \value{
 A numeric vector with noise added to each prediction
