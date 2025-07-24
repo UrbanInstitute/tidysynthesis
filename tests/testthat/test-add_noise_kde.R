@@ -125,6 +125,20 @@ test_that("add_noise_kde error checking", {
     )
   )
   
+  # invalid sd_scale
+  expect_error(
+    add_noise_kde(
+      model = model,
+      new_data = new_data,
+      conf_model_data = conf_model_data,
+      outcome_var = outcome_var,
+      col_schema = col_schema,
+      pred = pred,
+      n_ntiles = 2,
+      sd_scale = -1
+    )
+  )
+  
 })
 
 
@@ -183,5 +197,41 @@ test_that("add_noise_kde basic reproducibility with obs_per_ntile rounding", {
   )
   
   expect_true(all(sample1 == sample2))
+  
+})
+
+
+test_that("add_noise_kde sd_scale", {
+  
+  test_preds <- rep(pred, 100)
+  
+  set.seed(1)
+  sample1 <- add_noise_kde(
+    model = model,
+    new_data = new_data,
+    conf_model_data = conf_model_data,
+    outcome_var = outcome_var,
+    col_schema = col_schema,
+    pred = test_preds,
+    n_ntiles = n_ntiles,
+    sd_scale = 1
+  )
+  
+  set.seed(1)
+  sample2 <- add_noise_kde(
+    model = model,
+    new_data = new_data,
+    conf_model_data = conf_model_data,
+    outcome_var = outcome_var,
+    col_schema = col_schema,
+    pred = test_preds,
+    n_ntiles = n_ntiles,
+    sd_scale = 10
+  )
+  
+  # expect ratio in empirical SDs to be `sd_scale`
+  expect_equal(
+    sd(sample2 - test_preds) / sd(sample1 - test_preds), 10.0
+  )
   
 })
