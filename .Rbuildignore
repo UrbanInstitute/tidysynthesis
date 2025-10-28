@@ -9,3 +9,4 @@
 ^examples/
 ^data-raw/
 README.qmd
+^\.github$

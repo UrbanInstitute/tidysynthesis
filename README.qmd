@@ -10,16 +10,19 @@ This repository contains the tidysynthesis R package for generating synthetic da
 
 ## Installation:
 
-tidysynthesis is not currently on [CRAN](https://cran.r-project.org/), so it cannot be installed with `install.packages()`. Please install tidysynthesis with the following code:
+```{r}
+#| eval: false
+# The easiest way to get tidysynthesis is from CRAN:
+install.packages("tidysynthesis")
 
+# Or the development version from GitHub:
+# install.packages("pak")
+pak::pak("UrbanInstitute/tidysynthesis")
 ```
-devtools::install_github("UrbanInstitute/tidysynthesis")
-```
-After doing this, you can use the traditional `library(tidysynthesis)` command. 
 
 ## Overview
 
-`tidysynthesis` is a "metapackage" for creating synthetic data sets for statistical disclosure limitation that shares the underlying design philosophy, grammar, and data structures of the [tidyverse](https://www.tidyverse.org/) and [tidymodels](https://www.tidymodels.org/). `tidysynthesis` flexibly supports sequential synthesis modeling and sampling specifications with different formal and empirical privacy properties. 
+`tidysynthesis` is a "metapackage" for creating synthetic data sets for statistical disclosure limitation that shares the underlying design philosophy, grammar, and data structures of the [tidyverse](https://tidyverse.org/) and [tidymodels](https://www.tidymodels.org/). `tidysynthesis` flexibly supports sequential synthesis modeling and sampling specifications with different formal and empirical privacy properties. 
 
 Note that the privacy and security properties of tidysynthesis's outputs rely on many different technical assumptions. Our goal is to make the package agnostic to many of these assumptions, which places greater responsibility on users to evaluate synthetic data prior to dissemination. For more information, see our notes on [security principles](https://ui-research.github.io/tidysynthesis-documentation/security-principles.html) from our documentation.
 

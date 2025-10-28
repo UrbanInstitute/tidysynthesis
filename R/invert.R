@@ -2,7 +2,6 @@
 #'
 #' @rdname invert
 #' @aliases invert invert.recipe
-#' @author Aaron R. Williams
 #' @concept postprocessing
 #' 
 #' @param object A recipe after fitting a model

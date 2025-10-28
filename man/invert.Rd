@@ -17,7 +17,4 @@ invert(object, predictions, ...)
 \description{
 An S3 method for inverting a step
 }
-\author{
-Aaron R. Williams
-}
 \concept{postprocessing}
