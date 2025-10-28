@@ -8,6 +8,24 @@
 #' @param predictions A data frame with .pred
 #' @param ... Other arguments 
 #' 
+#' @return A tibble with inverted model-generated values
+#' 
+#' @examples
+#' 
+#' data <- tibble::tibble(
+#'   y = rlnorm(n = 1000, meanlog = 0, sdlog = 1),
+#'   x = rnorm(n = 1000)
+#' )
+#' 
+#' adj <- recipes::recipe(y ~ x, data = data) %>%
+#'   recipes::step_BoxCox(recipes::all_outcomes()) %>%
+#'   recipes::prep()
+#'   
+#' invert(
+#'   object = adj$steps[[1]], 
+#'   predictions = tibble::tibble(.pred = adj[["template"]][["y"]])
+#' )
+#' 
 #' @export
 invert <- function(object, predictions, ...)
   UseMethod("invert")
@@ -18,6 +36,24 @@ invert <- function(object, predictions, ...)
 #' @param predictions A data frame with .pred
 #' @param ... Other arguments 
 #'
+#' @return A tibble with inverted model-generated values
+#' 
+#' @examples
+#' 
+#' data <- tibble::tibble(
+#'   y = rlnorm(n = 1000, meanlog = 0, sdlog = 1),
+#'   x = rnorm(n = 1000)
+#' )
+#' 
+#' adj <- recipes::recipe(y ~ x, data = data) %>%
+#'   recipes::step_BoxCox(recipes::all_outcomes()) %>%
+#'   recipes::prep()
+#'   
+#' invert(
+#'   object = adj$steps[[1]], 
+#'   predictions = tibble::tibble(.pred = adj[["template"]][["y"]])
+#' )
+#' 
 #' @export
 invert.step_BoxCox <- function(object, predictions, ...) {
   
@@ -47,6 +83,24 @@ invert.step_BoxCox <- function(object, predictions, ...) {
 #' @param predictions A data frame with .pred
 #' @param ... Other arguments 
 #'
+#' @return A tibble with inverted model-generated values
+#'
+#' @examples
+#' 
+#' data <- tibble::tibble(
+#'   y = rlnorm(n = 1000, meanlog = 0, sdlog = 1),
+#'   x = rnorm(n = 1000)
+#' )
+#' 
+#' adj <- recipes::recipe(y ~ x, data = data) %>%
+#'   recipes::step_log(recipes::all_outcomes()) %>%
+#'   recipes::prep()
+#'   
+#' invert(
+#'   object = adj$steps[[1]], 
+#'   predictions = tibble::tibble(.pred = adj[["template"]][["y"]])
+#' )
+#'
 #' @export
 invert.step_log <- function(object, predictions, ...) {
 
@@ -61,6 +115,8 @@ invert.step_log <- function(object, predictions, ...) {
 #' @param object A recipe after fitting a model
 #' @param predictions A data frame with .pred
 #' @param ... Other arguments
+#'
+#' @return A tibble with inverted model-generated values
 #'
 #' @return A tibble with Yeo_johnson transformation inverted for .pred 
 #' 

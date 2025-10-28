@@ -1,12 +1,9 @@
-#'
 #' Construct a list of `col_schema`s that aligns with a visit sequence.
 #' 
 #' @param roadmap A `roadmap` S3 object
 #' 
 #' @return A named list of lists mapping variable names to their `col_schema`
 #' specifications.
-#' 
-#' @export 
 #' 
 construct_col_schema <- function(roadmap) {
   

@@ -8,6 +8,10 @@
 #' @return An augmented data frame with the original variables and new 
 #' variables that contain the missingness patterns of variables with NA
 #' 
+#' @examples 
+#' 
+#' expand_na(data = example_na, type = c("dbl", "int"))
+#' 
 #' @export
 expand_na <- function(data, 
                       types = c("chr", "dbl", "fct", "lgl", "int", "ord"),

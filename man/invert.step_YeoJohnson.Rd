@@ -14,6 +14,8 @@
 \item{...}{Other arguments}
 }
 \value{
+A tibble with inverted model-generated values
+
 A tibble with Yeo_johnson transformation inverted for .pred
 }
 \description{

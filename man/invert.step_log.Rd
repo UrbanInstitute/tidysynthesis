@@ -13,6 +13,26 @@
 
 \item{...}{Other arguments}
 }
+\value{
+A tibble with inverted model-generated values
+}
 \description{
 Invert a log transformation
+}
+\examples{
+
+data <- tibble::tibble(
+  y = rlnorm(n = 1000, meanlog = 0, sdlog = 1),
+  x = rnorm(n = 1000)
+)
+
+adj <- recipes::recipe(y ~ x, data = data) \%>\%
+  recipes::step_log(recipes::all_outcomes()) \%>\%
+  recipes::prep()
+  
+invert(
+  object = adj$steps[[1]], 
+  predictions = tibble::tibble(.pred = adj[["template"]][["y"]])
+)
+
 }
