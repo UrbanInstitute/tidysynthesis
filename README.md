@@ -12,7 +12,7 @@ tidysynthesis is not currently on [CRAN](https://cran.r-project.org/),
 so it cannot be installed with `install.packages()`. Please install
 tidysynthesis with the following code:
 
-    devtools::install_github("UI-Research/tidysynthesis")
+    devtools::install_github("UrbanInstitute/tidysynthesis")
 
 After doing this, you can use the traditional `library(tidysynthesis)`
 command.
