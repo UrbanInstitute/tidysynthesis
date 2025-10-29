@@ -4,7 +4,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# tidysynthesis
+# tidysynthesis <a href="https://dplyr.tidyverse.org"><img src="man/figures/logo.png" align="right" height="138" /></a>
 
 This repository contains the tidysynthesis R package for generating synthetic data. Complete documentation is available is available at the [tidysynthesis documentation website](https://ui-research.github.io/tidysynthesis-documentation/). 
 
@@ -13,7 +13,7 @@ This repository contains the tidysynthesis R package for generating synthetic da
 tidysynthesis is not currently on [CRAN](https://cran.r-project.org/), so it cannot be installed with `install.packages()`. Please install tidysynthesis with the following code:
 
 ```
-devtools::install_github("UI-Research/tidysynthesis")
+devtools::install_github("UrbanInstitute/tidysynthesis")
 ```
 After doing this, you can use the traditional `library(tidysynthesis)` command. 
 

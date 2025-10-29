@@ -1,6 +1,6 @@
 Package: tidysynthesis
 Title: A Common API for Synthesizing Data
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
     c(person(given = "Aaron", 
              family = "Williams", 
@@ -64,7 +64,8 @@ Imports:
     vctrs,
     workflows,
     yardstick,
-    ExtDist
+    ExtDist,
+    dapper
 Suggests:
     hardhat,
     palmerpenguins,

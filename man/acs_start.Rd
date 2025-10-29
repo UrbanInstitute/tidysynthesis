@@ -7,7 +7,7 @@
 \format{
 \subsection{\code{acs_start}}{
 
-A data frame with 1,500 rows and 5 columns:
+A data frame with 500 rows and 5 columns:
 \describe{
 \item{county}{fct, county}
 \item{gq}{fct, group quarter kind}
@@ -25,7 +25,7 @@ acs_start
 }
 \description{
 An extract constructed from the 2019 American Community Survey containing a
-survey sample of n = 1500 Nebraska respondents, with survey weights included.
+survey sample of n = 500 Nebraska respondents, with survey weights included.
 }
 \details{
 Original data source:

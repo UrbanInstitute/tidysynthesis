@@ -290,13 +290,27 @@ test_that("print.constraints", {
     
   }
   
+  for (eo in c("vs: 0", "am: 0", "gear: 0")) {
+    
+    expect_output(print(constraints_defaults, eo))
+    
+  }
+  
   constraints_custom <- constraints(
     schema = schema, 
     constraints_df_num = constraints_df_num, 
-    max_z_num = 1
+    max_z_num = 1,
+    constraints_df_cat = constraints_df_cat,
+    max_z_cat = 2
   )
   
   for (eo in c("mpg: 3", "disp: 1", "carb: 1")) {
+    
+    expect_output(print(constraints_custom, eo))
+    
+  }
+  
+  for (eo in c("vs: 1", "am: 0", "gear: 2")) {
     
     expect_output(print(constraints_custom, eo))
     

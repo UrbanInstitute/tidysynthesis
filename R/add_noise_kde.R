@@ -210,7 +210,7 @@
 #' @param exclusions Numeric values that should not receive extra noise
 #' @param n_ntiles The number of ntiles
 #' @param obs_per_ntile A numeric for the minimum number of observations to be 
-#' in an ntile. Cannot be used in conjunction with the `ntiles` argument.
+#' in an ntile. Cannot be used in conjunction with the `n_ntiles` argument.
 #' @param ties_method The ntiles approach to adding noise requires a one-to-one
 #' mapping from model-generated values to ntiles in the original data. The 
 #' methods "collapse", "random", and "exclusions" deal with situations where the
@@ -218,6 +218,8 @@
 #' one-to-one relationship; "random" adds a small random perturbation to the 
 #' derived boundaries; finally, "exclusions" treats ntile tie values as derived
 #' exclusions.
+#' @param sd_scale float, a positive number to scale the estimated KDE variance. 
+#' Defaults to 1.0
 #'
 #' @return A numeric vector with noise added to each prediction
 #' 
@@ -234,7 +236,8 @@ add_noise_kde <- function(model,
                           exclusions = NULL,
                           n_ntiles = NULL, 
                           obs_per_ntile = NULL,
-                          ties_method = "collapse") {
+                          ties_method = "collapse",
+                          sd_scale = 1.0) {
   
   # check args
   if (!is.null(n_ntiles) & !is.null(obs_per_ntile)) {
@@ -249,6 +252,12 @@ add_noise_kde <- function(model,
     
   }
   
+  if (is.null(n_ntiles)) {
+    
+    n_ntiles <- floor(nrow(conf_model_data) / obs_per_ntile)
+    
+  }
+  
   valid_ties_method <- c("collapse", "exclusions", "random")
   
   if (!ties_method %in% valid_ties_method) {
@@ -258,14 +267,17 @@ add_noise_kde <- function(model,
     )
   }
   
-
+  stopifnot("`sd_scale` must be a positive number" = {
+    sd_scale > 0
+  })
+  
   
   # 1 + 2: extract baseline data and calculate confidential KDE bandwidths
   baseline <- dplyr::pull(conf_model_data, outcome_var)
   
   bandwidths <- .calc_bandwidths(baseline = baseline, 
-                              n = n_ntiles, 
-                              ties_method = ties_method)
+                                 n = n_ntiles, 
+                                 ties_method = ties_method)
   
   # 3. find the ntiles of the predicted vector based on breaks from the baseline data
   ntiles <- .create_ntiles(
@@ -298,20 +310,21 @@ add_noise_kde <- function(model,
     pred_with_noise <- dplyr::bind_cols(
       pred_ntiles,
       pred_with_noise = purrr::map2_dbl(.x = pred_ntiles$pred, 
-                                        .y = pred_ntiles$bandwidth, 
+                                        .y = pred_ntiles$bandwidth * sd_scale, 
                                         .f = ~ rnorm(n = 1, mean = .x, sd = .y))
     ) %>%
       dplyr::pull(pred_with_noise)
-    
   } else {
     
     pred_with_noise <- dplyr::bind_cols(
       pred_ntiles,
-      pred_with_noise = purrr::map2_dbl(.x = pred_ntiles$pred, 
-                                        .y = pred_ntiles$bandwidth, 
-                                        .f = ~ dplyr::if_else(condition = .x %in% exclusions, 
-                                                              true = as.numeric(.x), 
-                                                              false = rnorm(n = 1, mean = .x, sd = .y)))
+      pred_with_noise = purrr::map2_dbl(
+        .x = pred_ntiles$pred, 
+        .y = pred_ntiles$bandwidth * sd_scale, 
+        .f = ~ dplyr::if_else(condition = .x %in% exclusions, 
+                              true = as.numeric(.x), 
+                              false = rnorm(n = 1, mean = .x, sd = .y))
+      )
     ) %>%
       dplyr::pull(pred_with_noise)
     
