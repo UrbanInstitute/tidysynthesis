@@ -78,47 +78,63 @@ test_that("col_schema argument parsing", {
   
   # expect errors for invalid argument types
   expect_error(
-    schema(conf_data = "not a data.frame", start_data = acs_start)
+    schema(conf_data = "not a data.frame", start_data = acs_start),
+    regexp = "`conf_data` must be a data.frame",
+    fixed = TRUE
   )
   
   expect_error(
-    schema(conf_data = acs_conf, start_data = "not a data.frame")
-  )
-  
-  expect_error(
-    schema(conf_data = acs_conf, 
-           start_data = acs_start, 
-           col_schema = c("not", "a", "list"))
-  )
-  
-  expect_error(
-    schema(conf_data = acs_conf, 
-           start_data = acs_start, 
-           enforce = "not a logical")
+    schema(conf_data = acs_conf, start_data = "not a data.frame"),
+    regexp = "`start_data` must be a data.frame",
+    fixed = TRUE
   )
   
   expect_error(
     schema(conf_data = acs_conf, 
            start_data = acs_start, 
-           coerce_to_factors = "not a logical")
+           col_schema = c("not", "a", "list")),
+    regexp = "`col_schema`, if supplied, must be a list",
+    fixed = TRUE
   )
   
   expect_error(
     schema(conf_data = acs_conf, 
            start_data = acs_start, 
-           coerce_to_doubles = "not a logical")
+           enforce = "not a logical"),
+    regexp = "`enforce` must be logical",
+    fixed = TRUE
   )
   
   expect_error(
     schema(conf_data = acs_conf, 
            start_data = acs_start, 
-           na_factor_to_level = "not a logical")
+           coerce_to_factors = "not a logical"),
+    regexp = "`coerce_to_factors` must be logical",
+    fixed = TRUE
   )
   
   expect_error(
     schema(conf_data = acs_conf, 
            start_data = acs_start, 
-           na_numeric_to_ind = "not a logical")
+           coerce_to_doubles = "not a logical"),
+    regexp = "`coerce_to_doubles` must be logical",
+    fixed = TRUE
+  )
+  
+  expect_error(
+    schema(conf_data = acs_conf, 
+           start_data = acs_start, 
+           na_factor_to_level = "not a logical"),
+    regexp = "`na_factor_to_level` must be logical",
+    fixed = TRUE
+  )
+  
+  expect_error(
+    schema(conf_data = acs_conf, 
+           start_data = acs_start, 
+           na_numeric_to_ind = "not a logical"),
+    regexp = "`na_numeric_to_ind` must be logical",
+    fixed = TRUE
   )
   
 })
@@ -128,14 +144,20 @@ test_that("col_schema argument parsing", {
 test_that("validate_schema expected errors", {
   
   # error if input is not a roadmap
-  expect_error(validate_schema("not_a_roadmap"))
+  expect_error(
+    validate_schema("not_a_roadmap"),
+    regexp = "`roadmap` must be a roadmap object",
+    fixed = TRUE
+)
   
   # error if columns from col_schema not in conf_data
   expect_error(
     validate_schema(
       acs_roadmap %>%
         update_schema(col_schema = list("not_a_column" = list("dtype" = "dbl")))
-    )
+    ),
+    regexp = "`col_schema` included unknown name(s) not_a_column",
+    fixed = TRUE
   )
   
   # error if unsupported dtype provided
@@ -143,7 +165,9 @@ test_that("validate_schema expected errors", {
     validate_schema(
       acs_roadmap %>%
         update_schema(col_schema = list("gq" = list("dtype" = "notatype")))
-    )
+    ),
+    regexp = "`col_schema` included unsupported dtype(s) notatype",
+    fixed = TRUE
   )
   
   # error if unsupported col_schema fields provided
@@ -151,7 +175,9 @@ test_that("validate_schema expected errors", {
     validate_schema(
       acs_roadmap %>%
         update_schema(col_schema = list("gq" = list("notafield" = "dbl")))
-    )
+    ),
+    regexp = "Invalid `col_schema` field names for variable(s) gq",
+    fixed = TRUE
   )
   
 })

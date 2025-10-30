@@ -45,7 +45,9 @@ test_that("input errors work correctly", {
     construct_recipes(
       roadmap = "apple", 
       default_regression_steps = step1
-    )
+    ),
+    regexp = "`roadmap` must be a roadmap object",
+    fixed = TRUE
   )
   
   # recipes must be a function
@@ -53,14 +55,18 @@ test_that("input errors work correctly", {
     construct_recipes(
       roadmap = roadmap, 
       default_regression_steps = "banana"
-    )
+    ),
+    regexp = "Default regression step(s) has incorrect type",
+    fixed = TRUE
   )
   
   expect_error(
     construct_recipes(
       roadmap = roadmap, 
       default_classification_steps = "banana"
-    )
+    ),
+    regexp = "Default classification step(s) has incorrect type",
+    fixed = TRUE
   )
   
   # custom recipes must be a list of functions
@@ -69,7 +75,9 @@ test_that("input errors work correctly", {
       roadmap = roadmap, 
       default_regression_steps = step1,
       custom_steps = "apple"
-    )
+    ),
+    regexp = "subscript out of bounds",
+    fixed = TRUE
   )
   
   # custom recipes must be correctly specified
@@ -80,7 +88,9 @@ test_that("input errors work correctly", {
       default_classification_steps = step1,
       custom_steps = list(list("vars" = c("price", "wrong_var"), 
                                "steps" = step2))
-    )
+    ),
+    regexp = "Custom step(s) list has variables not in visit_sequence: wrong_var",
+    fixed = TRUE
   )
   
   # custom recipes should not have duplicate vars
@@ -93,7 +103,9 @@ test_that("input errors work correctly", {
                                "steps" = step1),
                           list("vars" = c("price"), 
                                "steps" = step2))
-    )
+    ),
+    regexp = "Custom step(s) list has repeated variable names: price",
+    fixed = TRUE
   )
   
 })
@@ -193,7 +205,9 @@ test_that("try to break the custom recipes", {
     construct_recipes(
       roadmap = roadmap, 
       custom_steps = too_few_vars
-    )
+    ),
+    regexp = "\033[1m\033[22m\033[36mℹ\033[39m In index: 1.\n\033[36mℹ\033[39m With name: price.\n\033[1mCaused by error in `pluck_raw()`:\033[22m\n\033[33m!\033[39m Can't pluck from a function at level 1.",
+    fixed = TRUE
   )
   
   # incorrect variables
@@ -206,7 +220,9 @@ test_that("try to break the custom recipes", {
     construct_recipes(
       roadmap = roadmap, 
       custom_steps = incorrect_vars
-    )
+    ),
+    regexp = "\033[1m\033[22m\033[36mℹ\033[39m In index: 1.\n\033[36mℹ\033[39m With name: price.\n\033[1mCaused by error in `pluck_raw()`:\033[22m\n\033[33m!\033[39m Can't pluck from a function at level 1.",
+    fixed = TRUE
   )
   
 })

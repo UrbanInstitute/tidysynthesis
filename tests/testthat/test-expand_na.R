@@ -26,7 +26,11 @@ test_that("Expanded example_na correctly labels missing and nonmissing values", 
 
 test_that("Variable with name containing '_NA' throws an error", {
 
-  expect_error(expand_na(data = data.frame(x2_NA = c("1", "2", NA))))
+  expect_error(
+    expand_na(data = data.frame(x2_NA = c("1", "2", NA))),
+    regexp = "If using incomplete data, variable names cannot end in '_NA'",
+    fixed = FALSE
+)
 
 })
 

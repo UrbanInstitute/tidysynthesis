@@ -33,21 +33,29 @@ test_that("input errors work correctly", {
       default_regression_tuner = NULL,
       default_classification_tuner = NULL,
       custom_tuners = NULL
-    )
+    ),
+    regexp = "`roadmap` must be a roadmap object",
+    fixed = TRUE
   )
   
   expect_error(
     construct_tuners(
       roadmap = df, 
       default_regression_tuner = "notatuner", 
-      custom_tuners = NULL)
+      custom_tuners = NULL
+    ),
+    regexp = "`roadmap` must be a roadmap object",
+    fixed = TRUE
   )
   
   expect_error(
     construct_tuners(
       roadmap = roadmap, 
       default_regression_tuner = default_tuner, 
-      custom_tuners = list("table" = "table"))
+      custom_tuners = list("table" = "table")
+    ),
+    regexp = "subscript out of bounds",
+    fixed = TRUE
   )
   
   # incorrect variable names
@@ -57,7 +65,9 @@ test_that("input errors work correctly", {
       default_regression_tuner = default_tuner, 
       custom_tuners = list(list("vars" = c("color", "notavar"),
                                 "tuner" = default_tuner_alt))
-    )
+    ),
+    regexp = "Custom tuner(s) list has variables not in visit_sequence: notavar",
+    fixed = TRUE
   )
   
 })

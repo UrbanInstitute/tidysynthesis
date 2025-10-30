@@ -138,18 +138,24 @@ test_that("Invalid inputs throw errors as expected", {
 
   expect_error(
     tune_synthesis(list("not_a_presynth"), 
-                   postproc_f_null)
+                   postproc_f_null),
+    regexp = "`presynths` elements must be presynth objects",
+    fixed = TRUE
   )
   
   expect_error(
     tune_synthesis(list(presynth1), 
-                   function(z) { })
+                   function(z) { }),
+    regexp = "`postprocessing_func` must have required arguments: synth_id, synth_name, \n    and postsynth",
+    fixed = TRUE
   )
   
   expect_error(
     tune_synthesis(list(presynth1), 
                    postprof_f_null, 
-                   metadata_func = function(z) {})
+                   metadata_func = function(z) {}),
+    regexp = "object 'postprof_f_null' not found",
+    fixed = TRUE
   )
     
 })

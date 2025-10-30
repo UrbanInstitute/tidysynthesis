@@ -6,34 +6,52 @@ roadmap <- roadmap(conf_data = data, start_data = start_data)
 test_that("roadmap() input errors work ", {
   
   # conf_data must be a data frame
-  expect_error(roadmap(conf_data = data, start_data = 1))
+  expect_error(
+    roadmap(conf_data = data, start_data = 1), 
+    regexp = "`start_data` must be a data.frame",
+    fixed = TRUE
+  )
   
   # start_data must be a data frame
-  expect_error(roadmap(conf_data = 1, start_data = start_data))
+  expect_error(
+    roadmap(conf_data = 1, start_data = start_data), 
+    regexp = "`conf_data` must be a data.frame",
+    fixed = TRUE
+  )
   
   # start_method must be a start_method object
   expect_error(
-    roadmap(conf_data = data, start_data = start_data, start_method = 1)
+    roadmap(conf_data = data, start_data = start_data, start_method = 1), 
+    regexp = "`start_method` must be a start_method object",
+    fixed = TRUE
   )
   
   # schema must be a schema object
   expect_error(
-    roadmap(conf_data = data, start_data = start_data, schema = 1)
+    roadmap(conf_data = data, start_data = start_data, schema = 1), 
+    regexp = "`schema` must be a schema object",
+    fixed = TRUE
   )
 
   # visit_sequence must be a visit_sequence object
   expect_error(
-    roadmap(conf_data = data, start_data = start_data, visit_sequence = 1)
+    roadmap(conf_data = data, start_data = start_data, visit_sequence = 1), 
+    regexp = "`visit_sequence` must be a visit_sequence object",
+    fixed = TRUE
   )
   
   # replicates must be a replicates object
   expect_error(
-    roadmap(conf_data = data, start_data = start_data, replicates = 1)
+    roadmap(conf_data = data, start_data = start_data, replicates = 1), 
+    regexp = "`replicates` must be a replcates object",
+    fixed = TRUE
   )
   
   # constraints must be a constraints object
   expect_error(
-    roadmap(conf_data = data, start_data = start_data, constraints = 1)
+    roadmap(conf_data = data, start_data = start_data, constraints = 1), 
+    regexp = "`constraints` must be a constraints object",
+    fixed = TRUE
   )
   
 })
@@ -170,7 +188,9 @@ test_that("roadmap() throws an error for a factor with ordered levels", {
         conf_data = data_factor, 
         start_data = dplyr::select(data_factor, col2) # select the non-ordered-factor column
       )
-    )
+    ), 
+    regexp = "`col_schema` included unsupported dtype(s) ord",
+    fixed = TRUE
   )
   
   expect_no_error(
@@ -210,7 +230,9 @@ test_that("roadmap() throws an error for ordinal variables ", {
         conf_data = example_na,
         start_data = dplyr::select(example_na, age)
       )
-    )
+    ), 
+    regexp = "`col_schema` included unsupported dtype(s) ord",
+    fixed = TRUE
   )
   
 })

@@ -94,7 +94,9 @@ test_that("add_noise_disc_gaussian error handling", {
       outcome_var = outcome_var,
       col_schema = col_schema,
       pred = pred
-    )
+    ),
+    regexp = "Must specify either `variance` or both `rho` and `sensitivity`",
+    fixed = TRUE
   )
   
   # too many variance parameters specified
@@ -108,7 +110,9 @@ test_that("add_noise_disc_gaussian error handling", {
       pred = pred,
       variance = 1,
       rho = 2
-    )
+    ),
+    regexp = "If using variance, rho and sensitivity cannot be specified.",
+    fixed = TRUE
   )
   
   # not enough variance parameters specified
@@ -121,7 +125,9 @@ test_that("add_noise_disc_gaussian error handling", {
       col_schema = col_schema,
       pred = pred,
       rho = 2
-    )
+    ),
+    regexp = "Must specify either `variance` or both `rho` and `sensitivity`",
+    fixed = TRUE
   )
   
   # incorrect increment 
