@@ -7,8 +7,32 @@
 #'
 #' @return A named list of tuners
 #' 
-#' @export
+#' @examples
 #' 
+#' roadmap <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' )
+#' 
+#' tuner_reg <- list(
+#'   v = 3,
+#'   grid = 3,
+#'   metrics = yardstick::metric_set(yardstick::rmse)
+#' )
+#' 
+#' tuner_cat <- list(
+#'   v = 3,
+#'   grid = 3,
+#'   metrics = yardstick::metric_set(yardstick::roc_auc)
+#' )
+#' 
+#' construct_tuners(
+#'   roadmap = roadmap, 
+#'   default_regression_tuner = tuner_reg, 
+#'   default_classification_tuner = tuner_cat
+#' )
+#' 
+#' @export
 construct_tuners <- function(
     roadmap, 
     default_regression_tuner = NULL,

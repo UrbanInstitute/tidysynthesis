@@ -25,3 +25,49 @@ A new \code{synth_spec} object.
 \description{
 Add, update, or remove tuners from a \code{synth_spec} object
 }
+\examples{
+
+synth_spec <- synth_spec()
+
+tuner1 <- list(
+  v = 3,
+  grid = 3,
+  metrics = yardstick::metric_set(yardstick::rmse)
+)
+
+add_custom_tuners(
+  synth_spec = synth_spec, 
+  list("vars" = c("a", "b", "c"), "tuner" = tuner1)
+)
+
+
+synth_spec <- synth_spec()
+
+tuner1 <- list(
+  v = 3,
+  grid = 3,
+  metrics = yardstick::metric_set(yardstick::rmse)
+)
+
+update_custom_tuners(
+  synth_spec = synth_spec, 
+  list("vars" = c("a", "b", "c"), "tuner" = tuner1)
+)
+
+
+synth_spec <- synth_spec()
+
+tuner1 <- list(
+  v = 3,
+  grid = 3,
+  metrics = yardstick::metric_set(yardstick::rmse)
+)
+
+synth_spec <- add_custom_tuners(
+  synth_spec = synth_spec, 
+  list("vars" = c("a", "b", "c"), "tuner" = tuner1)
+)
+
+remove_custom_tuners(synth_spec = synth_spec)
+
+}

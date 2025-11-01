@@ -26,3 +26,11 @@ domain.}
 \description{
 Specify a resampling scheme for start_data
 }
+\examples{
+ 
+ 
+start_method(
+  start_func = start_resample, n = 1000
+)
+ 
+}

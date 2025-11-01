@@ -15,7 +15,6 @@ NULL
 
 #'
 #' @rdname visit_sequence_api
-#' @export 
 #' 
 add_visit_sequence <- function(roadmap, visit_sequence) {
   
@@ -39,8 +38,21 @@ add_visit_sequence <- function(roadmap, visit_sequence) {
 
 #'
 #' @rdname visit_sequence_api
-#' @export
 #' 
+#' @examples
+#' 
+#' roadmap <- roadmap(
+#'   conf_data = acs_conf_nw, 
+#'   start_data = acs_start_nw
+#' ) 
+#' 
+#' roadmap |>
+#'   update_visit_sequence(
+#'     weight_var = wgt,
+#'     synthesize_weight = TRUE
+#'   )
+#' 
+#' @export
 update_visit_sequence <- function(roadmap, ...) {
   
   stopifnot("`roadmap` must be a roadmap object" = { is_roadmap(roadmap) })
@@ -98,8 +110,22 @@ update_visit_sequence <- function(roadmap, ...) {
 
 #'
 #' @rdname visit_sequence_api
-#' @export 
+##' @examples
 #' 
+#' roadmap <- roadmap(
+#'   conf_data = acs_conf_nw, 
+#'   start_data = acs_start_nw
+#' ) 
+#' 
+#' roadmap <- roadmap |>
+#'   update_visit_sequence(
+#'     weight_var = wgt,
+#'     synthesize_weight = TRUE
+#'   )
+#' 
+#' reset_visit_sequence(roadmap = roadmap)
+#' 
+#' @export
 reset_visit_sequence <- function(roadmap) {
   
   stopifnot("`roadmap` must be a roadmap object" = { is_roadmap(roadmap) })
@@ -127,8 +153,18 @@ reset_visit_sequence <- function(roadmap) {
 #'
 #' @return An updated `roadmap` object.
 #' 
-#' @export
+#' @examples
 #' 
+#' roadmap(
+#'   conf_data = acs_conf_nw, 
+#'   start_data = acs_start_nw
+#' ) |>
+#'   add_sequence_manual(
+#'     c("inctot", "hcovany", "empstat",  "classwkr",  "age",   "famsize",  
+#'       "transit_time")
+#'   )
+#' 
+#' @export
 add_sequence_manual <- function(roadmap, ...) {
   
   stopifnot("`roadmap` must be a roadmap object" = { is_roadmap(roadmap) })
@@ -176,8 +212,20 @@ add_sequence_manual <- function(roadmap, ...) {
 #'
 #' @return An updated visit_sequence
 #' 
-#' @export
+#' @examples
 #' 
+#' roadmap(
+#'   conf_data = acs_conf_nw, 
+#'   start_data = acs_start_nw
+#' ) |>
+#'   add_sequence_numeric(
+#'     dplyr::where(is.numeric), 
+#'     method = "correlation", 
+#'     cor_var = "age",
+#'     na.rm = TRUE
+#'   )
+#'
+#' @export
 add_sequence_numeric <- function(
     roadmap, 
     ..., 
@@ -407,8 +455,15 @@ add_sequence_numeric <- function(
 #'
 #' @return An updated visit_sequence
 #' 
-#' @export 
+#' @examples
 #' 
+#' roadmap(
+#'   conf_data = acs_conf_nw, 
+#'   start_data = acs_start_nw
+#' ) |>
+#'   add_sequence_factor(dplyr::where(is.factor), method = "gini")
+#' 
+#' @export 
 add_sequence_factor <- function(
     roadmap, 
     ..., 

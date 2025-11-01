@@ -18,3 +18,17 @@ A \code{synth_spec}
 \description{
 Update non-custom \code{synth_spec} arguments
 }
+\examples{
+
+synth_spec <- synth_spec()
+
+lm_mod <- parsnip::linear_reg() \%>\% 
+  parsnip::set_engine("lm") \%>\%
+  parsnip::set_mode(mode = "regression")
+
+update_synth_spec(
+  synth_spec, 
+  default_regression_model = lm_mod
+)
+
+}

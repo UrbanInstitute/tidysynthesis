@@ -25,3 +25,31 @@ A new \code{synth_spec} object.
 \description{
 Add, update, or remove extractors from a \code{synth_spec} object
 }
+\examples{
+
+synth_spec <- synth_spec()
+
+add_custom_extractors(
+  synth_spec = synth_spec, 
+  list("vars" = c("a", "b", "c"), "extractor" = parsnip::extract_fit_engine)
+)
+
+
+synth_spec <- synth_spec()
+
+update_custom_extractors(
+  synth_spec = synth_spec, 
+  list("vars" = c("a", "b", "c"), "extractor" = parsnip::extract_fit_engine)
+)
+
+
+synth_spec <- synth_spec()
+
+synth_spec <- add_custom_extractors(
+  synth_spec = synth_spec, 
+  list("vars" = c("a", "b", "c"), "extractor" = parsnip::extract_fit_engine)
+)
+
+remove_custom_extractors(synth_spec = synth_spec)
+
+}

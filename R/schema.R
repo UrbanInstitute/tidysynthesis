@@ -256,6 +256,22 @@ validate_schema <- function(roadmap) {
   
 }
 
+#' Print the schema object to the console with formatting
+#'
+#' @param x A `schema` object
+#' @param ... further arguments passed to or from other methods (not currently
+#'   used).
+#' 
+#' @examples
+#' 
+#' # default inferred schema
+#' schema <- schema(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' )
+#' 
+#' print(schema)
+#' 
 #' @export
 print.schema <- function(x, ...) {
   
@@ -285,8 +301,24 @@ NULL
 
 #'
 #' @rdname schema_api
-#' @export 
 #' 
+#' @examples
+#' 
+#' roadmap <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' )
+#' 
+#' schema <- schema(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw,
+#'   na_numeric_to_ind = TRUE
+#' )
+#' 
+#' roadmap |>
+#'   add_schema(schema)
+#' 
+#' @export 
 add_schema <- function(roadmap, schema) { 
   
   stopifnot(
@@ -302,8 +334,18 @@ add_schema <- function(roadmap, schema) {
 
 #'
 #' @rdname schema_api
-#' @export 
 #' 
+#' @examples
+#' 
+#' roadmap <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' )
+#' 
+#' roadmap |>
+#'   update_schema(na_numeric_to_ind = TRUE)
+#' 
+#' @export 
 update_schema <- function(roadmap, ...) {
   
   stopifnot("`roadmap` must be a roadmap object" = { is_roadmap(roadmap) })
@@ -349,8 +391,20 @@ update_schema <- function(roadmap, ...) {
 
 #'
 #' @rdname schema_api
-#' @export 
 #' 
+#' @examples
+#' 
+#' roadmap <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' )
+#' 
+#' roadmap <- roadmap |>
+#'   update_schema(na_numeric_to_ind = TRUE)
+#' 
+#' reset_schema(roadmap)
+#'   
+#' @export 
 reset_schema <- function(roadmap) {
   
   stopifnot("`roadmap` must be a roadmap object" = { is_roadmap(roadmap) })

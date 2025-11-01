@@ -1,4 +1,3 @@
-#'
 #' Create a noise object
 #' 
 #' @param add_noise Boolean, TRUE if adding noise
@@ -6,8 +5,11 @@
 #' @param noise_func A function that adds noise to 
 #' @param ... Optional named additional arguments to pass to `noise_func(...)`
 #' 
-#' @export 
+#' @examples
 #' 
+#' noise()
+#' 
+#' @export 
 noise <- function(add_noise = FALSE,
                   mode = "regression", 
                   noise_func = NULL,
@@ -42,6 +44,16 @@ is_noise <- function(x) {
 }
 
 
+#' Print the noise object to the console with formatting
+#'
+#' @param x A `noise` object
+#' @param ... further arguments passed to or from other methods (not currently
+#'   used).
+#'
+#' @examples
+#' 
+#' print(noise())
+#' 
 #' @export
 print.noise <- function(x, ...) {
   
@@ -64,8 +76,6 @@ print.noise <- function(x, ...) {
 #' @param noise A `noise` S3 object
 #' 
 #' @return A vector of noisy predictions with the same length as `pred`
-#' 
-#' @export 
 #' 
 exec_noise_func <- function(model,
                             new_data,

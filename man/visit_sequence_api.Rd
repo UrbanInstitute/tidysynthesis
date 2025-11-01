@@ -26,3 +26,31 @@ A new \code{roadmap} object.
 \description{
 Add or reset a \code{visit_sequence} object within an existing \code{roadmap}.
 }
+\examples{
+
+roadmap <- roadmap(
+  conf_data = acs_conf_nw, 
+  start_data = acs_start_nw
+) 
+
+roadmap |>
+  update_visit_sequence(
+    weight_var = wgt,
+    synthesize_weight = TRUE
+  )
+
+
+roadmap <- roadmap(
+  conf_data = acs_conf_nw, 
+  start_data = acs_start_nw
+) 
+
+roadmap <- roadmap |>
+  update_visit_sequence(
+    weight_var = wgt,
+    synthesize_weight = TRUE
+  )
+
+reset_visit_sequence(roadmap = roadmap)
+
+}

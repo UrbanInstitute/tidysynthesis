@@ -1,4 +1,3 @@
-#'
 #' Specify a resampling scheme for start_data
 #' 
 #' @param start_data A `data.frame`
@@ -9,8 +8,13 @@
 #' @param support A string that specifies the method of resampling from the `start_data` 
 #' domain. 
 #'  
-#' @export
+#' @examples  
 #'  
+#' start_method(
+#'   start_func = start_resample, n = 1000
+#' )
+#'  
+#' @export
 start_resample <- function(
     start_data,
     n = NULL,

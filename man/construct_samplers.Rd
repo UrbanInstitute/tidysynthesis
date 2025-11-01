@@ -26,3 +26,17 @@ A named list of samplers
 \description{
 Construct a list of samplers for synthesis
 }
+\examples{
+
+roadmap <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+)
+
+construct_samplers(
+  roadmap = roadmap, 
+  default_regression_sampler = sample_rpart, 
+  default_classification_sampler = sample_rpart
+)
+
+}

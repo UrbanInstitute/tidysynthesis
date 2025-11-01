@@ -26,3 +26,40 @@ A new \code{roadmap} object.
 \description{
 Add, update, or reset a \code{schema} object within an existing \code{roadmap}.
 }
+\examples{
+
+roadmap <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+)
+
+schema <- schema(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw,
+  na_numeric_to_ind = TRUE
+)
+
+roadmap |>
+  add_schema(schema)
+
+
+roadmap <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+)
+
+roadmap |>
+  update_schema(na_numeric_to_ind = TRUE)
+
+
+roadmap <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+)
+
+roadmap <- roadmap |>
+  update_schema(na_numeric_to_ind = TRUE)
+
+reset_schema(roadmap)
+  
+}

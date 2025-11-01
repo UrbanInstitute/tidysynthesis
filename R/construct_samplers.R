@@ -7,8 +7,20 @@
 #'
 #' @return A named list of samplers
 #' 
-#' @export
+#' @examples
 #' 
+#' roadmap <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' )
+#' 
+#' construct_samplers(
+#'   roadmap = roadmap, 
+#'   default_regression_sampler = sample_rpart, 
+#'   default_classification_sampler = sample_rpart
+#' )
+#' 
+#' @export
 construct_samplers <- function(roadmap, 
                                default_regression_sampler = NULL,
                                default_classification_sampler = NULL,

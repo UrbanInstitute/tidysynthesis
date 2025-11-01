@@ -29,3 +29,25 @@ A named list of models
 \description{
 Construct a list of models for synthesis
 }
+\examples{
+
+roadmap <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+)
+
+rpart_mod_class <- parsnip::decision_tree() \%>\%
+  parsnip::set_engine(engine = "rpart") \%>\%
+  parsnip::set_mode(mode = "classification")
+
+lm_mod <- parsnip::linear_reg() \%>\% 
+  parsnip::set_engine("lm") \%>\%
+  parsnip::set_mode(mode = "regression")
+
+construct_models(
+  roadmap = roadmap, 
+  default_regression_model = lm_mod, 
+  default_classification_model = rpart_mod_class
+)
+
+}

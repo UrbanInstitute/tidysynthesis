@@ -18,3 +18,8 @@ noise(add_noise = FALSE, mode = "regression", noise_func = NULL, ...)
 \description{
 Create a noise object
 }
+\examples{
+
+noise()
+
+}

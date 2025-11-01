@@ -26,3 +26,36 @@ A new \code{roadmap} object.
 \description{
 Add, update, or reset a \code{replicates} object within an existing \code{roadmap}.
 }
+\examples{
+
+roadmap <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+)
+
+new_replicates <- replicates(end_to_end_replicates = 2)
+
+roadmap |>
+  add_replicates(new_replicates)
+
+
+roadmap <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+)
+
+roadmap |>
+  update_replicates(start_data_replicates = 3)
+
+
+roadmap <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+)
+
+roadmap <- roadmap |>
+  add_replicates(replicates(start_data_replicates = 3))
+  
+ reset_replicates(roadmap = roadmap)
+
+}

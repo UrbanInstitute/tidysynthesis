@@ -37,3 +37,17 @@ An updated visit_sequence
 \description{
 Add to visit sequence for numeric variables
 }
+\examples{
+
+roadmap(
+  conf_data = acs_conf_nw, 
+  start_data = acs_start_nw
+) |>
+  add_sequence_numeric(
+    dplyr::where(is.numeric), 
+    method = "correlation", 
+    cor_var = "age",
+    na.rm = TRUE
+  )
+
+}

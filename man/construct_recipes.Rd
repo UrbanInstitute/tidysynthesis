@@ -26,3 +26,13 @@ A list of formulas
 \description{
 Construct a sequence of model recipes for sequential synthesis
 }
+\examples{
+
+roadmap <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+)
+
+construct_recipes(roadmap)
+
+}

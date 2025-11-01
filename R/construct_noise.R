@@ -7,8 +7,20 @@
 #'
 #' @return A named list of noise
 #' 
-#' @export
+#' @examples
 #' 
+#' roadmap <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' )
+#' 
+#' noise_defaults <- construct_noise(
+#'   roadmap = roadmap,
+#'   default_regression_noise = noise(),
+#'   default_classification_noise = noise()
+#' )
+#' 
+#' @export
 construct_noise <- function(
     roadmap, 
     default_regression_noise = NULL,

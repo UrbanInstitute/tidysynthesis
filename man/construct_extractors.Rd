@@ -23,3 +23,16 @@ A named list of extractors
 \description{
 Construct a list of extractors for parsnip models
 }
+\examples{
+
+roadmap <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+)
+
+extractors_default <- construct_extractors(
+  roadmap = roadmap, 
+  default_extractor = parsnip::extract_fit_engine
+)
+
+}

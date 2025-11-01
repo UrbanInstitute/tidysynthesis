@@ -26,3 +26,63 @@ A new \code{roadmap} object.
 \description{
 Add, update, or reset a \code{constraints} object within an existing \code{roadmap}.
 }
+\examples{
+
+roadmap <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+)
+
+constraints_df_num <- 
+  tibble::tribble(~var, ~min, ~max, ~conditions,
+                  "transit_time", 0, 300, "TRUE")
+
+constraints <- constraints(
+  schema = roadmap[["schema"]],
+  constraints_df_num = constraints_df_num,
+  max_z_num = 0
+)
+
+roadmap |>
+  add_constraints(constraints)
+
+
+roadmap <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+)
+
+constraints_df_num <- 
+  tibble::tribble(~var, ~min, ~max, ~conditions,
+                  "transit_time", 0, 300, "TRUE")
+
+constraints <- constraints(
+  schema = roadmap[["schema"]],
+  constraints_df_num = constraints_df_num,
+  max_z_num = 0
+)
+
+roadmap |>
+  update_constraints(constraints)
+
+roadmap <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+)
+
+constraints_df_num <- 
+  tibble::tribble(~var, ~min, ~max, ~conditions,
+                  "transit_time", 0, 300, "TRUE")
+
+constraints <- constraints(
+  schema = roadmap[["schema"]],
+  constraints_df_num = constraints_df_num,
+  max_z_num = 0
+)
+
+roadmap <- roadmap |>
+  add_constraints(constraints)
+
+reset_constraints(roadmap)
+
+}

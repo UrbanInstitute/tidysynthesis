@@ -8,8 +8,16 @@
 #'
 #' @return A list of formulas
 #'
-#' @export
+#' @examples
 #' 
+#' roadmap <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' )
+#' 
+#' construct_recipes(roadmap)
+#'
+#' @export
 construct_recipes <- function(
     roadmap,
     default_regression_steps = NULL,

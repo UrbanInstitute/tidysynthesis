@@ -6,8 +6,19 @@
 #'
 #' @return A named list of extractors
 #' 
-#' @export
+#' @examples
 #' 
+#' roadmap <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' )
+#' 
+#' extractors_default <- construct_extractors(
+#'   roadmap = roadmap, 
+#'   default_extractor = parsnip::extract_fit_engine
+#' )
+#' 
+#' @export
 construct_extractors <- function(
     roadmap, 
     default_extractor = NULL,

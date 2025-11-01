@@ -38,8 +38,15 @@
 #'
 #' @return A new `replicates` object.
 #'
+#' @examples
+#'
+#' replicates(
+#'   start_data_replicates = 2,
+#'   model_sample_replicates = 2,
+#'   end_to_end_replicates = 2
+#' )
+#'
 #' @export
-#' 
 replicates <- function(start_data_replicates = 1, 
                        model_sample_replicates = 1, 
                        end_to_end_replicates = 1) {
@@ -122,7 +129,22 @@ validate_replicates <- function(roadmap) {
   
 }
 
-# print method
+#' Print the replicates object to the console with formatting
+#'
+#' @param x A `replicates` object
+#' @param ... further arguments passed to or from other methods (not currently
+#'   used).
+#'   
+#' @examples
+#' 
+#' replicates <- replicates(
+#'   start_data_replicates = 2,
+#'   model_sample_replicates = 2,
+#'   end_to_end_replicates = 2
+#' )
+#'   
+#' print(replicates)
+#'   
 #' @export
 print.replicates <- function(x, ...) {
 
@@ -157,8 +179,20 @@ NULL
 
 #'
 #' @rdname replicates_api
-#' @export 
 #' 
+#' @examples
+#' 
+#' roadmap <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' )
+#' 
+#' new_replicates <- replicates(end_to_end_replicates = 2)
+#' 
+#' roadmap |>
+#'   add_replicates(new_replicates)
+#' 
+#' @export 
 add_replicates <- function(roadmap, replicates) {
   
   stopifnot(
@@ -176,8 +210,18 @@ add_replicates <- function(roadmap, replicates) {
 
 #'
 #' @rdname replicates_api
-#' @export 
 #' 
+#' @examples
+#' 
+#' roadmap <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' )
+#' 
+#' roadmap |>
+#'   update_replicates(start_data_replicates = 3)
+#' 
+#' @export 
 update_replicates <- function(roadmap, ...) {
   
   stopifnot("`roadmap` must be a roadmap object" = { is_roadmap(roadmap) })
@@ -203,8 +247,20 @@ update_replicates <- function(roadmap, ...) {
 
 #'
 #' @rdname replicates_api
-#' @export 
 #' 
+#' @examples
+#' 
+#' roadmap <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' )
+#' 
+#' roadmap <- roadmap |>
+#'   add_replicates(replicates(start_data_replicates = 3))
+#'   
+#'  reset_replicates(roadmap = roadmap)
+#' 
+#' @export 
 reset_replicates <- function(roadmap) {
   
   stopifnot("`roadmap` must be a roadmap object" = { is_roadmap(roadmap) })

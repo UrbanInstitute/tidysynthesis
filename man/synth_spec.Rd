@@ -93,6 +93,7 @@ for sequential synthetic data generation. Each component has an associated
 \verb{construct_*} function called when creating a \code{presynth} object.
 }
 \examples{
+
 rpart_mod <- parsnip::decision_tree() \%>\%
   parsnip::set_engine(engine = "rpart") \%>\%
   parsnip::set_mode(mode = "regression")
