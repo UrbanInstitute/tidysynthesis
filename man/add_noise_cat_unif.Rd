@@ -45,3 +45,25 @@ A numeric vector with noise added to each prediction
 Inject noise into a categorical random variable by mixing a sample of uniform
 records into the predictions.
 }
+\examples{
+
+conf_model_data <- mtcars|>
+  dplyr::mutate(gear = factor(.data[["gear"]]))
+
+col_schema <- list(
+  "dtype" = "fct",
+  "levels" = c("3", "4", "5"),
+  "na_prop" = 0
+)
+
+add_noise_cat_unif(
+  model = conf_model_data,
+  new_data = NULL,
+  conf_model_data = NULL,
+  outcome_var = "gear",
+  col_schema = col_schema,
+  pred = factor(c(rep("3", 10), rep("4", 10), rep("5", 10))),
+  unif_prop = 0.5
+)
+
+}

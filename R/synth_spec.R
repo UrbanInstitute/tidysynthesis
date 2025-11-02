@@ -46,6 +46,8 @@
 #' synthetic data with `enforce_na()` during synthesis. An alternative approach 
 #' is to add the NA values after synthesis
 #' 
+#' @return A `synth_spec` object
+#' 
 #' @examples
 #' 
 #' rpart_mod <- parsnip::decision_tree() %>%
@@ -811,7 +813,7 @@ NULL
 #> NULL
 
 #'
-#' @rdname synth_spec_sampler_api
+#' @rdname synth_spec_noise_api
 #' 
 #' @examples
 #' 

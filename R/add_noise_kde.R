@@ -9,12 +9,6 @@
 #'
 #' @return A data frame with ntiles and bandwidths
 #'
-#' @examples 
-#' 
-#' .calc_bandwidths(baseline = mtcars$mpg, n = 2)
-#'
-#' @export
-#' 
 .calc_bandwidths <- function(baseline, n, ties_method = "collapse") {
   
   # 1. break the baseline vector into ntiles based on bounds from the baseline data
@@ -63,7 +57,6 @@
 #'
 #' @return A numeric vector of ntiles
 #'
-#' @export
 .create_ntiles <- function(x_bounds, 
                            y_ntiles, 
                            n,
@@ -225,8 +218,19 @@
 #' 
 #' @importFrom magrittr %>%
 #' 
-#' @export
+#' @examples
 #' 
+#' add_noise_kde(
+#'   model = NULL,
+#'   new_data = tibble::tibble(x = 1:100),
+#'   conf_model_data = tibble::tibble(x = 1:100),
+#'   outcome_var = "x",
+#'   col_schema = NULL,
+#'   pred = 1:100,
+#'   n_ntiles = 4
+#' )
+#'
+#' @export
 add_noise_kde <- function(model,
                           new_data,
                           conf_model_data,

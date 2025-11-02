@@ -13,6 +13,10 @@
 #' 
 #' @return A `start_method` object
 #' 
+#' @examples
+#' 
+#' start_method(start_func = start_resample)
+#' 
 #' @export
 #'
 start_method <- function(start_func = NULL, ...) {
@@ -53,8 +57,6 @@ is_start_method <- function(x) {
 #' @param roadmap A `roadmap` object
 #' 
 #' @return A `data.frame`
-#' 
-#' @export
 #' 
 exec_start_method <- function(roadmap) {
   

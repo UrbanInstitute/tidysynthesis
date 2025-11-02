@@ -8,6 +8,8 @@
 #' @param support A string that specifies the method of resampling from the `start_data` 
 #' domain. 
 #'  
+#' @return A `start_method` object for resampling starting data
+#'  
 #' @examples  
 #'  
 #' start_method(

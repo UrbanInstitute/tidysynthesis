@@ -15,6 +15,9 @@ noise(add_noise = FALSE, mode = "regression", noise_func = NULL, ...)
 
 \item{...}{Optional named additional arguments to pass to \code{noise_func(...)}}
 }
+\value{
+A \code{noise} object
+}
 \description{
 Create a noise object
 }

@@ -20,3 +20,8 @@ A \code{start_method} gets executed prior to running a synthesis. This modifies
 the \code{start_data}, typically randomly, to provide greater disclosure risk
 protections.
 }
+\examples{
+
+start_method(start_func = start_resample)
+
+}

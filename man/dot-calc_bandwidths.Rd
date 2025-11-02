@@ -22,8 +22,3 @@ A data frame with ntiles and bandwidths
 \description{
 Calculate bandwidths for each ntile in a confidential vector
 }
-\examples{
-
-.calc_bandwidths(baseline = mtcars$mpg, n = 2)
-
-}

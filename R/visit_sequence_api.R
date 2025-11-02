@@ -110,7 +110,8 @@ update_visit_sequence <- function(roadmap, ...) {
 
 #'
 #' @rdname visit_sequence_api
-##' @examples
+#'
+#' @examples
 #' 
 #' roadmap <- roadmap(
 #'   conf_data = acs_conf_nw, 

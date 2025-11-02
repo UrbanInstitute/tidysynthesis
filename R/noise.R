@@ -5,6 +5,8 @@
 #' @param noise_func A function that adds noise to 
 #' @param ... Optional named additional arguments to pass to `noise_func(...)`
 #' 
+#' @returns A `noise` object
+#' 
 #' @examples
 #' 
 #' noise()

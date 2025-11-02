@@ -82,6 +82,36 @@
 #' 
 #' @return A `presynth` object.
 #' 
+#' @examples
+#'
+#' # create roadmap
+#' roadmap <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' ) 
+#' 
+#' rpart_mod_reg <- parsnip::decision_tree() |>
+#'   parsnip::set_engine(engine = "rpart") |>
+#'   parsnip::set_mode(mode = "regression")
+#' 
+#' rpart_mod_class <- parsnip::decision_tree() |>
+#'   parsnip::set_engine(engine = "rpart") |>
+#'   parsnip::set_mode(mode = "classification")
+#' 
+#' synth_spec1 <- synth_spec(
+#'   default_regression_model = rpart_mod_reg,
+#'   default_regression_sampler = sample_rpart,
+#'   default_classification_model = rpart_mod_class,
+#'   default_classification_sampler = sample_rpart
+#' )
+#' 
+#' # create a presynth object
+#' # use defaults for noise, constraints, and replicates
+#' presynth(
+#'   roadmap = roadmap,
+#'   synth_spec = synth_spec1
+#' )
+#'
 #' @export
 presynth <- function(roadmap,
                      synth_spec) {
@@ -139,8 +169,6 @@ new_presynth <- function(roadmap,
 #' @param x Object
 #' @return Logical 
 #'  
-#' @export 
-#' 
 is_presynth <- function(x) {
   inherits(x, "presynth")
 }
@@ -255,8 +283,46 @@ is_presynth <- function(x) {
   
 }
 
-# print method for presynth objects
-# 
+#' print method for presynth objects
+#' 
+#' @param x A `presynth` object
+#' @param ... further arguments passed to or from other methods (not currently
+#'   used).
+#' 
+#' @returns A `presynth` object
+#' 
+#' @examples
+#' 
+#' # create roadmap
+#' roadmap <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' ) 
+#' 
+#' rpart_mod_reg <- parsnip::decision_tree() |>
+#'   parsnip::set_engine(engine = "rpart") |>
+#'   parsnip::set_mode(mode = "regression")
+#' 
+#' rpart_mod_class <- parsnip::decision_tree() |>
+#'   parsnip::set_engine(engine = "rpart") |>
+#'   parsnip::set_mode(mode = "classification")
+#' 
+#' synth_spec1 <- synth_spec(
+#'   default_regression_model = rpart_mod_reg,
+#'   default_regression_sampler = sample_rpart,
+#'   default_classification_model = rpart_mod_class,
+#'   default_classification_sampler = sample_rpart
+#' )
+#' 
+#' # create a presynth object
+#' # use defaults for noise, constraints, and replicates
+#' presynth <- presynth(
+#'   roadmap = roadmap,
+#'   synth_spec = synth_spec1
+#' )
+#' 
+#' print(presynth)
+#' 
 #' @export
 print.presynth <- function(x, ...) {
   
@@ -278,8 +344,48 @@ print.presynth <- function(x, ...) {
 #' 
 #' @return A `presynth` object.
 #' 
-#' @export
+#' @examples
 #' 
+#' # create roadmap
+#' roadmap <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' ) 
+#' 
+#' rpart_mod_reg <- parsnip::decision_tree() |>
+#'   parsnip::set_engine(engine = "rpart") |>
+#'   parsnip::set_mode(mode = "regression")
+#' 
+#' rpart_mod_class <- parsnip::decision_tree() |>
+#'   parsnip::set_engine(engine = "rpart") |>
+#'   parsnip::set_mode(mode = "classification")
+#' 
+#' synth_spec1 <- synth_spec(
+#'   default_regression_model = rpart_mod_reg,
+#'   default_regression_sampler = sample_rpart,
+#'   default_classification_model = rpart_mod_class,
+#'   default_classification_sampler = sample_rpart
+#' )
+#' 
+#' # create a presynth object
+#' # use defaults for noise, constraints, and replicates
+#' presynth <- presynth(
+#'   roadmap = roadmap,
+#'   synth_spec = synth_spec1
+#' )
+#' 
+#' lm_mod <- parsnip::linear_reg() |>
+#'   parsnip::set_engine(engine = "lm") |>
+#'   parsnip::set_mode(mode = "regression")
+#' 
+#' synth_spec2 <- synth_spec(
+#'   default_regression_model = lm_mod,
+#'   default_regression_sampler = sample_lm,
+#'   default_classification_model = rpart_mod_class,
+#'   default_classification_sampler = sample_rpart
+#' )
+#' 
+#' @export
 update_presynth <- function(presynth, 
                             roadmap = NULL, 
                             synth_spec = NULL) {

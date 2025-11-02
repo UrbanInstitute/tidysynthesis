@@ -5,7 +5,6 @@
 \alias{add_custom_samplers}
 \alias{update_custom_samplers}
 \alias{remove_custom_samplers}
-\alias{add_custom_noise}
 \alias{update_custom_noise}
 \alias{remove_custom_noise}
 \title{Add, update, or remove samplers from a \code{synth_spec} object}
@@ -15,8 +14,6 @@ add_custom_samplers(synth_spec, ...)
 update_custom_samplers(synth_spec, ...)
 
 remove_custom_samplers(synth_spec)
-
-add_custom_noise(synth_spec, ...)
 
 update_custom_noise(synth_spec, ...)
 
@@ -60,22 +57,6 @@ synth_spec <- add_custom_samplers(
 )
 
 remove_custom_samplers(synth_spec = synth_spec)
-
-
-synth_spec <- synth_spec()
-
-noise1 <- noise(
-  add_noise = TRUE, 
-  noise_func = add_noise_kde,
-  noise_params = list(
-    n_ntiles = 2
-  )
-)
-
-add_custom_noise(
-  synth_spec = synth_spec, 
-  list("vars" = c("a", "b", "c"), "noise" = noise1)
-)
 
 
 synth_spec <- synth_spec()
