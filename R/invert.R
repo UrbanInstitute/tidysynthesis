@@ -81,9 +81,9 @@ invert.step_YeoJohnson <- function(object, predictions, ...) {
       
     } else {
       
-      predictions[, ".pred"] <- yeo_johnson(y = predictions[, ".pred", drop = TRUE], 
-                                            lambda = lambda,
-                                            inverse = TRUE)
+      predictions[, ".pred"] <- VGAM::yeo.johnson(y = predictions[, ".pred", drop = TRUE], 
+                                                  lambda = lambda,
+                                                  inverse = TRUE)
       
     }
     
