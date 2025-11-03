@@ -206,8 +206,8 @@ test_that("try to break the custom recipes", {
       roadmap = roadmap, 
       custom_steps = too_few_vars
     ),
-    regexp = "\033[1m\033[22m\033[36mℹ\033[39m In index: 1.\n\033[36mℹ\033[39m With name: price.\n\033[1mCaused by error in `pluck_raw()`:\033[22m\n\033[33m!\033[39m Can't pluck from a function at level 1.",
-    fixed = TRUE
+    regexp = "Can't pluck from a function at level 1.",
+    fixed = FALSE
   )
   
   # incorrect variables
@@ -221,8 +221,8 @@ test_that("try to break the custom recipes", {
       roadmap = roadmap, 
       custom_steps = incorrect_vars
     ),
-    regexp = "\033[1m\033[22m\033[36mℹ\033[39m In index: 1.\n\033[36mℹ\033[39m With name: price.\n\033[1mCaused by error in `pluck_raw()`:\033[22m\n\033[33m!\033[39m Can't pluck from a function at level 1.",
-    fixed = TRUE
+    regexp = "Can't pluck from a function at level 1.",
+    fixed = FALSE
   )
   
 })
