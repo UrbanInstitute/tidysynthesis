@@ -24,7 +24,9 @@ test_that("invert.step_BoxCox fails with incorrect lambdas length ", {
   
   expect_error(
     invert(object = adj$steps[[1]], 
-           predictions = tibble::tibble(.pred = adj[["template"]][["y"]]))
+           predictions = tibble::tibble(.pred = adj[["template"]][["y"]])),
+    regexp = "Too many lambdas for invert.step_BoxCox()",
+    fixed = TRUE
   )
   
 })
@@ -103,7 +105,9 @@ test_that("invert.step_YeoJohnson fails with incorrect lambdas length ", {
   
   expect_error(
     invert(object = adj$steps[[1]], 
-           predictions = tibble::tibble(.pred = adj[["template"]][["y"]]))
+           predictions = tibble::tibble(.pred = adj[["template"]][["y"]])),
+    regexp = "Too many lambdas for invert.step_YeoJohnson()",
+    fixed = TRUE
   )
   
 })

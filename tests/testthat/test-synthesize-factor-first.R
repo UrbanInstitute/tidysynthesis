@@ -90,6 +90,10 @@ test_that("failure when obs_per_ntile > start_data", {
     )
   )
   
-  expect_error(synth2 <- synthesize(presynth_noise_too_big))
+  expect_error(
+    synthesize(presynth_noise_too_big),
+    regexp = "unused argument (noise_params = list(0, 334))",
+    fixed = TRUE
+  )
   
 })

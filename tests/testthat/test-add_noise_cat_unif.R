@@ -100,7 +100,9 @@ test_that("add_noise_cat_unif error handling", {
       outcome_var = outcome_var,
       col_schema = col_schema,
       pred = pred
-    )
+    ),
+    regexp = "argument \"unif_prop\" is missing, with no default",
+    fixed = TRUE
   )
   
   # unif_prop must be between 0 and 1
@@ -113,7 +115,9 @@ test_that("add_noise_cat_unif error handling", {
       col_schema = col_schema,
       pred = pred,
       unif_prop = 2
-    )
+    ),
+    regexp = "unif_prop >= 0 & unif_prop <= 1 is not TRUE",
+    fixed = TRUE
   )
   
   # resample_props names must be correct
@@ -127,7 +131,9 @@ test_that("add_noise_cat_unif error handling", {
       pred = pred,
       unif_prop = .5,
       resample_props = c("notalevel" = 1)
-    )
+    ),
+    regexp = "names(resample_props) %in% resample_levels is not TRUE",
+    fixed = TRUE
   )
   
   # observed_levels drops a level specified in resample_props
@@ -144,7 +150,9 @@ test_that("add_noise_cat_unif error handling", {
         observed_levels = TRUE,
         resample_props = c("3" = 1, "4" = 0, "5" = 1)
       ) 
-    )
+    ),
+    regexp = "names(resample_props) %in% resample_levels are not all TRUE",
+    fixed = TRUE
   )
   
 })

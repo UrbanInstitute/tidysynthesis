@@ -14,23 +14,31 @@ test_that("noise() input tests guard against input error", {
   
   # input type checking
   expect_error(
-    noise(add_noise = "not_logical")
+    noise(add_noise = "not_logical"),
+    regexp = "is.logical(add_noise) is not TRUE",
+    fixed = TRUE
   )
   
   expect_error(
     noise(add_noise = FALSE,
-          mode = "invalid_mode")
+          mode = "notamode"),
+    regexp = "mode %in% c(\"regression\", \"classification\") is not TRUE",
+    fixed = TRUE
   )
   
   expect_error(
     noise(add_noise = TRUE,
           mode = "regression",
-          noise_func = "not_a_function")
+          noise_func = "not_a_function"),
+    regexp = "is.null(noise_func) | is.function(noise_func) is not TRUE",
+    fixed = TRUE
   )
   
   # check for supplied noise_func if add_noise = TRUE
   expect_error(
-    noise(add_noise = TRUE)
+    noise(add_noise = TRUE),
+    regexp = "`add_noise` is TRUE but no `noise_func` specified.",
+    fixed = TRUE
   )
   
 })

@@ -37,18 +37,25 @@ test_that("validate_start_method", {
   
   # expect error if wrong start_method type
   expect_error( {
-    acs_roadmap <- roadmap(conf_data = acs_conf_nw, 
-                           start_data = acs_start_nw)
-    acs_roadmap[["start_method"]] <- "wrong"
-    validate_start_method(acs_roadmap)
-  })
+      acs_roadmap <- roadmap(conf_data = acs_conf_nw, 
+                            start_data = acs_start_nw)
+      acs_roadmap[["start_method"]] <- "wrong"
+      validate_start_method(acs_roadmap)
+    },
+    regexp = "`start_method` must be a start_method object",
+    fixed = TRUE
+  )
   
   # expect error if wrong keyword arguments provided
   expect_error(
-    roadmap(conf_data = acs_conf_nw, 
-            start_data = acs_start_nw) %>%
-      update_start_method(not_an_arg = 123) %>%
-      validate_start_method()
+    {
+      roadmap(conf_data = acs_conf_nw, 
+              start_data = acs_start_nw) %>%
+        update_start_method(not_an_arg = 123) %>%
+        validate_start_method()
+    },
+    regexp = "Keyword arguments not aligned with provided start_method function",
+    fixed = TRUE
   )
   
 })

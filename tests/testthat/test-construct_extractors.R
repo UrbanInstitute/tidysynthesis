@@ -28,14 +28,20 @@ test_that("input errors work correctly", {
     construct_extractors(
       roadmap = df, 
       default_extractor = parsnip::extract_fit_engine, 
-      custom_extractors = NULL)
+      custom_extractors = NULL
+    ),
+    regexp = "`roadmap` must be a roadmap object",
+    fixed = TRUE
   )
   
   expect_error(
     construct_extractors(
       roadmap = roadmap, 
       default_extractor = parsnip::extract_fit_engine, 
-      custom_extractors = list("table" = "table"))
+      custom_extractors = list("table" = "table")
+    ),
+    regexp = "subscript out of bounds",
+    fixed = TRUE
   )
 
 })

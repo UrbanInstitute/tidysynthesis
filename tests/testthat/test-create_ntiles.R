@@ -67,16 +67,24 @@ test_that(".create_ntiles returns expected values with exclusions", {
 # missing values and illegal values
 test_that(".create_ntiles fails with incorrect inputs", {
   expect_error(
-    .create_ntiles(x_bounds = c(1:10, NA, NA), y_ntiles = 1:10, n = 2)$ntiles
+    .create_ntiles(x_bounds = c(1:10, NA, NA), y_ntiles = 1:10, n = 2)$ntiles,
+    regexp = "!any(is.na(x_bounds)) is not TRUE",
+    fixed = TRUE
   )
   expect_error(
-    .create_ntiles(x_bounds = c("a", "b", "c"), y_ntiles = 1:10, n = 2)$ntiles
+    .create_ntiles(x_bounds = c("a", "b", "c"), y_ntiles = 1:10, n = 2)$ntiles,
+    regexp = "is.numeric(x_bounds) is not TRUE",
+    fixed = TRUE
   )
   expect_error(
-    .create_ntiles(x_bounds = 1:10, y_ntiles = c("a", "b", "c"), n = 2)$ntiles
+    .create_ntiles(x_bounds = 1:10, y_ntiles = c("a", "b", "c"), n = 2)$ntiles,
+    regexp = "is.numeric(y_ntiles) is not TRUE",
+    fixed = TRUE
   )
   expect_error(
-    .create_ntiles(x_bounds = seq(1, 10, by = 1), y_ntiles = seq(1, 10, by = 1), n = 20)$ntiles
+    .create_ntiles(x_bounds = seq(1, 10, by = 1), y_ntiles = seq(1, 10, by = 1), n = 20)$ntiles,
+    regexp = "`n` can't exceed the length of the confidential variable",
+    fixed = TRUE
   )
 })
 

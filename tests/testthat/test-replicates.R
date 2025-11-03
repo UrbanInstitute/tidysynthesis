@@ -31,15 +31,47 @@ test_that("replicate total accounting", {
 test_that("replicates input type checking", {
   
   # expect error for incorrect types
-  expect_error(replicates(start_data_replicates = FALSE))
-  expect_error(replicates(start_data_replicates = 1.5))
-  expect_error(replicates(start_data_replicates = -1))
-  expect_error(replicates(start_data_replicates = c(1, 2, 3)))
+  expect_error(
+    replicates(start_data_replicates = FALSE), 
+    regexp = "Argument `start_data_replicates` is not numeric.",
+    fixed = TRUE
+  )
+  expect_error(
+    replicates(start_data_replicates = 1.5), 
+    regexp = "Argument `start_data_replicates` must be integer-valued.",
+    fixed = TRUE
+  )
+  expect_error(
+    replicates(start_data_replicates = -1), 
+    regexp = "Argument `start_data_replicates` must be >= 1.",
+    fixed = TRUE
+  )
+  expect_error(
+    replicates(start_data_replicates = c(1, 2, 3)), 
+    regexp = "Argument `start_data_replicates` must be length 1.",
+    fixed = TRUE
+  )
   
-  expect_error(replicates(model_sample_replicates = FALSE))
-  expect_error(replicates(model_sample_replicates = 1.5))
-  expect_error(replicates(model_sample_replicates = -1))
-  expect_error(replicates(model_sample_replicates = c(1, 2, 3)))
+  expect_error(
+    replicates(model_sample_replicates = FALSE), 
+    regexp = "Argument `model_sample_replicates` is not numeric.",
+    fixed = TRUE
+  )
+  expect_error(
+    replicates(model_sample_replicates = 1.5), 
+    regexp = "Argument `model_sample_replicates` must be integer-valued.",
+    fixed = TRUE
+  )
+  expect_error(
+    replicates(model_sample_replicates = -1), 
+    regexp = "Argument `model_sample_replicates` must be >= 1.",
+    fixed = TRUE
+  )
+  expect_error(
+    replicates(model_sample_replicates = c(1, 2, 3)), 
+    regexp = "Argument `model_sample_replicates` must be length 1.",
+    fixed = TRUE
+  )
   
 })
 
