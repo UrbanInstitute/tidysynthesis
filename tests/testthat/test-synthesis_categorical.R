@@ -1,15 +1,15 @@
-data <- dplyr::select(mtcars, cyl, mpg, disp, vs) %>%
+data <- dplyr::select(mtcars, cyl, mpg, disp, vs) |>
   dplyr::mutate(vs = factor(vs, levels = c("0", "1", "2")))
 
 set.seed(20231218)
-start_data <- dplyr::select(data, cyl) %>%
+start_data <- dplyr::select(data, cyl) |>
   dplyr::slice_sample(n = 20)
 
 # roadmap
 roadmap <- roadmap(
   conf_data = data,
   start_data = start_data
-) %>%
+) |>
   add_sequence_manual(mpg, disp, vs)
 
 # synth_spec
@@ -21,12 +21,12 @@ step2 <- function(x) {
   recipes::step_center(x, recipes::all_numeric(), -recipes::all_outcomes())
 }
 
-rpart_mod_cat <- parsnip::decision_tree() %>% 
-  parsnip::set_mode("classification") %>%
+rpart_mod_cat <- parsnip::decision_tree() |> 
+  parsnip::set_mode("classification") |>
   parsnip::set_engine("rpart")
 
-rpart_mod_num <- parsnip::decision_tree() %>%
-  parsnip::set_mode("regression") %>%
+rpart_mod_num <- parsnip::decision_tree() |>
+  parsnip::set_mode("regression") |>
   parsnip::set_engine("rpart")
 
 
@@ -75,7 +75,7 @@ test_that("synthesize() runs without error", {
   
   expect_warning(
     presynth <- presynth(
-      roadmap = roadmap %>%
+      roadmap = roadmap |>
         add_constraints(constraints),
       synth_spec = synth_spec
     )
@@ -98,13 +98,13 @@ test_that("synthesize() runs without error", {
 
 test_that("identity method works with factor variable ", {
   
-  data_no_var <- dplyr::select(mtcars, cyl, mpg, disp, vs) %>%
-    dplyr::mutate(vs = "0") %>%
+  data_no_var <- dplyr::select(mtcars, cyl, mpg, disp, vs) |>
+    dplyr::mutate(vs = "0") |>
     dplyr::mutate(vs = as.factor(vs))
   
   roadmap_no_var <- roadmap(
     conf_data = data_no_var,
-    start_data = start_data) %>%
+    start_data = start_data) |>
     add_sequence_manual(mpg, disp, vs)
   
   synth_spec <- synth_spec(

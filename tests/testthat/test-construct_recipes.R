@@ -13,12 +13,12 @@ roadmap <- roadmap(conf_data = df, start_data = df_start)
 
 
 step1 <- function(x) {
-  x %>%
+  x |>
     recipes::step_center(recipes::all_predictors(), id = "center")
 }
 
 step2 <- function(x) {
-  x %>%
+  x |>
     recipes::step_scale(recipes::all_predictors(), id = "scale")
 }
 
@@ -221,7 +221,7 @@ test_that("construct_recipes() correctly handles variables without variation ", 
     fctr_var2 = factor(c("a", "b", "c"))
   )
   
-  start_data <- conf_data %>%
+  start_data <- conf_data |>
     dplyr::select(start)
   
   roadmap <- roadmap(conf_data = conf_data, start_data = start_data) |>
@@ -245,7 +245,7 @@ test_that("construct_recipes() can handle large visit sequences ", {
   
   nvar <- 600
   
-  data <- purrr::map(.x = 1:nvar, ~tibble::tibble(x = rnorm(n = 1000))) %>%
+  data <- purrr::map(.x = 1:nvar, ~tibble::tibble(x = rnorm(n = 1000))) |>
     purrr::reduce(cbind)
   
   names(data) <- paste0("var", 1:nvar)
@@ -271,7 +271,7 @@ test_that("construct_recipes() can handle large visit sequences ", {
 
 
 step1 <- function(x) {
-  x %>%
+  x |>
     recipes::step_center(recipes::all_predictors(), id = "center")
 }
 

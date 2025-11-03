@@ -36,20 +36,20 @@ test_that("validate_visit_sequence errors", {
   
   # error if synthesize_weight = TRUE and weight_var in start_data
   expect_error(
-    roadmap(conf_data = acs_conf_nw, start_data = acs_start) %>%
-      update_visit_sequence(weight_var = wgt) %>%
+    roadmap(conf_data = acs_conf_nw, start_data = acs_start) |>
+      update_visit_sequence(weight_var = wgt) |>
       validate_visit_sequence()
   )
   
   # error if visit_sequence does not contain all synth_vars
   expect_error(
-    roadmap(conf_data = acs_conf_nw, start_data = acs_start_nw) %>%
+    roadmap(conf_data = acs_conf_nw, start_data = acs_start_nw) |>
       add_visit_sequence(
         visit_sequence = visit_sequence(
-          schema = schema(conf_data = acs_conf %>% dplyr::select(wgt),
+          schema = schema(conf_data = acs_conf |> dplyr::select(wgt),
                           start_data = acs_start_nw)
         )
-      ) %>%
+      ) |>
       validate_visit_sequence()
   )
   
@@ -77,8 +77,8 @@ test_that("visit_sequence respects NA variable ordering", {
   roadmap <- roadmap(
     conf_data = acs_conf_nw, 
     start_data = acs_start_nw
-  ) %>% 
-    enforce_schema() %>%
+  ) |> 
+    enforce_schema() |>
     add_sequence_manual(inctot, inctot_NA)
   
   expect_error(

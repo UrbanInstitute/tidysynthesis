@@ -10,17 +10,17 @@ roadmap2 <- roadmap(conf_data = data,
   add_sequence_numeric(everything(), method = "correlation", cor_var = "mpg")
 
 # synth_spec
-dt_mod <- parsnip::decision_tree() %>%
-  parsnip::set_engine("rpart") %>%
+dt_mod <- parsnip::decision_tree() |>
+  parsnip::set_engine("rpart") |>
   parsnip::set_mode("regression")
 
-dt_class_mod <- parsnip::decision_tree() %>%
-  parsnip::set_engine("rpart") %>%
+dt_class_mod <- parsnip::decision_tree() |>
+  parsnip::set_engine("rpart") |>
   parsnip::set_mode("classification")
 
-rf_mod_regression <- parsnip::rand_forest(trees = 500, min_n = 1) %>%
-  parsnip::set_engine(engine = "ranger") %>%
-  parsnip::set_mode(mode = "regression") %>%
+rf_mod_regression <- parsnip::rand_forest(trees = 500, min_n = 1) |>
+  parsnip::set_engine(engine = "ranger") |>
+  parsnip::set_mode(mode = "regression") |>
   parsnip::set_args(quantreg = TRUE)
 
 synth_spec <- synth_spec(default_regression_model = dt_mod,

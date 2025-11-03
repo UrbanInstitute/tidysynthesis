@@ -12,16 +12,16 @@ df_start <- dplyr::select(df, carat)
 roadmap <- roadmap(conf_data = df, start_data = df_start)
 
 # model objects
-rpart_mod <- parsnip::decision_tree() %>%
-  parsnip::set_engine(engine = "rpart") %>%
+rpart_mod <- parsnip::decision_tree() |>
+  parsnip::set_engine(engine = "rpart") |>
   parsnip::set_mode(mode = "regression")
 
-rpart_mod_class <- parsnip::decision_tree() %>%
-  parsnip::set_engine(engine = "rpart") %>%
+rpart_mod_class <- parsnip::decision_tree() |>
+  parsnip::set_engine(engine = "rpart") |>
   parsnip::set_mode(mode = "classification")
 
-lm_mod <- parsnip::linear_reg() %>% 
-  parsnip::set_engine("lm") %>%
+lm_mod <- parsnip::linear_reg() |> 
+  parsnip::set_engine("lm") |>
   parsnip::set_mode(mode = "regression")
 
 test_that("input errors work correctly", {
@@ -166,7 +166,7 @@ test_that("construct_models() correctly handles variables without variation ", {
     fctr_var2 = factor(c("a", "b", "c"))
   )
 
-  start_data <- conf_data %>%
+  start_data <- conf_data |>
     dplyr::select(start)
   
   roadmap <- roadmap(conf_data = conf_data, start_data = start_data) |>
@@ -197,7 +197,7 @@ test_that("construct_models() correctly handles variables without variation ", {
 test_that("construct_models() works identically with length 1 sequence", {
   
   rmap <- roadmap(
-    conf_data = df %>% dplyr::select(carat, price),
+    conf_data = df |> dplyr::select(carat, price),
     start_data = df_start
   )
   

@@ -8,15 +8,15 @@
 #' 
 #' @examples
 #' 
-#' lm_mod <- parsnip::linear_reg() %>%
-#'   parsnip::set_engine("lm") %>%
+#' lm_mod <- parsnip::linear_reg() |>
+#'   parsnip::set_engine("lm") |>
 #'   parsnip::set_mode(mode = "regression")
 #' 
 #' regression_rec <- recipes::recipe(inctot ~ ., data = acs_conf)
 #' 
-#' model_reg <- workflows::workflow() %>%
-#'   workflows::add_model(spec = lm_mod) %>%
-#'   workflows::add_recipe(recipe = regression_rec) %>%
+#' model_reg <- workflows::workflow() |>
+#'   workflows::add_model(spec = lm_mod) |>
+#'   workflows::add_recipe(recipe = regression_rec) |>
 #'   parsnip::fit(data = acs_conf)
 #' 
 #' set.seed(1)

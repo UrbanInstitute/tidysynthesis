@@ -65,7 +65,7 @@ test_that("replicates print function", {
 test_that("add_replicates functionality", {
   
   old_roadmap <- roadmap(conf_data = acs_conf, start_data = acs_start)
-  new_roadmap <- old_roadmap %>% add_replicates(test_reps)
+  new_roadmap <- old_roadmap |> add_replicates(test_reps)
   
   # expect new object is roadmap
   expect_s3_class(new_roadmap, "roadmap")
@@ -78,7 +78,7 @@ test_that("add_replicates functionality", {
 test_that("update_replicates functionality", {
   
   old_roadmap <- roadmap(conf_data = acs_conf, start_data = acs_start)
-  new_roadmap <- old_roadmap %>%
+  new_roadmap <- old_roadmap |>
     update_replicates(model_sample_replicates = 5,
                       end_to_end_replicates = 7)
   
@@ -99,7 +99,7 @@ test_that("reset_replicates functionality", {
   old_roadmap <- roadmap(conf_data = acs_conf, start_data = acs_start,
                          replicates = test_reps)
   
-  new_roadmap <- old_roadmap %>% reset_replicates()
+  new_roadmap <- old_roadmap |> reset_replicates()
   
   # expect new object is roadmap
   expect_s3_class(new_roadmap, "roadmap")
@@ -127,8 +127,8 @@ test_that("validate_replicates() catches manual overrides", {
   # Manually override start data replicates
   roadmap$replicates$start_data_replicates <- 2
   
-  dt_mod <- parsnip::decision_tree() %>%
-    parsnip::set_engine("rpart") %>%
+  dt_mod <- parsnip::decision_tree() |>
+    parsnip::set_engine("rpart") |>
     parsnip::set_mode("regression")
   
   synth_spec <- synth_spec(default_regression_model = dt_mod,

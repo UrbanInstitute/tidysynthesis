@@ -1,10 +1,10 @@
 library(poissonreg)
 library(stats)
 
-acs_conf <- acs_conf %>%
+acs_conf <- acs_conf |>
   tidyr::drop_na()
 
-acs_start <- acs_start %>%
+acs_start <- acs_start |>
   tidyr::drop_na()
 
 # roadmap
@@ -18,29 +18,29 @@ mtcars_roadmap <- roadmap(
   start_data = dplyr::select(mtcars, mpg, cyl, disp)
 )
 
-poisson_mod <- parsnip::poisson_reg() %>%
-  parsnip::set_engine("glm") %>%
+poisson_mod <- parsnip::poisson_reg() |>
+  parsnip::set_engine("glm") |>
   parsnip::set_mode(mode = "regression")
 
-logistic_mod <- parsnip::logistic_reg() %>%
-  parsnip::set_engine("glm") %>%
+logistic_mod <- parsnip::logistic_reg() |>
+  parsnip::set_engine("glm") |>
   parsnip::set_mode(mode = "classification")
 
-rpart_mod <- parsnip::decision_tree() %>%
-  parsnip::set_engine("rpart") %>%
+rpart_mod <- parsnip::decision_tree() |>
+  parsnip::set_engine("rpart") |>
   parsnip::set_mode(mode = "classification")
 
-lm_mod <- parsnip::linear_reg() %>%
-  parsnip::set_engine("lm") %>%
+lm_mod <- parsnip::linear_reg() |>
+  parsnip::set_engine("lm") |>
   parsnip::set_mode(mode = "regression")
 
 test_that("sample_glm() doesn't work with non-logistic classification models", {
   
   classification_rec <- recipes::recipe(classwkr ~ ., data = acs_conf)
   
-  model_class <- workflows::workflow() %>%
-    workflows::add_model(spec = rpart_mod) %>%
-    workflows::add_recipe(recipe = classification_rec) %>%
+  model_class <- workflows::workflow() |>
+    workflows::add_model(spec = rpart_mod) |>
+    workflows::add_recipe(recipe = classification_rec) |>
     parsnip::fit(data = acs_conf)
   
   expect_error(
@@ -55,9 +55,9 @@ test_that("sample_glm() doesn't work for non-poisson regression models", {
   
   regression_rec <- recipes::recipe(inctot ~ ., data = acs_conf)
   
-  model_reg <- workflows::workflow() %>%
-    workflows::add_model(spec = lm_mod) %>%
-    workflows::add_recipe(recipe = regression_rec) %>%
+  model_reg <- workflows::workflow() |>
+    workflows::add_model(spec = lm_mod) |>
+    workflows::add_recipe(recipe = regression_rec) |>
     parsnip::fit(data = acs_conf)
   
   expect_error(
@@ -72,9 +72,9 @@ test_that("sample_glm() works with poisson regression", {
   
   regression_rec <- recipes::recipe(age ~ ., data = acs_conf)
   
-  model_reg <- workflows::workflow() %>%
-    workflows::add_model(spec = poisson_mod) %>%
-    workflows::add_recipe(recipe = regression_rec) %>%
+  model_reg <- workflows::workflow() |>
+    workflows::add_model(spec = poisson_mod) |>
+    workflows::add_recipe(recipe = regression_rec) |>
     parsnip::fit(data = acs_conf)
   
   set.seed(1)
@@ -111,9 +111,9 @@ test_that("sample_glm() works with classification", {
   
   classification_rec <- recipes::recipe(hcovany ~ ., data = acs_conf)
   
-  model_class <- workflows::workflow() %>%
-    workflows::add_model(spec = logistic_mod) %>%
-    workflows::add_recipe(recipe = classification_rec) %>%
+  model_class <- workflows::workflow() |>
+    workflows::add_model(spec = logistic_mod) |>
+    workflows::add_recipe(recipe = classification_rec) |>
     parsnip::fit(data = acs_conf)
   
   set.seed(1)
@@ -215,7 +215,7 @@ test_that("sample_glm() works with noise and constraints", {
   # presynth
   expect_warning(
     presynth <- presynth(
-      roadmap = mtcars_roadmap %>%
+      roadmap = mtcars_roadmap |>
         add_constraints(constraints),
       synth_spec = synth_spec
     )
@@ -232,8 +232,8 @@ acs_rec <- recipes::recipe(inctot ~ .,
                            data = acs_conf)
 
 # create model workflow
-model_wf <- workflows::workflow() %>%
-  workflows::add_model(poisson_mod) %>%
+model_wf <- workflows::workflow() |>
+  workflows::add_model(poisson_mod) |>
   workflows::add_recipe(acs_rec)
 
 test_that("Test sample_glm() with no variation in outcome", {
@@ -242,7 +242,7 @@ test_that("Test sample_glm() with no variation in outcome", {
   roadmap[["conf_data"]]$inctot <- 10
   
   # fit the model with the edited confidential data
-  fitted_model <- model_wf %>%
+  fitted_model <- model_wf |>
     parsnip::fit(data = roadmap[["conf_data"]])
   
   # sample values
@@ -264,7 +264,7 @@ test_that("Test sample_glm()", {
   roadmap[["conf_data"]]$inctot <- c(rep(10, times = 389), rep(20, times = 388))
   
   # fit the model with the edited confidential data
-  fitted_model <- model_wf %>%
+  fitted_model <- model_wf |>
     parsnip::fit(data = roadmap[["conf_data"]])
   
   # sample values
@@ -290,7 +290,7 @@ test_that("Test sample_glm() with perfect model", {
   )
   
   # fit the model with the edited confidential data
-  fitted_model <- model_wf %>%
+  fitted_model <- model_wf |>
     parsnip::fit(data = roadmap[["conf_data"]])
   
   # sample values

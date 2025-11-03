@@ -100,14 +100,14 @@ new_schema <- function(conf_data,
   synth_vars <- setdiff(names(conf_data), names(start_data))
   
   # next, infer variable names with no observed variation
-  no_variation <- conf_data %>%
-    dplyr::select(dplyr::all_of(synth_vars)) %>%
+  no_variation <- conf_data |>
+    dplyr::select(dplyr::all_of(synth_vars)) |>
     purrr::map_lgl(.f = ~ length(unique(.x)) == 1)
   
-  dtypes <- conf_data %>% 
+  dtypes <- conf_data |> 
     purrr::map(.f = ~ pillar::type_sum(.x))
   
-  col_schema_inf <- conf_data %>%
+  col_schema_inf <- conf_data |>
     purrr::map(.f = ~ list("dtype" = pillar::type_sum(.x),
                            "levels" = NULL,
                            "na_value" = NA))
@@ -116,7 +116,7 @@ new_schema <- function(conf_data,
   factor_cols <- col_schema_inf[dtypes == "fct"]
   for (fc in names(factor_cols)) {
     
-    col_schema_inf[[fc]][["levels"]] <- dplyr::pull(conf_data, fc) %>% 
+    col_schema_inf[[fc]][["levels"]] <- dplyr::pull(conf_data, fc) |> 
       levels()
     
   }
@@ -139,7 +139,7 @@ new_schema <- function(conf_data,
   }
   
   # calculate the proportions of values that are missing
-  col_schema_na <- conf_data %>%
+  col_schema_na <- conf_data |>
     purrr::map(.f = ~ mean(is.na(.x)))
   
   for (col in names(col_schema_inf)) {

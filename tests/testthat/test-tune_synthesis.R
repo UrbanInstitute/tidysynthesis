@@ -7,11 +7,11 @@ roadmap <- roadmap(
   start_data = start_data) |> 
   add_sequence_numeric(everything(), method = "correlation", cor_var = "mpg")
 
-dt_mod <- parsnip::decision_tree() %>%
-  parsnip::set_engine(engine = "rpart") %>%
+dt_mod <- parsnip::decision_tree() |>
+  parsnip::set_engine(engine = "rpart") |>
   parsnip::set_mode(mode = "regression")
 
-lm_mod <- lm_mod <- parsnip::linear_reg() %>% 
+lm_mod <- lm_mod <- parsnip::linear_reg() |> 
   parsnip::set_engine("lm")
 
 # synth specs
@@ -44,7 +44,7 @@ postproc_f <- function(synth_id, synth_name, postsynth) {
     list(
       "file_name" = paste0("synths/", synth_name, ".R"),
       "synth_time" = postsynth$total_synthesis_time,
-      "mean_mpg" = postsynth$synthetic_data$mpg %>% mean
+      "mean_mpg" = postsynth$synthetic_data$mpg |> mean()
     )
   )
 }
@@ -129,8 +129,8 @@ test_that("Replicable seeds work as expected", {
     seed = 12345
   )
   
-  expect_identical(ms1$results %>% dplyr::select(mean_mpg), 
-                   ms2$results %>% dplyr::select(mean_mpg))
+  expect_identical(ms1$results |> dplyr::select(mean_mpg), 
+                   ms2$results |> dplyr::select(mean_mpg))
   
 })
 

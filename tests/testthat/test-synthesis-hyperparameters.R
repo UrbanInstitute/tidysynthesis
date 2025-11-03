@@ -1,4 +1,4 @@
-data <- dplyr::select(mtcars, cyl, mpg, disp, hp) %>%
+data <- dplyr::select(mtcars, cyl, mpg, disp, hp) |>
   dplyr::mutate(identity_var = 1)
 
 start_data <- dplyr::select(data, cyl)
@@ -7,7 +7,7 @@ start_data <- dplyr::select(data, cyl)
 roadmap <- roadmap(
   conf_data = data,
   start_data = start_data
-) %>%
+) |>
   add_sequence_numeric(everything(), method = "proportion")
 
 # recipes
@@ -18,11 +18,11 @@ step2 <- function(x) {
   recipes::step_center(x, recipes::all_numeric(), -recipes::all_outcomes())
 }
 
-rpart_mod <- parsnip::decision_tree(cost_complexity = tune::tune()) %>%
-  parsnip::set_engine(engine = "rpart") %>%
+rpart_mod <- parsnip::decision_tree(cost_complexity = tune::tune()) |>
+  parsnip::set_engine(engine = "rpart") |>
   parsnip::set_mode(mode = "regression")
 
-lm_mod <- parsnip::linear_reg() %>%
+lm_mod <- parsnip::linear_reg() |>
   parsnip::set_engine(engine = "lm")
 
 synth_spec <- synth_spec(

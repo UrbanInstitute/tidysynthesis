@@ -1,10 +1,10 @@
 # create a roadmap
-data <- dplyr::select(mtcars, mpg, cyl, disp, carb, vs, am, gear) %>%
+data <- dplyr::select(mtcars, mpg, cyl, disp, carb, vs, am, gear) |>
   dplyr::mutate(vs = factor(vs), 
                 am = factor(am),
                 gear = factor(gear))
 
-start_data <- dplyr::select(data, cyl) %>%
+start_data <- dplyr::select(data, cyl) |>
   dplyr::slice_sample(n = 30)
 
 schema <- schema(conf_data = data, start_data = start_data)
@@ -68,7 +68,7 @@ test_that("constraints() input errors work ", {
   expect_error(
     constraints(
       schema = schema, 
-      constraints_df_num = constraints_df_num %>% 
+      constraints_df_num = constraints_df_num |> 
         dplyr::select(
           dplyr::all_of(
             c("var", "min", "max")
@@ -84,7 +84,7 @@ test_that("constraints() input errors work ", {
   expect_error(
     constraints(
       schema = schema, 
-      constraints_df_cat = constraints_df_cat %>% 
+      constraints_df_cat = constraints_df_cat |> 
         dplyr::select(
           dplyr::all_of(
             c("var", "allowed", "forbidden")
@@ -212,14 +212,14 @@ test_that("synthesize() works with constraints() ", {
   )
   
   roadmap <- roadmap(
-    conf_data = data %>% dplyr::select(-c(vs, am, gear)),
+    conf_data = data |> dplyr::select(-c(vs, am, gear)),
     start_data = start_data, 
     constraints = constraints_custom_p
-  ) %>%
+  ) |>
     add_sequence_numeric(everything(), method = "correlation", cor_var = "mpg")
   
-  dt_mod <- parsnip::decision_tree() %>%
-    parsnip::set_engine(engine = "rpart") %>%
+  dt_mod <- parsnip::decision_tree() |>
+    parsnip::set_engine(engine = "rpart") |>
     parsnip::set_mode(mode = "regression")
   
   

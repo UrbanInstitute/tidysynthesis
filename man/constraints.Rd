@@ -36,7 +36,7 @@ Create a constraints object
 \examples{
 constraints(
   schema = schema(
-    conf_data = mtcars \%>\% dplyr::mutate(vs = factor(vs)),
+    conf_data = mtcars |> dplyr::mutate(vs = factor(vs)),
     start_data = dplyr::select(mtcars, cyl)
   ),
   constraints_df_num = tibble::tribble(

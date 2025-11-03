@@ -1,5 +1,5 @@
-penguins_complete <- palmerpenguins::penguins %>%
-  dplyr::filter(complete.cases(.)) %>%
+penguins_complete <- palmerpenguins::penguins |>
+  tidyr::drop_na() |>
   dplyr::mutate(
     flipper_length_mm = as.numeric(flipper_length_mm),
     body_mass_g = as.numeric(body_mass_g)
@@ -8,8 +8,8 @@ penguins_complete <- palmerpenguins::penguins %>%
 
 set.seed(1)
 
-starting_data <- penguins_complete %>% 
-  dplyr::select(sex) %>%
+starting_data <- penguins_complete |> 
+  dplyr::select(sex) |>
   dplyr::slice_sample(n = nrow(penguins_complete), replace = TRUE)
 
 
@@ -24,12 +24,12 @@ roadmap <- roadmap(
   )
 
 
-rpart_mod_cat <- parsnip::decision_tree() %>% 
-  parsnip::set_mode("classification") %>%
+rpart_mod_cat <- parsnip::decision_tree() |> 
+  parsnip::set_mode("classification") |>
   parsnip::set_engine("rpart")
 
-rpart_mod_num <- parsnip::decision_tree() %>%
-  parsnip::set_mode("regression") %>%
+rpart_mod_num <- parsnip::decision_tree() |>
+  parsnip::set_mode("regression") |>
   parsnip::set_engine("rpart")
 
 numeric_vars <- c("flipper_length_mm", 
@@ -83,7 +83,7 @@ test_that("failure when obs_per_ntile > start_data", {
   expect_warning(
     presynth_noise_too_big <- presynth(
       roadmap = roadmap,
-      synth_spec = synth_spec %>%
+      synth_spec = synth_spec |>
         update_synth_spec(
           default_regression_noise = noise_too_big
         )

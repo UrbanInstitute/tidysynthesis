@@ -37,16 +37,16 @@ data <- ipumsr::read_ipums_micro(path_to_data_files)
 
 # Gold-standard dataset pre-processing / cleaning -------------------------
 
-acs <- data %>%
+acs <- data |>
   dplyr::transmute(
-    county = haven::as_factor(COUNTYFIP) %>%
+    county = haven::as_factor(COUNTYFIP) |>
       forcats::fct_recode(
         "Douglas" = "55", 
         "Lancaster" = "109", 
         "Sarpy" = "153", 
         "Other" = "County not identifiable from public-use data (1950-onward)"
       ), 
-    gq = haven::as_factor(GQ) %>%
+    gq = haven::as_factor(GQ) |>
       forcats::fct_collapse(
         "Household" = c("Households under 1970 definition",
                         "Additional households under 1990 definition",
@@ -54,9 +54,9 @@ acs <- data %>%
         "Institution" = c("Group quarters--Institutions"),
         "Other GQ" = c("Other group quarters", "Vacant unit", "Fragment")
       ),
-    sex = haven::as_factor(SEX) %>% 
+    sex = haven::as_factor(SEX) |> 
       forcats::fct_drop(only = "Missing/blank"),
-    marst = haven::as_factor(MARST) %>% 
+    marst = haven::as_factor(MARST) |> 
       forcats::fct_collapse(
         "Married" = c("Married, spouse present", 
                       "Married, spouse absent"),
@@ -64,29 +64,29 @@ acs <- data %>%
         "Separated" = c("Separated"),
         "Widowed" = c("Widowed"), 
         "Single" = c("Never married/single")
-      ) %>%
+      ) |>
       forcats::fct_drop(only = "Blank, missing"),
     hcovany = haven::as_factor(HCOVANY),
-    empstat = haven::as_factor(EMPSTAT) %>%
+    empstat = haven::as_factor(EMPSTAT) |>
       forcats::fct_collapse(
         "Employed" = c("Employed"), 
         "Unemployed" = c("Unemployed"), 
         "Not in labor force" = c("Not in labor force", "N/A")
-      ) %>% 
-      forcats::fct_drop(only = "Unknown/Illegible") %>%
+      ) |> 
+      forcats::fct_drop(only = "Unknown/Illegible") |>
       forcats::fct_recode(NULL = "Not in labor force"),
-    classwkr = haven::as_factor(CLASSWKR) %>%
+    classwkr = haven::as_factor(CLASSWKR) |>
       forcats::fct_drop(only = "Unknown"),
     age = as.double(AGE),
     famsize = as.double(FAMSIZE),
     transit_time = as.double(TRANTIME),
     inctot = dplyr::if_else(INCTOT == 9999999, NA, as.double(INCTOT))
-  ) %>% 
-  dplyr::slice_sample(n = 2000) %>%
+  ) |> 
+  dplyr::slice_sample(n = 2000) |>
   dplyr::mutate(wgt = pmin(stats::rgamma(2000, 1, 1) + 1, 10))
 
 acs_conf <- acs[1:1500, ]
-acs_conf_nw <- acs[1:1500, ] %>% dplyr::select(-wgt)
+acs_conf_nw <- acs[1:1500, ] |> dplyr::select(-wgt)
 acs_start <- acs[1501:2000, c("county", "gq", "sex", "marst", "wgt")]
 acs_start_nw <- acs[1501:2000, c("county", "gq", "sex", "marst")]
 

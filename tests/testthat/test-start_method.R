@@ -46,8 +46,8 @@ test_that("validate_start_method", {
   # expect error if wrong keyword arguments provided
   expect_error(
     roadmap(conf_data = acs_conf_nw, 
-            start_data = acs_start_nw) %>%
-      update_start_method(not_an_arg = 123) %>%
+            start_data = acs_start_nw) |>
+      update_start_method(not_an_arg = 123) |>
       validate_start_method()
   )
   
@@ -60,7 +60,7 @@ test_that("add_start_method functionality", {
   old_roadmap <- acs_roadmap 
   
   # add start_method with default options
-  new_roadmap <- acs_roadmap %>%
+  new_roadmap <- acs_roadmap |>
     add_start_method(start_method(start_func = start_resample))
   
   # expect new object is roadmap
@@ -77,7 +77,7 @@ test_that("update_start_method functionality", {
   old_roadmap <- roadmap(conf_data = acs_conf_nw, 
                          start_data = acs_start_nw)
   
-  new_roadmap <- old_roadmap %>%
+  new_roadmap <- old_roadmap |>
     update_start_method(start_func = start_resample, 
                         n = 123)
   
@@ -109,7 +109,7 @@ test_that("remove_start_method functionality", {
                            start_func = start_resample, 
                            n = 12345))
   
-  new_roadmap <- old_roadmap %>%
+  new_roadmap <- old_roadmap |>
     remove_start_method()
   
   # expect new object is roadmap
@@ -131,7 +131,7 @@ test_that("exec_start_method", {
   
   rmap <- roadmap(
     conf_data = acs_conf,
-    start_data = acs_start %>%
+    start_data = acs_start |>
       dplyr::select(county, gq),
     start_method = start_method(
       start_func = start_resample, 
@@ -161,13 +161,13 @@ test_that("exec_start_method within synthesis", {
       n = 20,
       support = "observed"
     )
-  ) %>% 
+  ) |> 
     add_sequence_numeric(dplyr::everything(), 
                          method = "correlation", 
                          cor_var = "mpg")
   
-  dt_mod <- parsnip::decision_tree() %>%
-    parsnip::set_engine(engine = "rpart") %>%
+  dt_mod <- parsnip::decision_tree() |>
+    parsnip::set_engine(engine = "rpart") |>
     parsnip::set_mode(mode = "regression")
   
   synth_spec <- synth_spec(default_regression_model = dt_mod,

@@ -22,8 +22,8 @@ Update non-custom \code{synth_spec} arguments
 
 synth_spec <- synth_spec()
 
-lm_mod <- parsnip::linear_reg() \%>\% 
-  parsnip::set_engine("lm") \%>\%
+lm_mod <- parsnip::linear_reg() |> 
+  parsnip::set_engine("lm") |>
   parsnip::set_mode(mode = "regression")
 
 update_synth_spec(

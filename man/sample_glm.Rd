@@ -23,18 +23,18 @@ the standard \code{glm} engine. Note that poisson regression requires the sugges
 }
 \examples{
 
-acs_conf <- acs_conf \%>\%
+acs_conf <- acs_conf |>
   tidyr::drop_na()
 
-logistic_mod <- parsnip::logistic_reg() \%>\%
-  parsnip::set_engine("glm") \%>\%
+logistic_mod <- parsnip::logistic_reg() |>
+  parsnip::set_engine("glm") |>
   parsnip::set_mode(mode = "classification")
 
 classification_rec <- recipes::recipe(hcovany ~ ., data = acs_conf)
 
-model_class <- workflows::workflow() \%>\%
-  workflows::add_model(spec = logistic_mod) \%>\%
-  workflows::add_recipe(recipe = classification_rec) \%>\%
+model_class <- workflows::workflow() |>
+  workflows::add_model(spec = logistic_mod) |>
+  workflows::add_recipe(recipe = classification_rec) |>
   parsnip::fit(data = acs_conf)
 
 set.seed(1)

@@ -48,7 +48,6 @@ Depends: R (>= 4.1.0)
 Imports:
     dplyr,
     forcats,
-    magrittr,
     parsnip,
     pillar,
     purrr,

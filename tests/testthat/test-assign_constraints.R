@@ -39,7 +39,7 @@ test_that("assign_constraints_num returns expected values", {
 test_that("assign_constraints_cat returns expected values", {
   
   schema <- schema(
-    conf_data = dplyr::select(mtcars, mpg, cyl, disp, carb, vs, am, gear) %>%
+    conf_data = dplyr::select(mtcars, mpg, cyl, disp, carb, vs, am, gear) |>
       dplyr::mutate(vs = factor(vs), 
                     am = factor(am),
                     gear = factor(gear)),
@@ -88,9 +88,9 @@ test_that("assign_constraints_cat returns expected values", {
         .keep = "none"
       ) == (
         # ...should be the same as using assign_constraints_cat
-        constraints_by_function_cat$synth_data %>%
+        constraints_by_function_cat$synth_data |>
           dplyr::inner_join(constraints_by_function_cat$condition_defs,
-                            by = ".condition_id") %>%
+                            by = ".condition_id") |>
           dplyr::pull(".condition_mode")
       )
     )
