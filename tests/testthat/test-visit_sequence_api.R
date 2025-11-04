@@ -141,7 +141,9 @@ test_that("visit_sequence correlation order", {
         dplyr::where(is.numeric), 
         method = "correlation", 
         cor_var = "not_in_conf_data"
-      )
+      ),
+    regexp = "`cor_var` isn't in conf_data",
+    fixed = TRUE
   )
   
 })
@@ -191,7 +193,9 @@ test_that("visit_sequence correlation order with weight_var", {
         dplyr::where(is.numeric), 
         method = "correlation", 
         cor_var = "famsize"
-      )
+      ),
+    regexp = "`weight_var` isn't in conf_data",
+    fixed = TRUE
   )
   
 })
@@ -215,7 +219,9 @@ test_that("visit_sequence proportion order", {
     acs_roadmap_nw |>
       add_sequence_numeric(where(is.numeric), 
                            method = "proportion",
-                           cor_var = "famsize")
+                           cor_var = "famsize"),
+    regexp = "`cor_var` is unnecessary if method is not 'correlation'",
+    fixed = TRUE
   )
   
 })
@@ -289,7 +295,9 @@ test_that("visit_sequence weighted total", {
       add_sequence_numeric(
         dplyr::where(is.numeric), 
         method = "weighted total"
-      )
+      ),
+    regexp = "One of the weighted methods is specified but weight_var is NULL",
+    fixed = TRUE
   )
   
 })
@@ -527,7 +535,10 @@ test_that("visit_sequence with factors and keeping weight (entropy)", {
 test_that("visit_sequence weighted method with weight_var = NULL throws error", {
   expect_error(
     acs_roadmap_w |>
-      add_sequence_numeric(everything(), method = "weighted absolute total"))
+      add_sequence_numeric(everything(), method = "weighted absolute total"),
+    regexp = "Only default and manual methods are supported for numeric \n      data with NA unless na.rm = TRUE",
+    fixed = TRUE
+  )
 })
 
 
@@ -537,7 +548,10 @@ test_that("error when synthesizing weight when the weight is in the start_data",
     roadmap(conf_data = acs_conf_nw, start_data = acs_start) |>
       update_visit_sequence(weight_var = wgt) |>
       add_sequence_numeric(dplyr::where(is.numeric), 
-                           method = "absolute weighted total"))
+                           method = "absolute weighted total"),
+    regexp = "Only default and manual methods are supported for numeric \n      data with NA unless na.rm = TRUE",
+    fixed = TRUE
+  )
   
 })
 
@@ -549,7 +563,9 @@ test_that("cannot rebuild built sequence", {
     add_sequence_numeric(where(is.numeric), method = "proportion")
   
   expect_error(
-    update_visit_sequence(nr, weight_var = wgt)
+    update_visit_sequence(nr, weight_var = wgt),
+    regexp = "Cannot update_visit_sequence(roadmap, ...) if sequence already built. \n         Please call reset_visit_sequence(roadmap) first.",
+    fixed = TRUE
   )
     
 })
@@ -578,7 +594,9 @@ test_that("add_sequence_numeric() correlation with NA", {
     acs_roadmap_na |>
       add_sequence_numeric(dplyr::where(is.numeric),
                            method = "correlation",
-                           cor_var = "age")
+                           cor_var = "age"),
+    regexp = "Only default and manual methods are supported for numeric \n      data with NA unless na.rm = TRUE",
+    fixed = TRUE
   )
   
   # use na.rm == TRUE and confirm results
@@ -604,7 +622,9 @@ test_that("add_sequence_numeric() proportion with NA", {
   expect_error(
     acs_roadmap_na |>
       add_sequence_numeric(dplyr::where(is.numeric),
-                           method = "proportion")
+                           method = "proportion"),
+    regexp = "Only default and manual methods are supported for numeric \n      data with NA unless na.rm = TRUE",
+    fixed = TRUE
   )
   
   # use na.rm == TRUE and confirm results
@@ -631,7 +651,9 @@ test_that("add_sequence_numeric() weighted total with NA", {
       update_visit_sequence(weight_var = wgt,
                             synthesize_weight = FALSE) |>
       add_sequence_numeric(dplyr::where(is.numeric),
-                           method = "weighted total")
+                           method = "weighted total"),
+    regexp = "Only default and manual methods are supported for numeric \n      data with NA unless na.rm = TRUE",
+    fixed = TRUE
   )
   
   # use na.rm == TRUE and confirm results
@@ -661,7 +683,9 @@ test_that("add_sequence_numeric() absolute weighted total with NA", {
       update_visit_sequence(weight_var = wgt,
                             synthesize_weight = FALSE) |>
       add_sequence_numeric(dplyr::where(is.numeric),
-                           method = "absolute weighted total")
+                           method = "absolute weighted total"),
+    regexp = "Only default and manual methods are supported for numeric \n      data with NA unless na.rm = TRUE",
+    fixed = TRUE
   )
   
   # use na.rm == TRUE and confirm results
@@ -690,7 +714,9 @@ test_that("add_sequence_numeric() weighted absolute total with NA", {
       update_visit_sequence(weight_var = wgt,
                             synthesize_weight = FALSE) |>
       add_sequence_numeric(dplyr::where(is.numeric),
-                           method = "weighted absolute total")
+                           method = "weighted absolute total"),
+    regexp = "Only default and manual methods are supported for numeric \n      data with NA unless na.rm = TRUE",
+    fixed = TRUE
   )
   
   # use na.rm == TRUE and confirm results

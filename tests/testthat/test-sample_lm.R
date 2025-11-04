@@ -38,7 +38,9 @@ test_that("sample_lm() doesn't work with classification models", {
   expect_error(
     sample_lm(model = model_class, 
               new_data = acs_conf[1:3, ], 
-              conf_data = acs_conf)
+              conf_data = acs_conf),
+    regexp = "sample_lm only works with regression models",
+    fixed = TRUE
   )
   
 })

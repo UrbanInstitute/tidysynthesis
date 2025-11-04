@@ -38,7 +38,9 @@ test_that("validate_visit_sequence errors", {
   expect_error(
     roadmap(conf_data = acs_conf_nw, start_data = acs_start) |>
       update_visit_sequence(weight_var = wgt) |>
-      validate_visit_sequence()
+      validate_visit_sequence(),
+    regexp = "Cannot synthesize weight_var if weight_var is in start_data",
+    fixed = TRUE
   )
   
   # error if visit_sequence does not contain all synth_vars
@@ -50,7 +52,9 @@ test_that("validate_visit_sequence errors", {
                           start_data = acs_start_nw)
         )
       ) |>
-      validate_visit_sequence()
+      validate_visit_sequence(),
+    regexp = "Variables from the visit sequence must be in conf_data and not in start_data\n  Problem variable(s): wgt",
+    fixed = TRUE
   )
   
 })
@@ -82,7 +86,9 @@ test_that("visit_sequence respects NA variable ordering", {
     add_sequence_manual(inctot, inctot_NA)
   
   expect_error(
-    validate_visit_sequence(roadmap)
+    validate_visit_sequence(roadmap),
+    regexp = "_NA vars must come before their corresponding variables. \n Issues with inctot_NA and inctot",
+    fixed = TRUE
   )
   
 })

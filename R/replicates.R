@@ -182,14 +182,14 @@ NULL
 #' 
 #' @examples
 #' 
-#' roadmap <- roadmap(
+#' rm <- roadmap(
 #'   conf_data = acs_conf_nw,
 #'   start_data = acs_start_nw
 #' )
 #' 
 #' new_replicates <- replicates(end_to_end_replicates = 2)
 #' 
-#' roadmap |>
+#' rm |>
 #'   add_replicates(new_replicates)
 #' 
 #' @export 
@@ -213,12 +213,12 @@ add_replicates <- function(roadmap, replicates) {
 #' 
 #' @examples
 #' 
-#' roadmap <- roadmap(
+#' rm <- roadmap(
 #'   conf_data = acs_conf_nw,
 #'   start_data = acs_start_nw
 #' )
 #' 
-#' roadmap |>
+#' rm |>
 #'   update_replicates(start_data_replicates = 3)
 #' 
 #' @export 
@@ -250,15 +250,15 @@ update_replicates <- function(roadmap, ...) {
 #' 
 #' @examples
 #' 
-#' roadmap <- roadmap(
+#' rm <- roadmap(
 #'   conf_data = acs_conf_nw,
 #'   start_data = acs_start_nw
 #' )
 #' 
-#' roadmap <- roadmap |>
+#' rm <- rm |>
 #'   add_replicates(replicates(start_data_replicates = 3))
 #'   
-#'  reset_replicates(roadmap = roadmap)
+#'  reset_replicates(roadmap = rm)
 #' 
 #' @export 
 reset_replicates <- function(roadmap) {

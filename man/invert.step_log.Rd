@@ -14,7 +14,7 @@
 \item{...}{Other arguments}
 }
 \value{
-A tibble with inverted model-generated values
+A tibble with the log transformation inverted for .pred
 }
 \description{
 Invert a log transformation

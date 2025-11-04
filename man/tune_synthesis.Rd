@@ -35,7 +35,7 @@ Generate syntheses from multiple \code{presynth} objects.
 }
 \examples{
 
-roadmap <- roadmap(
+rm <- roadmap(
   conf_data = acs_conf_nw,
   start_data = acs_start_nw
 ) 
@@ -69,12 +69,12 @@ synth_spec2 <- synth_spec(
 
 
 presynth1 <- presynth(
-  roadmap = roadmap,
+  roadmap = rm,
   synth_spec = synth_spec1
 )
 
 presynth2 <- presynth(
-  roadmap = roadmap,
+  roadmap = rm,
   synth_spec = synth_spec2
 )
 

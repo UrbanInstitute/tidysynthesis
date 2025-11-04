@@ -25,4 +25,19 @@ Create a noise object
 
 noise()
 
+# create noise object for classification
+noise(
+  add_noise = TRUE,
+  mode = "classification",
+  noise_func = add_noise_cat_unif
+)
+
+# create noise object for regression
+noise(
+  add_noise = TRUE,
+  mode = "regression",
+  noise_func = add_noise_kde,
+  n_ntiles = 10
+)
+
 }

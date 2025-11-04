@@ -23,7 +23,11 @@ test_that("sum_to_cast_categorical basic functionality", {
   expect_equal(.sum_to_cast_categorical(test_col_lgl, "lgl") |> class(), "logical")
   
   # expect invalid casting with incorrect type
-  expect_error(.sum_to_cast_categorical(test_col, "not_a_dtype_sum"))
+  expect_error(
+    .sum_to_cast_categorical(test_col, "not_a_dtype_sum"),
+    regexp = "Cannot enforce_schema() with unsupported categorical type: not_a_dtype_sum",
+    fixed = TRUE
+  )
   
 })
 
@@ -38,7 +42,11 @@ test_that("sum_to_cast_numeric basic functionality", {
   expect_equal(.sum_to_cast_numeric(acs_conf[["age"]], "dbl") |> class(), "numeric")
   
   # expect invalid casting with incorrect type
-  expect_error(.sum_to_cast_numeric(test_col, "not_a_dtype_sum"))
+  expect_error(
+    .sum_to_cast_numeric(test_col, "not_a_dtype_sum"),
+    regexp = "Cannot enforce_schema() with unsupported numeric type: not_a_dtype_sum",
+    fixed = TRUE
+  )
   
 })
 

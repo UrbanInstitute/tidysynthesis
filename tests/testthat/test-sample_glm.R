@@ -46,7 +46,9 @@ test_that("sample_glm() doesn't work with non-logistic classification models", {
   expect_error(
     sample_glm(model = model_class, 
                new_data = acs_conf[1:3, ], 
-               conf_data = acs_conf)
+               conf_data = acs_conf),
+    regexp = "GLM classification only supported for logistic regression",
+    fixed = TRUE
   )
   
 })
@@ -63,7 +65,9 @@ test_that("sample_glm() doesn't work for non-poisson regression models", {
   expect_error(
     sample1 <- sample_glm(model = model_reg, 
                           new_data = acs_conf[1:3, ], 
-                          conf_data = acs_conf)
+                          conf_data = acs_conf),
+    regexp = "GLM regression only supported for Poisson regression",
+    fixed = TRUE
   )
   
 })

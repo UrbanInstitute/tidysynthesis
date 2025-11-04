@@ -36,7 +36,7 @@ invert <- function(object, predictions, ...)
 #' @param predictions A data frame with .pred
 #' @param ... Other arguments 
 #'
-#' @return A tibble with inverted model-generated values
+#' @return A tibble with the Box-Cox transformation inverted for .pred
 #' 
 #' @examples
 #' 
@@ -83,7 +83,7 @@ invert.step_BoxCox <- function(object, predictions, ...) {
 #' @param predictions A data frame with .pred
 #' @param ... Other arguments 
 #'
-#' @return A tibble with inverted model-generated values
+#' @return A tibble with the log transformation inverted for .pred 
 #'
 #' @examples
 #' 
@@ -116,9 +116,7 @@ invert.step_log <- function(object, predictions, ...) {
 #' @param predictions A data frame with .pred
 #' @param ... Other arguments
 #'
-#' @return A tibble with inverted model-generated values
-#'
-#' @return A tibble with Yeo_johnson transformation inverted for .pred 
+#' @return A tibble with the Yeo_johnson transformation inverted for .pred 
 #' 
 #' @export
 invert.step_YeoJohnson <- function(object, predictions, ...) {
@@ -136,9 +134,9 @@ invert.step_YeoJohnson <- function(object, predictions, ...) {
       
     } else {
       
-      predictions[, ".pred"] <- yeo_johnson(y = predictions[, ".pred", drop = TRUE], 
-                                            lambda = lambda,
-                                            inverse = TRUE)
+      predictions[, ".pred"] <- VGAM::yeo.johnson(y = predictions[, ".pred", drop = TRUE], 
+                                                  lambda = lambda,
+                                                  inverse = TRUE)
       
     }
     

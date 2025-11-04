@@ -33,17 +33,19 @@ test_that("synthesize_j() throws error with no sampler specified ", {
   mtcars_rec <- recipes::recipe(mpg ~ cyl + disp + hp, data = mtcars)
   
   expect_error(
-    jth_synth <- synthesize_j(conf_data = mtcars,
-                              synth_data = dplyr::select(mtcars, cyl, disp, hp),
-                              col_schema = list(dtype = "dbl", na_prop = 0),
-                              recipe = mtcars_rec,
-                              sampler = NULL,
-                              noise = default_noise,
-                              tuner = NULL,
-                              extractor = NULL,
-                              constraints = NULL,
-                              model = rpart_mod,
-                              invert_transformations = TRUE)
+    synthesize_j(conf_data = mtcars,
+                 synth_data = dplyr::select(mtcars, cyl, disp, hp),
+                 col_schema = list(dtype = "dbl", na_prop = 0),
+                 recipe = mtcars_rec,
+                 sampler = NULL,
+                 noise = default_noise,
+                 tuner = NULL,
+                 extractor = NULL,
+                 constraints = NULL,
+                 model = rpart_mod,
+                 invert_transformations = TRUE),
+    regexp = "Missing sampler object in generate_predictions().",
+    fixed = TRUE
   )
   
 })

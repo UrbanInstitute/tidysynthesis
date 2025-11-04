@@ -72,14 +72,18 @@ test_that("presynth input errors", {
     presynth(
       roadmap = roadmap,
       synth_spec = "not a synth_spec"
-    )
+    ),
+    regexp = "`synth_spec` must be a synth_spec object",
+    fixed = TRUE
   )
   
   expect_error(
     presynth(
       roadmap = "not a roadmap",
       synth_spec = synth_spec
-    )
+    ),
+    regexp = "`roadmap` must be a roadmap object",
+    fixed = TRUE
   )
   
 })
@@ -131,6 +135,10 @@ test_that("variable location by type validation", {
   )
   ps$workflows$built_models$mpg <- dt_class_mod
   
-  expect_error(.validate_presynth(ps))
+  expect_error(
+    .validate_presynth(ps),
+    regexp = "Variable types in visit_sequence do not match model types in synth_algorithms\n  Problem variable(s): mpg",
+    fixed = TRUE
+  )
   
 })

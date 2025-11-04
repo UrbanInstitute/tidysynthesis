@@ -95,7 +95,9 @@ test_that("add_noise_kde error checking", {
       pred = pred,
       n_ntiles = NULL,
       obs_per_ntile = NULL
-    )
+    ),
+    regexp = "`n_ntiles` and `obs_per_ntile` are both NULL",
+    fixed = TRUE
   )
   
   expect_error(
@@ -108,7 +110,9 @@ test_that("add_noise_kde error checking", {
       pred = pred,
       n_ntiles = 2,
       obs_per_ntile = 2
-    )
+    ),
+    regexp = "`n_ntiles` and `obs_per_ntile` cannot be set together",
+    fixed = TRUE
   )
   
   # invalid ties method
@@ -122,7 +126,9 @@ test_that("add_noise_kde error checking", {
       pred = pred,
       n_ntiles = 2,
       ties_method = "invalid"
-    )
+    ),
+    regexp = "`ties_method` argument must be one of: collapse, exclusions, random",
+    fixed = TRUE
   )
   
   # invalid sd_scale
@@ -136,7 +142,9 @@ test_that("add_noise_kde error checking", {
       pred = pred,
       n_ntiles = 2,
       sd_scale = -1
-    )
+    ),
+    regexp = "`sd_scale` must be a positive number",
+    fixed = TRUE
   )
   
 })

@@ -51,14 +51,18 @@ test_that("start_resample error handling", {
     start_resample(acs_start_nw, 
                    n = 100,
                    inv_noise_scale = 0,
-                   support = "all")
+                   support = "all"),
+    regexp = "inv_noise_scale > 0 is not TRUE",
+    fixed = TRUE
   )
   
   expect_error(
     start_resample(acs_start_nw, 
                    n = 100,
                    inv_noise_scale = NULL,
-                   support = "all")
+                   support = "all"),
+    regexp = "Cannot resample from complete support with unspecified inv_noise_scale.",
+    fixed = TRUE
   )
   
 })

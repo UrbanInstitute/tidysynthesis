@@ -304,19 +304,19 @@ NULL
 #' 
 #' @examples
 #' 
-#' roadmap <- roadmap(
+#' rm <- roadmap(
 #'   conf_data = acs_conf_nw,
 #'   start_data = acs_start_nw
 #' )
 #' 
-#' schema <- schema(
+#' acs_schema <- schema(
 #'   conf_data = acs_conf_nw,
 #'   start_data = acs_start_nw,
 #'   na_numeric_to_ind = TRUE
 #' )
 #' 
-#' roadmap |>
-#'   add_schema(schema)
+#' rm |>
+#'   add_schema(schema = acs_schema)
 #' 
 #' @export 
 add_schema <- function(roadmap, schema) { 
@@ -337,12 +337,12 @@ add_schema <- function(roadmap, schema) {
 #' 
 #' @examples
 #' 
-#' roadmap <- roadmap(
+#' rm <- roadmap(
 #'   conf_data = acs_conf_nw,
 #'   start_data = acs_start_nw
 #' )
 #' 
-#' roadmap |>
+#' rm |>
 #'   update_schema(na_numeric_to_ind = TRUE)
 #' 
 #' @export 
@@ -394,15 +394,15 @@ update_schema <- function(roadmap, ...) {
 #' 
 #' @examples
 #' 
-#' roadmap <- roadmap(
+#' rm <- roadmap(
 #'   conf_data = acs_conf_nw,
 #'   start_data = acs_start_nw
 #' )
 #' 
-#' roadmap <- roadmap |>
+#' rm <- rm |>
 #'   update_schema(na_numeric_to_ind = TRUE)
 #' 
-#' reset_schema(roadmap)
+#' reset_schema(roadmap = rm)
 #'   
 #' @export 
 reset_schema <- function(roadmap) {

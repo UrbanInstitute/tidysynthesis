@@ -12,11 +12,19 @@
 #' 
 #' @examples
 #' 
-#' roadmap <- roadmap(
+#' # construct_models() can create a sequence of models using a fully-default 
+#' # approach, a hybrid approach, or a fully-customized approach. All approaches
+#' # require a roadmap and model objects. 
+#' 
+#' rm <- roadmap(
 #'   conf_data = acs_conf_nw,
 #'   start_data = acs_start_nw
 #' )
 #' 
+#' rpart_mod_reg <- parsnip::decision_tree() |>
+#'   parsnip::set_engine(engine = "rpart") |>
+#'   parsnip::set_mode(mode = "regression")
+#'
 #' rpart_mod_class <- parsnip::decision_tree() |>
 #'   parsnip::set_engine(engine = "rpart") |>
 #'   parsnip::set_mode(mode = "classification")
@@ -25,10 +33,33 @@
 #'   parsnip::set_engine("lm") |>
 #'   parsnip::set_mode(mode = "regression")
 #' 
+#' # Fully-default approach
+#' 
 #' construct_models(
-#'   roadmap = roadmap, 
+#'   roadmap = rm, 
 #'   default_regression_model = lm_mod, 
 #'   default_classification_model = rpart_mod_class
+#' )
+#' 
+#' # Hybrid approach
+#' 
+#' construct_models(
+#'   roadmap = rm, 
+#'   default_regression_model = lm_mod,
+#'   default_classification_model = rpart_mod_class,
+#'   custom_models = list(
+#'     list(vars = "age", model = lm_mod)
+#'   )
+#' )
+#' 
+#' # Fully-customized approach
+#' 
+#' construct_models(
+#'   roadmap = rm, 
+#'   custom_models = list(
+#'     list(vars = c("hcovany", "empstat", "classwkr"), model = rpart_mod_class),
+#'     list(vars = c("age", "famsize", "transit_time", "inctot"), model = rpart_mod_reg)
+#'   )
 #' )
 #' 
 #' @export

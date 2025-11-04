@@ -518,7 +518,7 @@ NULL
 #' 
 #' @examples
 #' 
-#' roadmap <- roadmap(
+#' rm <- roadmap(
 #'   conf_data = acs_conf_nw,
 #'   start_data = acs_start_nw
 #' )
@@ -528,12 +528,12 @@ NULL
 #'                   "transit_time", 0, 300, "TRUE")
 #' 
 #' constraints <- constraints(
-#'   schema = roadmap[["schema"]],
+#'   schema = rm[["schema"]],
 #'   constraints_df_num = constraints_df_num,
 #'   max_z_num = 0
 #' )
 #' 
-#' roadmap |>
+#' rm |>
 #'   add_constraints(constraints)
 #' 
 #' @export 
@@ -557,7 +557,7 @@ add_constraints <- function(roadmap, constraints) {
 #' 
 #' @examples
 #' 
-#' roadmap <- roadmap(
+#' rm <- roadmap(
 #'   conf_data = acs_conf_nw,
 #'   start_data = acs_start_nw
 #' )
@@ -567,12 +567,12 @@ add_constraints <- function(roadmap, constraints) {
 #'                   "transit_time", 0, 300, "TRUE")
 #' 
 #' constraints <- constraints(
-#'   schema = roadmap[["schema"]],
+#'   schema = rm[["schema"]],
 #'   constraints_df_num = constraints_df_num,
 #'   max_z_num = 0
 #' )
 #' 
-#' roadmap |>
+#' rm |>
 #'   update_constraints(constraints)
 #'
 #' @export 
@@ -625,7 +625,7 @@ update_constraints <- function(roadmap, ...) {
 #' @rdname constraints_api
 #' 
 #' @examples
-#' roadmap <- roadmap(
+#' rm <- roadmap(
 #'   conf_data = acs_conf_nw,
 #'   start_data = acs_start_nw
 #' )
@@ -635,15 +635,15 @@ update_constraints <- function(roadmap, ...) {
 #'                   "transit_time", 0, 300, "TRUE")
 #' 
 #' constraints <- constraints(
-#'   schema = roadmap[["schema"]],
+#'   schema = rm[["schema"]],
 #'   constraints_df_num = constraints_df_num,
 #'   max_z_num = 0
 #' )
 #' 
-#' roadmap <- roadmap |>
+#' rm <- rm |>
 #'   add_constraints(constraints)
 #' 
-#' reset_constraints(roadmap)
+#' reset_constraints(rm)
 #' 
 #' @export 
 reset_constraints <- function(roadmap) {
@@ -667,7 +667,7 @@ reset_constraints <- function(roadmap) {
 #'
 #' @examples
 #'
-#' roadmap <- roadmap(
+#' rm <- roadmap(
 #'   conf_data = acs_conf_nw,
 #'   start_data = acs_start_nw
 #' )
@@ -677,7 +677,7 @@ reset_constraints <- function(roadmap) {
 #'                   "transit_time", 0, 300, "TRUE")
 #' 
 #' constraints <- constraints(
-#'   schema = roadmap[["schema"]],
+#'   schema = rm[["schema"]],
 #'   constraints_df_num = constraints_df_num,
 #'   max_z_num = 0
 #' )

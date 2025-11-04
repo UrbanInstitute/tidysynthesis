@@ -9,15 +9,73 @@
 #' 
 #' @examples
 #' 
-#' roadmap <- roadmap(
+#' rm <- roadmap(
 #'   conf_data = acs_conf_nw,
 #'   start_data = acs_start_nw
 #' )
 #' 
 #' noise_defaults <- construct_noise(
-#'   roadmap = roadmap,
+#'   roadmap = rm,
 #'   default_regression_noise = noise(),
 #'   default_classification_noise = noise()
+#' )
+#' 
+#' @examples
+#' 
+#' # construct_noise() can create a sequence of noise objects using a 
+#' # fully-default approach, a hybrid approach, or a fully-customized approach. 
+#' # All approaches require a roadmap and noise objects. 
+#' 
+#' rm <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' )
+#' 
+#' noise_reg <- noise(
+#'   add_noise = TRUE,
+#'   mode = "regression",
+#'   noise_fun = add_noise_gaussian
+#' )
+#' 
+#' noise_class <- noise(
+#'   add_noise = TRUE,
+#'   mode = "classification",
+#'   noise_fun = add_noise_cat_unif
+#' )
+#' 
+#' # Fully-default approach
+#' 
+#' construct_noise(
+#'   roadmap = rm, 
+#'   default_regression_noise = noise_reg, 
+#'   default_classification_noise = noise_class
+#' )
+#' 
+#' # Hybrid approach
+#' 
+#' noise_reg2 <- noise(
+#'   add_noise = TRUE,
+#'   mode = "regression",
+#'   noise_fun = add_noise_disc_gaussian 
+#' )
+#' 
+#' construct_noise(
+#'   roadmap = rm, 
+#'   default_regression_noise = noise_reg,
+#'   default_classification_noise = noise_class,
+#'   custom_noise = list(
+#'     list(vars = "age", noise = noise_reg2)
+#'   )
+#' )
+#' 
+#' # Fully-customized approach
+#' 
+#' construct_noise(
+#'   roadmap = rm, 
+#'   custom_noise = list(
+#'     list(vars = c("hcovany", "empstat", "classwkr"), noise = noise_class),
+#'     list(vars = c("age", "famsize", "transit_time", "inctot"), noise = noise_reg)
+#'   )
 #' )
 #' 
 #' @export

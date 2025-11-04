@@ -28,38 +28,38 @@ Add, update, or reset a \code{schema} object within an existing \code{roadmap}.
 }
 \examples{
 
-roadmap <- roadmap(
+rm <- roadmap(
   conf_data = acs_conf_nw,
   start_data = acs_start_nw
 )
 
-schema <- schema(
+acs_schema <- schema(
   conf_data = acs_conf_nw,
   start_data = acs_start_nw,
   na_numeric_to_ind = TRUE
 )
 
-roadmap |>
-  add_schema(schema)
+rm |>
+  add_schema(schema = acs_schema)
 
 
-roadmap <- roadmap(
+rm <- roadmap(
   conf_data = acs_conf_nw,
   start_data = acs_start_nw
 )
 
-roadmap |>
+rm |>
   update_schema(na_numeric_to_ind = TRUE)
 
 
-roadmap <- roadmap(
+rm <- roadmap(
   conf_data = acs_conf_nw,
   start_data = acs_start_nw
 )
 
-roadmap <- roadmap |>
+rm <- rm |>
   update_schema(na_numeric_to_ind = TRUE)
 
-reset_schema(roadmap)
+reset_schema(roadmap = rm)
   
 }
