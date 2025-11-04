@@ -1,4 +1,3 @@
-#' 
 #' Redefine `NA` value for a dataset.
 #'  
 #' @param data A `data.frame` object 
@@ -6,8 +5,25 @@
 #'
 #' @return A `data.frame`
 #'  
+#' @examples
+#'
+#' # create custom NA filter
+#' example_na_custom <- example_na %>%
+#'   tidyr::replace_na(
+#'     list("wages" = -999)
+#'   )
+#'
+#' example_na_expanded_custom <- enforce_custom_na(
+#'   data = example_na_custom,
+#'   col_schema = list(
+#'     "wages" = list(
+#'       dtype = "dbl",
+#'       na_value = -999
+#'      )
+#'    )
+#'  )
+#' 
 #' @export
-#'  
 enforce_custom_na <- function(data, col_schema) {
   
   # for each column in col_schema

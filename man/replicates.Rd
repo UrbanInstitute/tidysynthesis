@@ -27,3 +27,12 @@ A new \code{replicates} object.
 \description{
 Create a replicates object
 }
+\examples{
+
+replicates(
+  start_data_replicates = 2,
+  model_sample_replicates = 2,
+  end_to_end_replicates = 2
+)
+
+}

@@ -48,3 +48,16 @@ A numeric vector with noise added to each prediction
 \description{
 Add discrete normal noise with mean 0 to predicted values with constant variance
 }
+\examples{
+
+add_noise_disc_gaussian(
+  model = NULL,
+  new_data = NULL,
+  conf_model_data = NULL,
+  outcome_var = NULL,
+  col_schema = NULL,
+  pred = 1:100,
+  variance = 3
+)
+
+}

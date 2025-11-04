@@ -1,4 +1,3 @@
-#'
 #' Construct a list of constraints that aligns with a visit sequence.
 #' 
 #' This set of constraints respects the `visit_sequence` ordering and properly
@@ -9,8 +8,6 @@
 #' 
 #' @return A named list of lists mapping variable names to their `constraint`
 #' dataframes and `max_z` values
-#' 
-#' @export
 #' 
 construct_constraints <- function(roadmap) {
   

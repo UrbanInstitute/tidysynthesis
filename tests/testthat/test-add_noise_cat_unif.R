@@ -20,7 +20,7 @@ test_that("add_noise_cat_unif reproduces with seed", {
     outcome_var = outcome_var,
     col_schema = col_schema,
     pred = pred,
-    unif_prop = .5
+    unif_prop = 0.5
   )
   
   set.seed(1)

@@ -20,3 +20,25 @@ A \code{start_method} gets executed prior to running a synthesis. This modifies
 the \code{start_data}, typically randomly, to provide greater disclosure risk
 protections.
 }
+\examples{
+
+# basic usage
+start_method(start_func = start_resample)
+
+# adjust the number of observations
+start_method(
+  start_func = start_resample,
+  start_data = acs_start_nw,
+  n = 10
+)
+
+# adjust the number of observations and use all combinations as support
+start_method(
+  start_func = start_resample,
+  start_data = acs_start_nw,
+  n = 10, 
+  inv_noise_scale = 1,
+  support = "all"
+)
+
+}

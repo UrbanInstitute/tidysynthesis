@@ -14,7 +14,7 @@
 \item{...}{Other arguments}
 }
 \value{
-A tibble with Yeo_johnson transformation inverted for .pred
+A tibble with the Yeo_johnson transformation inverted for .pred
 }
 \description{
 Invert a Yeo-Johnson transformation

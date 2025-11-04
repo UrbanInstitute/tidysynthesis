@@ -1,6 +1,6 @@
 Package: tidysynthesis
 Title: A Common API for Synthesizing Data
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: 
     c(person(given = "Aaron", 
              family = "Williams", 
@@ -23,28 +23,27 @@ Authors@R:
              comment = c(ORCID = "0000-0003-3526-3209")),
       person(given = "Elyse", 
              family = "McFalls", 
-             email = "emcfalls@urban.org", 
              role = "ctb"),               
       person(given = "Claire", 
              family = "Morton", 
-             email = "cmorton@urban.org", 
              role = "ctb"),              
       person(given = "Livia", 
              family = "Mucciolo", 
-             email = "lmucciolo@urban.org", 
              role = "ctb"),             
       person(given = "Madeline", 
              family = "Pickens", 
-             email = "mpickens@urban.org", 
              role = "ctb"),             
       person(given = "Noah", 
              family = "Zwiefel", 
-             email = "nzwiefel@urban.org", 
-             role = "ctb"))
+             role = "ctb"),
+      person(given = "The Urban Institute", role = c("cph")))
 Maintainer: Aaron R. Williams <awilliams@urban.org>
-Description: A comprehensive set of tools for generating synthetic data built on top of tidymodels.
+Description: A system built on 'tidymodels' for generating synthetic tabular
+    data. We provide tools for ordering a sequential synthesis, feature and 
+    target engineering, sampling, hyperparameter tuning, enforcing constraints, 
+    and adding extra noise during a synthesis.
 URL: https://ui-research.github.io/tidysynthesis-documentation/
-BugReports: https://github.com/UI-Research/tidysynthesis/issues
+BugReports: https://github.com/UrbanInstitute/tidysynthesis/issues
 Depends: R (>= 4.1.0)
 Imports:
     dplyr,

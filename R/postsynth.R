@@ -9,7 +9,6 @@
 #'
 #' @return A `postsynth` object.
 #' 
-#' @export
 postsynth <- function(synthetic_data,
                       jth_preprocessing,
                       total_synthesis_time,
@@ -71,6 +70,12 @@ is_postsynth <- function(x) {
 #   
 # }
 
+#' Print the postsynth object to the console with formatting
+#'
+#' @param x A `postsynth` object
+#' @param ... further arguments passed to or from other methods (not currently
+#'   used).
+#' 
 #' @export
 print.postsynth <- function(x, ...) {
 

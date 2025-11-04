@@ -105,8 +105,6 @@ is_visit_sequence <- function(x) {
 #' 
 #' @return NULL
 #' 
-#' @export 
-#' 
 validate_visit_sequence <- function(roadmap) {
   
   stopifnot("`roadmap` must be a roadmap object" = { is_roadmap(roadmap) })

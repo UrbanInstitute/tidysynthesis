@@ -18,8 +18,13 @@
 #'
 #' @return For `ks_distance_vec()`, a single numeric value (or `NA`).
 #' 
+#' @examples
+#' 
+#' ks1 <- data.frame(x = 1:100, y = 101:200)
+#' 
+#' ks_distance(data = ks1, truth = x, estimate = y)
+#' 
 #' @export
-#'
 ks_distance <- function(data, ...) {
   UseMethod("ks_distance")
 }
@@ -30,6 +35,13 @@ ks_distance <- yardstick::new_numeric_metric(
 )
 
 #' @rdname ks_distance
+#' 
+#' @examples
+#' 
+#' ks1 <- data.frame(x = 1:100, y = 101:200)
+#' 
+#' ks_distance(data = ks1, truth = x, estimate = y)
+#' 
 #' @export
 ks_distance.data.frame <- function(data, truth, estimate, na_rm = TRUE, case_weights = NULL, ...) {
   
@@ -45,8 +57,15 @@ ks_distance.data.frame <- function(data, truth, estimate, na_rm = TRUE, case_wei
   
 }
 
-#' @export
 #' @rdname ks_distance
+#' 
+#' @examples
+#' 
+#' ks1 <- data.frame(x = 1:100, y = 101:200)
+#' 
+#' ks_distance_vec(truth = ks1$x, estimate = ks1$y)
+#' 
+#' @export
 ks_distance_vec <- function(truth, estimate, na_rm = TRUE, case_weights = NULL, ...) {
   
   yardstick::check_numeric_metric(truth, estimate, case_weights)

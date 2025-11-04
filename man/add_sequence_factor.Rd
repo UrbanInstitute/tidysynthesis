@@ -22,3 +22,12 @@ An updated visit_sequence
 \description{
 Add to visit sequence for factor variables
 }
+\examples{
+
+roadmap(
+  conf_data = acs_conf_nw, 
+  start_data = acs_start_nw
+) |>
+  add_sequence_factor(dplyr::where(is.factor), method = "gini")
+
+}

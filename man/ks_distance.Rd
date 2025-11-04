@@ -40,3 +40,20 @@ For \code{ks_distance_vec()}, a single numeric value (or \code{NA}).
 \description{
 Kolmogorov-Smirnov distance
 }
+\examples{
+
+ks1 <- data.frame(x = 1:100, y = 101:200)
+
+ks_distance(data = ks1, truth = x, estimate = y)
+
+
+ks1 <- data.frame(x = 1:100, y = 101:200)
+
+ks_distance(data = ks1, truth = x, estimate = y)
+
+
+ks1 <- data.frame(x = 1:100, y = 101:200)
+
+ks_distance_vec(truth = ks1$x, estimate = ks1$y)
+
+}

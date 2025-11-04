@@ -87,12 +87,16 @@ recipes need ids that begin with "outcome".}
 synthetic data with \code{enforce_na()} during synthesis. An alternative approach
 is to add the NA values after synthesis}
 }
+\value{
+A \code{synth_spec} object
+}
 \description{
 The \code{synth_spec} object holds specifications for modeling and sampling components
 for sequential synthetic data generation. Each component has an associated
 \verb{construct_*} function called when creating a \code{presynth} object.
 }
 \examples{
+
 rpart_mod <- parsnip::decision_tree() \%>\%
   parsnip::set_engine(engine = "rpart") \%>\%
   parsnip::set_mode(mode = "regression")

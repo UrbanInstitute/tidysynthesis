@@ -1,4 +1,3 @@
-#' 
 #' Create a `synth_spec` object
 #' 
 #' The `synth_spec` object holds specifications for modeling and sampling components
@@ -47,7 +46,10 @@
 #' synthetic data with `enforce_na()` during synthesis. An alternative approach 
 #' is to add the NA values after synthesis
 #' 
+#' @return A `synth_spec` object
+#' 
 #' @examples
+#' 
 #' rpart_mod <- parsnip::decision_tree() %>%
 #'   parsnip::set_engine(engine = "rpart") %>%
 #'   parsnip::set_mode(mode = "regression")
@@ -264,13 +266,11 @@ synth_spec <- function(
   
 }
 
-#' 
 #' Check if object is `synth_spec`
 #' 
 #' @param z Object
 #' @return Logical 
 #'  
-#' @export 
 #' 
 is_synth_spec <- function(z) {
   
@@ -278,6 +278,18 @@ is_synth_spec <- function(z) {
   
 }
 
+#' Print the replicates object to the console with formatting
+#'
+#' @param x A `replicates` object
+#' @param ... further arguments passed to or from other methods (not currently
+#'   used).
+#'   
+#' @examples
+#' 
+#' synth_spec <- synth_spec()
+#' 
+#' print(synth_spec)
+#' 
 #' @export 
 print.synth_spec <- function(x, ...) {
   
@@ -328,8 +340,20 @@ print.synth_spec <- function(x, ...) {
 #' 
 #' @return A `synth_spec`
 #' 
-#' @export 
+#' @examples
 #' 
+#' synth_spec <- synth_spec()
+#' 
+#' lm_mod <- parsnip::linear_reg() %>% 
+#'   parsnip::set_engine("lm") %>%
+#'   parsnip::set_mode(mode = "regression")
+#' 
+#' update_synth_spec(
+#'   synth_spec, 
+#'   default_regression_model = lm_mod
+#' )
+#' 
+#' @export 
 update_synth_spec <- function(synth_spec, ...) {
   
   # check input names
@@ -460,8 +484,21 @@ NULL
 
 #'
 #' @rdname synth_spec_model_api
-#' @export 
 #' 
+#' @examples
+#' 
+#' synth_spec <- synth_spec()
+#' 
+#' dt_reg_mod <- parsnip::decision_tree() %>%
+#'   parsnip::set_engine("rpart") %>%
+#'   parsnip::set_mode("regression")
+#'
+#' add_custom_models(
+#'   synth_spec = synth_spec, 
+#'   list("vars" = c("a", "b", "c"), "model" = dt_reg_mod)
+#' )
+#' 
+#' @export 
 add_custom_models <- function(synth_spec, ...) {
   
   stopifnot(
@@ -484,8 +521,21 @@ add_custom_models <- function(synth_spec, ...) {
 
 #'
 #' @rdname synth_spec_model_api
-#' @export 
 #' 
+#' @examples
+#' 
+#' synth_spec <- synth_spec()
+#' 
+#' dt_reg_mod <- parsnip::decision_tree() %>%
+#'   parsnip::set_engine("rpart") %>%
+#'   parsnip::set_mode("regression")
+#'
+#' update_custom_models(
+#'   synth_spec = synth_spec, 
+#'   list("vars" = c("a", "b", "c"), "model" = dt_reg_mod)
+#' )
+#'
+#' @export 
 update_custom_models <- function(synth_spec, ...) {
   
   return(
@@ -501,8 +551,23 @@ update_custom_models <- function(synth_spec, ...) {
 
 #'
 #' @rdname synth_spec_model_api
-#' @export 
 #' 
+#' @examples
+#'
+#' synth_spec <- synth_spec()
+#' 
+#' dt_reg_mod <- parsnip::decision_tree() %>%
+#'   parsnip::set_engine("rpart") %>%
+#'   parsnip::set_mode("regression")
+#'
+#' synth_spec <- update_custom_models(
+#'   synth_spec = synth_spec, 
+#'   list("vars" = c("a", "b", "c"), "model" = dt_reg_mod)
+#' )
+#'
+#' remove_custom_models(synth_spec = synth_spec)
+#'
+#' @export 
 remove_custom_models <- function(synth_spec) {
   
   stopifnot(
@@ -538,8 +603,21 @@ NULL
 
 #'
 #' @rdname synth_spec_recipes_api
-#' @export 
 #' 
+#' @examples
+#'
+#' synth_spec <- synth_spec()
+#' 
+#' step1 <- function(x) {
+#'   x %>% recipes::step_center(recipes::all_predictors(), id = "center")
+#' }
+#' 
+#' add_custom_steps(
+#'   synth_spec = synth_spec, 
+#'   list("vars" = c("a", "b", "c"), "steps" = step1)
+#' )
+#'
+#' @export 
 add_custom_steps <- function(synth_spec, ...) {
   
   stopifnot(
@@ -562,8 +640,21 @@ add_custom_steps <- function(synth_spec, ...) {
 
 #'
 #' @rdname synth_spec_recipes_api
-#' @export 
 #' 
+#' @examples
+#' 
+#' synth_spec <- synth_spec()
+#' 
+#' step1 <- function(x) {
+#'   x %>% recipes::step_center(recipes::all_predictors(), id = "center")
+#' }
+#' 
+#' update_custom_steps(
+#'   synth_spec = synth_spec, 
+#'   list("vars" = c("a", "b", "c"), "steps" = step1)
+#' )
+#'
+#' @export 
 update_custom_steps <- function(synth_spec, ...) {
   
   return(
@@ -579,8 +670,23 @@ update_custom_steps <- function(synth_spec, ...) {
 
 #'
 #' @rdname synth_spec_recipes_api
-#' @export 
 #' 
+#' @examples
+#' 
+#' synth_spec <- synth_spec()
+#' 
+#' step1 <- function(x) {
+#'   x %>% recipes::step_center(recipes::all_predictors(), id = "center")
+#' }
+#' 
+#' synth_spec <- add_custom_steps(
+#'   synth_spec = synth_spec, 
+#'   list("vars" = c("a", "b", "c"), "steps" = step1)
+#' )
+#'
+#' remove_custom_steps(synth_spec = synth_spec)
+#'
+#' @export 
 remove_custom_steps <- function(synth_spec) {
   
   stopifnot(
@@ -609,8 +715,17 @@ NULL
 
 #'
 #' @rdname synth_spec_sampler_api
-#' @export 
 #' 
+#' @examples
+#'
+#' synth_spec <- synth_spec()
+#' 
+#' add_custom_samplers(
+#'   synth_spec = synth_spec, 
+#'   list("vars" = c("a", "b", "c"), "sampler" = sample_rpart)
+#' )
+#'
+#' @export 
 add_custom_samplers <- function(synth_spec, ...) {
   
   stopifnot(
@@ -631,8 +746,17 @@ add_custom_samplers <- function(synth_spec, ...) {
 
 #'
 #' @rdname synth_spec_sampler_api
+#' 
+#' @examples
+#'
+#' synth_spec <- synth_spec()
+#' 
+#' update_custom_samplers(
+#'   synth_spec = synth_spec, 
+#'   list("vars" = c("a", "b", "c"), "sampler" = sample_rpart)
+#' )
+#'
 #' @export 
-#'  
 update_custom_samplers <- function(synth_spec, ...) {
   
   return(
@@ -648,8 +772,19 @@ update_custom_samplers <- function(synth_spec, ...) {
 
 #'
 #' @rdname synth_spec_sampler_api
-#' @export 
 #' 
+#' @examples
+#'
+#' synth_spec <- synth_spec()
+#' 
+#' synth_spec <- add_custom_samplers(
+#'   synth_spec = synth_spec, 
+#'   list("vars" = c("a", "b", "c"), "sampler" = sample_rpart)
+#' )
+#'
+#' remove_custom_samplers(synth_spec = synth_spec)
+#'
+#' @export 
 remove_custom_samplers <- function(synth_spec) {
   
   stopifnot(
@@ -678,9 +813,26 @@ NULL
 #> NULL
 
 #'
-#' @rdname synth_spec_sampler_api
-#' @export 
+#' @rdname synth_spec_noise_api
 #' 
+#' @examples
+#' 
+#' synth_spec <- synth_spec()
+#' 
+#' noise1 <- noise(
+#'   add_noise = TRUE, 
+#'   noise_func = add_noise_kde,
+#'   noise_params = list(
+#'     n_ntiles = 2
+#'   )
+#' )
+#' 
+#' add_custom_noise(
+#'   synth_spec = synth_spec, 
+#'   list("vars" = c("a", "b", "c"), "noise" = noise1)
+#' )
+#'
+#' @export 
 add_custom_noise <- function(synth_spec, ...) {
   
   stopifnot(
@@ -701,8 +853,24 @@ add_custom_noise <- function(synth_spec, ...) {
 
 #'
 #' @rdname synth_spec_sampler_api
+#' @examples
+#' 
+#' synth_spec <- synth_spec()
+#' 
+#' noise1 <- noise(
+#'   add_noise = TRUE, 
+#'   noise_func = add_noise_kde,
+#'   noise_params = list(
+#'     n_ntiles = 2
+#'   )
+#' )
+#' 
+#' update_custom_noise(
+#'   synth_spec = synth_spec, 
+#'   list("vars" = c("a", "b", "c"), "noise" = noise1)
+#' )
+#'
 #' @export 
-#'  
 update_custom_noise <- function(synth_spec, ...) {
   
   return(
@@ -718,8 +886,26 @@ update_custom_noise <- function(synth_spec, ...) {
 
 #'
 #' @rdname synth_spec_sampler_api
-#' @export 
+#' @examples
 #' 
+#' synth_spec <- synth_spec()
+#' 
+#' noise1 <- noise(
+#'   add_noise = TRUE, 
+#'   noise_func = add_noise_kde,
+#'   noise_params = list(
+#'     n_ntiles = 2
+#'   )
+#' )
+#' 
+#' synth_spec <- add_custom_noise(
+#'   synth_spec = synth_spec, 
+#'   list("vars" = c("a", "b", "c"), "noise" = noise1)
+#' )
+#' 
+#' remove_custom_noise(synth_spec = synth_spec)
+#'
+#' @export 
 remove_custom_noise <- function(synth_spec) {
   
   stopifnot(
@@ -749,8 +935,23 @@ NULL
 
 #'
 #' @rdname synth_spec_tuner_api
-#' @export 
 #' 
+#' @examples
+#' 
+#' synth_spec <- synth_spec()
+#' 
+#' tuner1 <- list(
+#'   v = 3,
+#'   grid = 3,
+#'   metrics = yardstick::metric_set(yardstick::rmse)
+#' )
+#' 
+#' add_custom_tuners(
+#'   synth_spec = synth_spec, 
+#'   list("vars" = c("a", "b", "c"), "tuner" = tuner1)
+#' )
+#' 
+#' @export 
 add_custom_tuners <- function(synth_spec, ...) {
   
   stopifnot(
@@ -771,8 +972,22 @@ add_custom_tuners <- function(synth_spec, ...) {
 
 #'
 #' @rdname synth_spec_tuner_api
+#' @examples
+#' 
+#' synth_spec <- synth_spec()
+#' 
+#' tuner1 <- list(
+#'   v = 3,
+#'   grid = 3,
+#'   metrics = yardstick::metric_set(yardstick::rmse)
+#' )
+#' 
+#' update_custom_tuners(
+#'   synth_spec = synth_spec, 
+#'   list("vars" = c("a", "b", "c"), "tuner" = tuner1)
+#' )
+#' 
 #' @export 
-#'  
 update_custom_tuners <- function(synth_spec, ...) {
   
   return(
@@ -788,8 +1003,24 @@ update_custom_tuners <- function(synth_spec, ...) {
 
 #'
 #' @rdname synth_spec_tuner_api
-#' @export 
+#' @examples
 #' 
+#' synth_spec <- synth_spec()
+#' 
+#' tuner1 <- list(
+#'   v = 3,
+#'   grid = 3,
+#'   metrics = yardstick::metric_set(yardstick::rmse)
+#' )
+#' 
+#' synth_spec <- add_custom_tuners(
+#'   synth_spec = synth_spec, 
+#'   list("vars" = c("a", "b", "c"), "tuner" = tuner1)
+#' )
+#' 
+#' remove_custom_tuners(synth_spec = synth_spec)
+#' 
+#' @export 
 remove_custom_tuners <- function(synth_spec) {
   
   stopifnot(
@@ -820,8 +1051,17 @@ NULL
 
 #'
 #' @rdname synth_spec_extractor_api
-#' @export 
 #' 
+#' @examples
+#' 
+#' synth_spec <- synth_spec()
+#' 
+#' add_custom_extractors(
+#'   synth_spec = synth_spec, 
+#'   list("vars" = c("a", "b", "c"), "extractor" = parsnip::extract_fit_engine)
+#' )
+#'
+#' @export 
 add_custom_extractors <- function(synth_spec, ...) {
   
   stopifnot(
@@ -842,8 +1082,16 @@ add_custom_extractors <- function(synth_spec, ...) {
 
 #'
 #' @rdname synth_spec_extractor_api
+#' @examples
+#' 
+#' synth_spec <- synth_spec()
+#' 
+#' update_custom_extractors(
+#'   synth_spec = synth_spec, 
+#'   list("vars" = c("a", "b", "c"), "extractor" = parsnip::extract_fit_engine)
+#' )
+#'
 #' @export 
-#'  
 update_custom_extractors <- function(synth_spec, ...) {
   
   return(
@@ -859,8 +1107,19 @@ update_custom_extractors <- function(synth_spec, ...) {
 
 #'
 #' @rdname synth_spec_extractor_api
-#' @export 
 #' 
+#' @examples
+#' 
+#' synth_spec <- synth_spec()
+#' 
+#' synth_spec <- add_custom_extractors(
+#'   synth_spec = synth_spec, 
+#'   list("vars" = c("a", "b", "c"), "extractor" = parsnip::extract_fit_engine)
+#' )
+#'
+#' remove_custom_extractors(synth_spec = synth_spec)
+#'
+#' @export 
 remove_custom_extractors <- function(synth_spec) {
   
   stopifnot(

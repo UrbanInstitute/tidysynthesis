@@ -1,3 +1,7 @@
+# tidysynthesis 0.1.2
+
+* Prepare tidysynthesis for CRAN release (#26).
+
 # tidysynthesis 0.1.1
 
 * Add rounding to `noise()` (#6) and fix `obs_per_ntile` in `noise()` (#3).

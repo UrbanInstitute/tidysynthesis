@@ -10,6 +10,29 @@
 #'
 #' @return A numeric vector of predictions
 #' 
+#' @examples
+#' 
+#' acs_conf <- acs_conf %>%
+#'   tidyr::drop_na()
+#' 
+#' logistic_mod <- parsnip::logistic_reg() %>%
+#'   parsnip::set_engine("glm") %>%
+#'   parsnip::set_mode(mode = "classification")
+#' 
+#' classification_rec <- recipes::recipe(hcovany ~ ., data = acs_conf)
+#' 
+#' model_class <- workflows::workflow() %>%
+#'   workflows::add_model(spec = logistic_mod) %>%
+#'   workflows::add_recipe(recipe = classification_rec) %>%
+#'   parsnip::fit(data = acs_conf)
+#' 
+#' set.seed(1)
+#' sample1 <- sample_glm(
+#'   model = model_class, 
+#'   new_data = acs_conf[1:3, ], 
+#'   conf_data = acs_conf
+#' )
+#' 
 #' @export
 sample_glm <- function(model, new_data, conf_data) {
   

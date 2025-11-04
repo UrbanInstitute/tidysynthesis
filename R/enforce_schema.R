@@ -55,8 +55,14 @@
 #' @return A `roadmap` object with modified `conf_data`, `start_data`, and `schema`
 #' information. 
 #'
-#' @export
+#' @examples
+#'   
+#' rm <- roadmap(conf_data = acs_conf, start_data = acs_start) %>%
+#'   update_schema(na_numeric_to_ind = TRUE)
+#'
+#' enforce_schema(rm)
 #' 
+#' @export
 enforce_schema <- function(roadmap) {
   
   # create copies of the data for modification

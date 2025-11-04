@@ -26,3 +26,62 @@ A named list of tuners
 \description{
 Construct a list of tuning grids for hyperparameter tuning predictive models
 }
+\examples{
+
+# construct_tuners() can create a sequence of tuners using a fully-default 
+# approach, a hybrid approach, or a fully-customized approach. All approaches
+# require a roadmap and tuners. 
+
+rm <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+)
+
+tuner_reg <- list(
+  v = 3,
+  grid = 3,
+  metrics = yardstick::metric_set(yardstick::rmse)
+)
+
+tuner_cat <- list(
+  v = 3,
+  grid = 3,
+  metrics = yardstick::metric_set(yardstick::roc_auc)
+)
+
+# Fully-default approach
+
+construct_tuners(
+  roadmap = rm, 
+  default_regression_tuner = tuner_reg,
+  default_classification_tuner = tuner_cat
+)
+
+# Hybrid approach
+
+tuner_cat2 <- list(
+  v = 3,
+  grid = 3,
+  metrics = yardstick::metric_set(yardstick::precision)
+)
+
+construct_tuners(
+  roadmap = rm, 
+  default_regression_tuner = tuner_reg,
+  default_classification_tuner = tuner_cat,
+  custom_tuners = list(
+    list(vars = "hcovany", tuner = tuner_cat2)
+  )
+)
+
+# Fully-customized approach
+
+construct_tuners(
+  roadmap = rm, 
+  custom_tuners = list(
+    list(vars = c("hcovany", "empstat", "classwkr"), tuner = tuner_reg),
+    list(vars = c("age", "famsize", "transit_time", "inctot"), tuner = tuner_cat)
+  )
+)
+
+}

@@ -8,21 +8,21 @@ website](https://ui-research.github.io/tidysynthesis-documentation/).
 
 ## Installation:
 
-tidysynthesis is not currently on [CRAN](https://cran.r-project.org/),
-so it cannot be installed with `install.packages()`. Please install
-tidysynthesis with the following code:
+``` r
+# The easiest way to get tidysynthesis is from CRAN:
+install.packages("tidysynthesis")
 
-    devtools::install_github("UrbanInstitute/tidysynthesis")
-
-After doing this, you can use the traditional `library(tidysynthesis)`
-command.
+# Or the development version from GitHub:
+# install.packages("pak")
+pak::pak("UrbanInstitute/tidysynthesis")
+```
 
 ## Overview
 
 `tidysynthesis` is a “metapackage” for creating synthetic data sets for
 statistical disclosure limitation that shares the underlying design
 philosophy, grammar, and data structures of the
-[tidyverse](https://www.tidyverse.org/) and
+[tidyverse](https://tidyverse.org/) and
 [tidymodels](https://www.tidymodels.org/). `tidysynthesis` flexibly
 supports sequential synthesis modeling and sampling specifications with
 different formal and empirical privacy properties.
@@ -180,7 +180,7 @@ starting_data <- penguins_complete %>%
   ungroup()
 
 # create roadmap
-roadmap <- roadmap(
+rm <- roadmap(
   conf_data = penguins_complete,
   start_data = starting_data
 ) %>% 
@@ -213,7 +213,7 @@ synth_spec1 <- synth_spec(
 # create a presynth object
 # use defaults for noise, constraints, and replicates
 presynth1 <- presynth(
-  roadmap = roadmap,
+  roadmap = rm,
   synth_spec = synth_spec1
 )
 
@@ -272,7 +272,7 @@ synth_spec2 <- synth_spec(
 
 # create a presynth object
 presynth2 <- presynth(
-  roadmap = roadmap,
+  roadmap = rm,
   synth_spec = synth_spec2
 )
 
@@ -338,7 +338,7 @@ synth_spec3 <- synth_spec2 %>%
   )
 
 presynth3 <- presynth(
-  roadmap = roadmap,
+  roadmap = rm,
   synth_spec = synth_spec3
 )
 
@@ -413,13 +413,13 @@ constraints_df_num <-
 
 # create a constraints object
 constraints4 <- constraints(
-  schema = roadmap$schema,
+  schema = rm$schema,
   constraints_df_num = constraints_df_num,
   max_z_num = list(0, 1, 2, 3)
 )
 
 presynth4 <- presynth(
-  roadmap = roadmap %>%
+  roadmap = rm %>%
     add_constraints(constraints4),
   synth_spec = synth_spec3
 )
@@ -473,7 +473,7 @@ for different kinds of replicate specification).
 replicates5 <- replicates(model_sample_replicates = 5)
 
 presynth5 <- presynth(
-  roadmap = roadmap %>%
+  roadmap = rm %>%
     add_replicates(replicates5),
   synth_spec = synth_spec2
 )

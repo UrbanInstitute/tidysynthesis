@@ -26,3 +26,8 @@ variables that contain the missingness patterns of variables with NA
 Add new variables that indicate if a value is "missing" or "not missing" for
 original variables that contain NA
 }
+\examples{
+
+expand_na(data = example_na, type = c("dbl", "int"))
+
+}

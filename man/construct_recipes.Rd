@@ -26,3 +26,62 @@ A list of formulas
 \description{
 Construct a sequence of model recipes for sequential synthesis
 }
+\examples{
+
+rm <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+)
+
+construct_recipes(rm)
+
+
+# construct_recipes() can create a sequence of recipes using a fully-default 
+# approach, a hybrid approach, or a fully-customized approach. All approaches
+# require a roadmap and steps. 
+
+rm <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+)
+
+step1 <- function(x) {
+x \%>\%
+  recipes::step_center(recipes::all_predictors(), id = "center")
+}
+
+# Fully-default approach
+
+construct_recipes(
+  roadmap = rm, 
+  default_regression_steps = step1, 
+  default_classification_steps = step1
+)
+
+# Hybrid approach
+
+step2 <- function(x) {
+  x \%>\%
+    recipes::step_scale(recipes::all_predictors(), id = "scale")
+}
+
+construct_recipes(
+  roadmap = rm, 
+  default_regression_steps = step1,
+  default_classification_steps = step1,
+  custom_steps = list(
+    list(vars = "age", step = step2)
+  )
+)
+
+# Fully-customized approach
+
+construct_recipes(
+  roadmap = rm, 
+  custom_steps = list(
+    list(vars = c("hcovany", "empstat", "classwkr"), step = step1),
+    list(vars = c("age", "famsize", "transit_time", "inctot"), step = step1)
+  )
+)
+
+}

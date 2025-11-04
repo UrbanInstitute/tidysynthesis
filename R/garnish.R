@@ -5,7 +5,6 @@
 #'
 #' @return A vector of transformed predictions
 #' 
-#' @export
 garnish <- function(object, predictions) {
   
   # subset to the steps that affect the outcome variable

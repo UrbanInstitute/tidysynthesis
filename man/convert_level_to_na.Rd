@@ -15,3 +15,15 @@ A data frame or tibble with \code{"NA"} converted to \code{NA}
 \description{
 Convert \code{"NA"} values to \code{NA} for categorical variables
 }
+\examples{
+
+data <- data.frame(
+  x1 = c(1, 2, NA),  
+  x2 = c("1", "2", "NA"),
+  x3 = factor(c("1", "2", "NA")),
+  x4 = factor(c("b", "NA", "a"), ordered = TRUE)
+)
+
+convert_level_to_na(data)
+
+}

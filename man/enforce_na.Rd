@@ -17,3 +17,10 @@ variable
 \description{
 Add missing values where values should be missing according to _NA variables
 }
+\examples{
+
+example_na_expanded <- expand_na(data = example_na)
+
+enforce_na(data = example_na_expanded)
+
+}
