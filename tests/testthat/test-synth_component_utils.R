@@ -1,27 +1,27 @@
-dt_reg_mod <- parsnip::decision_tree() %>%
-  parsnip::set_engine("rpart") %>%
+dt_reg_mod <- parsnip::decision_tree() |>
+  parsnip::set_engine("rpart") |>
   parsnip::set_mode("regression")
 
-dt_class_mod <- parsnip::decision_tree() %>%
-  parsnip::set_engine("rpart") %>%
+dt_class_mod <- parsnip::decision_tree() |>
+  parsnip::set_engine("rpart") |>
   parsnip::set_mode("classification")
 
-lm_mod <- parsnip::linear_reg() %>%
-  parsnip::set_engine("lm") %>%
+lm_mod <- parsnip::linear_reg() |>
+  parsnip::set_engine("lm") |>
   parsnip::set_mode(mode = "regression")
 
-logistic_mod <- parsnip::logistic_reg() %>%
-  parsnip::set_engine("glm") %>%
+logistic_mod <- parsnip::logistic_reg() |>
+  parsnip::set_engine("glm") |>
   parsnip::set_mode(mode = "classification")
 
-rf_mod <- parsnip::rand_forest(trees = 500, min_n = 1) %>%
-  parsnip::set_engine(engine = "ranger") %>%
+rf_mod <- parsnip::rand_forest(trees = 500, min_n = 1) |>
+  parsnip::set_engine(engine = "ranger") |>
   parsnip::set_mode(mode = "classification")
 
 
 
 step1 <- function(x) {
-  x %>%
+  x |>
     recipes::step_center(recipes::all_predictors(), id = "center")
 }
 

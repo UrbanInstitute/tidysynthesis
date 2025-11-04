@@ -112,7 +112,7 @@ synthesize <- function(presynth, progress = FALSE) {
   all_var_types <- purrr::map(
     .x = presynth$roadmap$schema$col_schema, 
     .f = ~ .x[["dtype"]]
-    ) %>% 
+    ) |> 
       purrr::flatten_chr()
   
   if ("fct" %in% all_var_types) {

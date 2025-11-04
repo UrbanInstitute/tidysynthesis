@@ -30,7 +30,7 @@ Add, update, or remove recipe recipes from a \code{synth_spec} object
 synth_spec <- synth_spec()
 
 step1 <- function(x) {
-  x \%>\% recipes::step_center(recipes::all_predictors(), id = "center")
+  x |> recipes::step_center(recipes::all_predictors(), id = "center")
 }
 
 add_custom_steps(
@@ -42,7 +42,7 @@ add_custom_steps(
 synth_spec <- synth_spec()
 
 step1 <- function(x) {
-  x \%>\% recipes::step_center(recipes::all_predictors(), id = "center")
+  x |> recipes::step_center(recipes::all_predictors(), id = "center")
 }
 
 update_custom_steps(
@@ -54,7 +54,7 @@ update_custom_steps(
 synth_spec <- synth_spec()
 
 step1 <- function(x) {
-  x \%>\% recipes::step_center(recipes::all_predictors(), id = "center")
+  x |> recipes::step_center(recipes::all_predictors(), id = "center")
 }
 
 synth_spec <- add_custom_steps(

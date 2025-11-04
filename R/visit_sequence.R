@@ -188,8 +188,8 @@ print.visit_sequence <- function(x, ...) {
   output <- tibble::tibble(
     method = as.character(x$visit_method),
     variable = as.character(x$visit_sequence)
-  ) %>%
-    dplyr::transmute(output = paste0(.data$method, ":", .data$variable)) %>%
+  ) |>
+    dplyr::transmute(output = paste0(.data$method, ":", .data$variable)) |>
     dplyr::pull(output)
   
   cat("Visit Sequence\n")

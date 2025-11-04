@@ -1,8 +1,8 @@
 data <- dplyr::select(mtcars, cyl, mpg, disp, hp)
 
 # algos
-rpart_mod <- parsnip::decision_tree() %>%
-  parsnip::set_engine(engine = "rpart") %>%
+rpart_mod <- parsnip::decision_tree() |>
+  parsnip::set_engine(engine = "rpart") |>
   parsnip::set_mode(mode = "regression")
 
 new_data <- tibble::tibble(
@@ -15,12 +15,12 @@ test_that("garnish can handle no outcome variable transformations", {
   mtcars_rec <- recipes::recipe(mpg ~ cyl + hp, data = data)
   
   # create a workflow with the model and recipe
-  model_wf <- workflows::workflow() %>%
-    workflows::add_model(rpart_mod) %>%
+  model_wf <- workflows::workflow() |>
+    workflows::add_model(rpart_mod) |>
     workflows::add_recipe(mtcars_rec)
   
   # estimate the specified model using the confidential data
-  estimated_model <- model_wf %>%
+  estimated_model <- model_wf |>
     parsnip::fit(data = data)
   
   preds <- predict(estimated_model, 
@@ -35,17 +35,17 @@ test_that("garnish can handle no outcome variable transformations", {
 
 test_that("garnish inverts a log transformation", {
   
-  mtcars_rec <- recipes::recipe(mpg ~ cyl + hp, data = data) %>%
-    recipes::step_log(recipes::all_outcomes(), id = "outcomes log", skip = TRUE) %>%
+  mtcars_rec <- recipes::recipe(mpg ~ cyl + hp, data = data) |>
+    recipes::step_log(recipes::all_outcomes(), id = "outcomes log", skip = TRUE) |>
     recipes::step_center(-recipes::all_outcomes(), id = "predictors scale")
   
   # create a workflow with the model and recipe
-  model_wf <- workflows::workflow() %>%
-    workflows::add_model(rpart_mod) %>%
+  model_wf <- workflows::workflow() |>
+    workflows::add_model(rpart_mod) |>
     workflows::add_recipe(mtcars_rec)
   
   # estimate the specified model using the confidential data
-  estimated_model <- model_wf %>%
+  estimated_model <- model_wf |>
     parsnip::fit(data = data)
   
   preds <- predict(estimated_model, 
@@ -58,17 +58,17 @@ test_that("garnish inverts a log transformation", {
 
 test_that("garnish inverts a Yeo-Johnson transformation", {
   
-  mtcars_rec <- recipes::recipe(mpg ~ cyl + hp, data = data) %>%
-    recipes::step_YeoJohnson(recipes::all_outcomes(), id = "outcomes yj", skip = TRUE) %>%
+  mtcars_rec <- recipes::recipe(mpg ~ cyl + hp, data = data) |>
+    recipes::step_YeoJohnson(recipes::all_outcomes(), id = "outcomes yj", skip = TRUE) |>
     recipes::step_center(-recipes::all_outcomes(), id = "predictors scale")
   
   # create a workflow with the model and recipe
-  model_wf <- workflows::workflow() %>%
-    workflows::add_model(rpart_mod) %>%
+  model_wf <- workflows::workflow() |>
+    workflows::add_model(rpart_mod) |>
     workflows::add_recipe(mtcars_rec)
   
   # estimate the specified model using the confidential data
-  estimated_model <- model_wf %>%
+  estimated_model <- model_wf |>
     parsnip::fit(data = data)
   
   preds <- predict(estimated_model, 
@@ -86,13 +86,13 @@ test_that("garnish inverts a Yeo-Johnson transformation", {
 
 test_that("garnish works with synthesize_j()  ", {
   
-  rpart_mod <- parsnip::decision_tree() %>% 
-    parsnip::set_engine("rpart") %>%
+  rpart_mod <- parsnip::decision_tree() |> 
+    parsnip::set_engine("rpart") |>
     parsnip::set_mode(mode = "regression")
   
   mtcars_rec <- recipes::recipe(mpg ~ cyl + disp + hp, data = mtcars)
   
-  mtcars_rec_log <- recipes::recipe(mpg ~ cyl + disp + hp, data = mtcars) %>%
+  mtcars_rec_log <- recipes::recipe(mpg ~ cyl + disp + hp, data = mtcars) |>
     recipes::step_log(recipes::all_outcomes(), id = "outcome log", skip = TRUE)
   
   new_data <- tibble::tibble(
@@ -135,19 +135,19 @@ test_that("garnish works with synthesize_j()  ", {
 
 test_that("garnish works with many observations in synthesize_j() ", {
   
-  rpart_mod <- parsnip::decision_tree() %>% 
-    parsnip::set_engine("rpart") %>%
+  rpart_mod <- parsnip::decision_tree() |> 
+    parsnip::set_engine("rpart") |>
     parsnip::set_mode(mode = "regression")
   
   mtcars_rec <- recipes::recipe(mpg ~ cyl + disp + hp, data = mtcars)
   
-  mtcars_rec_bc <- recipes::recipe(mpg ~ cyl + disp + hp, data = mtcars) %>%
+  mtcars_rec_bc <- recipes::recipe(mpg ~ cyl + disp + hp, data = mtcars) |>
     recipes::step_BoxCox(recipes::all_outcomes(), id = "outcome Box-Cox", skip = TRUE)
   
-  mtcars_rec_log <- recipes::recipe(mpg ~ cyl + disp + hp, data = mtcars) %>%
+  mtcars_rec_log <- recipes::recipe(mpg ~ cyl + disp + hp, data = mtcars) |>
     recipes::step_log(recipes::all_outcomes(), id = "outcome log", skip = TRUE)
   
-  mtcars_rec_yj <- recipes::recipe(mpg ~ cyl + disp + hp, data = mtcars) %>%
+  mtcars_rec_yj <- recipes::recipe(mpg ~ cyl + disp + hp, data = mtcars) |>
     recipes::step_YeoJohnson(recipes::all_outcomes(), id = "outcome Yeo-Johnson", skip = TRUE)
   
   new_data <- dplyr::select(mtcars, cyl, disp, hp)

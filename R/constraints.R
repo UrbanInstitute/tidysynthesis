@@ -16,7 +16,7 @@
 #' @examples
 #' constraints(
 #'   schema = schema(
-#'     conf_data = mtcars %>% dplyr::mutate(vs = factor(vs)),
+#'     conf_data = mtcars |> dplyr::mutate(vs = factor(vs)),
 #'     start_data = dplyr::select(mtcars, cyl)
 #'   ),
 #'   constraints_df_num = tibble::tribble(
@@ -692,7 +692,7 @@ print.constraints <- function(x, ...) {
     
     if (is.data.frame(z)) { return( base::nrow(z)) } else { return(0) }
     
-  }) %>%
+  }) |>
     stats::setNames(names(x$constraints_num))
   
   cat("Numeric constraints specified per variable: \n")
@@ -708,7 +708,7 @@ print.constraints <- function(x, ...) {
     
     if (is.data.frame(z)) { return( base::nrow(z)) } else { return(0) }
     
-  }) %>%
+  }) |>
     stats::setNames(names(x$constraints_cat))
   
   cat("Categorical constraints specified per variable: \n")

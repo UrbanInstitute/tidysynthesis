@@ -135,7 +135,7 @@ test_that("construct_tuners() correctly handles variables without variation ", {
     fctr_var2 = factor(c("a", "b", "c"))
   )
   
-  start_data <- conf_data %>%
+  start_data <- conf_data |>
     dplyr::select(start)
   
   roadmap <- roadmap(

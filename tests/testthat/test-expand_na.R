@@ -58,7 +58,7 @@ test_that("Test type argument in expand_na", {
 test_that("Custom na_value conversion", {
   
   # create custom NA filter
-  example_na_custom <- example_na %>%
+  example_na_custom <- example_na |>
     tidyr::replace_na(
       list("wages" = -999)
     )

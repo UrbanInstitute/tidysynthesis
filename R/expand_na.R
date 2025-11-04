@@ -32,7 +32,7 @@ expand_na <- function(data,
   }
   
   # create a vector of variables to keep because they are the correct types
-  var_types <- data %>% 
+  var_types <- data |> 
     purrr::map_chr(.f = ~ pillar::type_sum(.x))
   
   keep_vars <- names(var_types[var_types %in% types])

@@ -1,5 +1,5 @@
 # create "starting data"
-starting_data <- example_na %>%
+starting_data <- example_na |>
   dplyr::select(age)
 
 # create schema
@@ -8,12 +8,12 @@ roadmap <- roadmap(
   start_data = starting_data
 ) 
 
-rpart_mod <- parsnip::decision_tree() %>% 
-  parsnip::set_mode("regression") %>%
+rpart_mod <- parsnip::decision_tree() |> 
+  parsnip::set_mode("regression") |>
   parsnip::set_engine("rpart")
 
-rpart_mod_cat <- parsnip::decision_tree() %>% 
-  parsnip::set_mode("classification") %>%
+rpart_mod_cat <- parsnip::decision_tree() |> 
+  parsnip::set_mode("classification") |>
   parsnip::set_engine("rpart")
 
 synth_spec <- synth_spec(
@@ -76,11 +76,11 @@ test_that("synthesis with enforce_na = TRUE", {
   
   synth_with_enforce_na <- synthesize(presynth_with_enforce_na)
   
-  synth1 <- synth_with_enforce_na[["synthetic_data"]] %>%
-    collapse_na() %>%
+  synth1 <- synth_with_enforce_na[["synthetic_data"]] |>
+    collapse_na() |>
     convert_level_to_na()
 
-  missing_values1 <- purrr::map_dbl(synth1, ~sum(is.na(.x))) %>%
+  missing_values1 <- purrr::map_dbl(synth1, ~sum(is.na(.x))) |>
     unname()
   
   expect_equal(missing_values1,  c(0, 23, 20, 13, 122))
@@ -108,11 +108,11 @@ test_that("synthesis with enforce_na = FALSE", {
   
   synth_without_enforce_na <- synthesize(presynth_without_enforce_na)
   
-  synth2 <- synth_without_enforce_na[["synthetic_data"]] %>%
-    collapse_na() %>%
+  synth2 <- synth_without_enforce_na[["synthetic_data"]] |>
+    collapse_na() |>
     convert_level_to_na()
   
-  missing_values2 <- purrr::map_dbl(synth2, ~sum(is.na(.x))) %>%
+  missing_values2 <- purrr::map_dbl(synth2, ~sum(is.na(.x))) |>
     unname()
   
   expect_equal(missing_values2,  c(0, 23, 20, 13, 122))

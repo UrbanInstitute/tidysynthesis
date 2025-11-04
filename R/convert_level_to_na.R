@@ -54,7 +54,7 @@ convert_level_to_na <- function(data) {
     
   }
 
-  data_converted <- data %>%
+  data_converted <- data |>
     dplyr::mutate(dplyr::across(.cols = dplyr::everything(), .fns = level_to_na))
   
   return(data_converted)

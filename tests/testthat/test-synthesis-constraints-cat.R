@@ -1,4 +1,4 @@
-data <- dplyr::select(mtcars, cyl, mpg, disp, vs, gear) %>%
+data <- dplyr::select(mtcars, cyl, mpg, disp, vs, gear) |>
   dplyr::mutate(
     vs = factor(vs, levels = c("0", "1", "2")),
     gear = factor(gear)
@@ -14,21 +14,21 @@ constraints_df_cat <-  tibble::tribble(
 
 
 roadmap1 <- roadmap(conf_data = data, 
-                    start_data = start_data) %>%
+                    start_data = start_data) |>
   update_constraints(constraints_df_cat = constraints_df_cat,
                      max_z_cat = 2)
 
 roadmap2 <- roadmap(conf_data = data, 
-                    start_data = start_data) %>%
+                    start_data = start_data) |>
   update_constraints(constraints_df_cat = constraints_df_cat,
                      max_z_cat = 0)
 
-rpart_mod_cat <- parsnip::decision_tree() %>% 
-  parsnip::set_mode("classification") %>%
+rpart_mod_cat <- parsnip::decision_tree() |> 
+  parsnip::set_mode("classification") |>
   parsnip::set_engine("rpart")
 
-rpart_mod_num <- parsnip::decision_tree() %>%
-  parsnip::set_mode("regression") %>%
+rpart_mod_num <- parsnip::decision_tree() |>
+  parsnip::set_mode("regression") |>
   parsnip::set_engine("rpart")
 
 synth_spec <- synth_spec(
@@ -91,8 +91,8 @@ test_that("constraints enforced properly", {
   for (s in list(synth1, synth2)) {
     
     expect_true(all(s$synthetic_data$gear != 5))
-    expect_true(all(s$synthetic_data %>%
-                      dplyr::filter(cyl == 8) %>%
+    expect_true(all(s$synthetic_data |>
+                      dplyr::filter(cyl == 8) |>
                       dplyr::pull(gear) == "3"))
     
   }

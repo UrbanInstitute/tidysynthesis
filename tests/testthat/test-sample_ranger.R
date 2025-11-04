@@ -13,22 +13,22 @@ roadmap <- roadmap(
   start_data = acs_start
 )
 
-rf_mod_regression <- parsnip::rand_forest(trees = 500, min_n = 1) %>%
-  parsnip::set_engine(engine = "ranger") %>%
-  parsnip::set_mode(mode = "regression") %>%
+rf_mod_regression <- parsnip::rand_forest(trees = 500, min_n = 1) |>
+  parsnip::set_engine(engine = "ranger") |>
+  parsnip::set_mode(mode = "regression") |>
   parsnip::set_args(quantreg = TRUE)
 
-rf_mod_classification <- parsnip::rand_forest(trees = 500, min_n = 1) %>%
-  parsnip::set_engine(engine = "ranger") %>%
+rf_mod_classification <- parsnip::rand_forest(trees = 500, min_n = 1) |>
+  parsnip::set_engine(engine = "ranger") |>
   parsnip::set_mode(mode = "classification")
 
 test_that("sample_ranger() works with regression", {
   
   regression_rec <- recipes::recipe(age ~ ., data = acs_conf)
 
-  model_reg <- workflows::workflow() %>%
-    workflows::add_model(spec = rf_mod_regression) %>%
-    workflows::add_recipe(recipe = regression_rec) %>%
+  model_reg <- workflows::workflow() |>
+    workflows::add_model(spec = rf_mod_regression) |>
+    workflows::add_recipe(recipe = regression_rec) |>
     parsnip::fit(data = acs_conf)
   
   set.seed(1)
@@ -55,9 +55,9 @@ test_that("sample_ranger() works with classification", {
   
   classification_rec <- recipes::recipe(hcovany ~ ., data = acs_conf)
 
-  model_reg <- workflows::workflow() %>%
-    workflows::add_model(spec = rf_mod_classification) %>%
-    workflows::add_recipe(recipe = classification_rec) %>%
+  model_reg <- workflows::workflow() |>
+    workflows::add_model(spec = rf_mod_classification) |>
+    workflows::add_recipe(recipe = classification_rec) |>
     parsnip::fit(data = acs_conf)
   
   set.seed(1)
@@ -179,8 +179,8 @@ acs_rec <- recipes::recipe(inctot ~ ., data = acs_conf)
 # acs_rec <- construct_recipes(roadmap = roadmap)
 
 # create model workflow
-model_wf <- workflows::workflow() %>%
-  workflows::add_model(spec = rf_mod_regression) %>%
+model_wf <- workflows::workflow() |>
+  workflows::add_model(spec = rf_mod_regression) |>
   workflows::add_recipe(recipe = acs_rec) #acs_rec[["inctot"]])
 
 test_that("Test sample_ranger() with no variation in outcome", {
@@ -189,7 +189,7 @@ test_that("Test sample_ranger() with no variation in outcome", {
   roadmap[["conf_data"]]$inctot <- 10
   
   # fit the model with the edited confidential data
-  fitted_model <- model_wf %>%
+  fitted_model <- model_wf |>
     parsnip::fit(data = roadmap[["conf_data"]])
   
   # sample values
@@ -210,7 +210,7 @@ test_that("Test sample_ranger()", {
   roadmap[["conf_data"]]$inctot <- c(rep(10, times = 389), rep(20, times = 388))
   
   # fit the model with the edited confidential data
-  fitted_model <- model_wf %>%
+  fitted_model <- model_wf |>
     parsnip::fit(data = roadmap[["conf_data"]])
   
   # sample values
@@ -236,7 +236,7 @@ test_that("Test sample_ranger() with perfect model", {
   )
   
   # fit the model with the edited confidential data
-  fitted_model <- model_wf %>%
+  fitted_model <- model_wf |>
     parsnip::fit(data = roadmap[["conf_data"]])
   
   # sample values

@@ -3,24 +3,24 @@ test_that("sum_to_cast_categorical basic functionality", {
   test_col <- acs_conf[["county"]]
   
   # expect normal factor casting returns the same values
-  expect_equal(.sum_to_cast_categorical(test_col, "fct") %>% class, "factor")
+  expect_equal(.sum_to_cast_categorical(test_col, "fct") |> class(), "factor")
   expect_true(all(.sum_to_cast_categorical(test_col, "fct") == test_col))
   
   # expect new specified levels are maintained
   expect_identical(
     .sum_to_cast_categorical(
-      test_col, "fct", levels = c("Other", "Douglas")) %>% levels, 
+      test_col, "fct", levels = c("Other", "Douglas")) |> levels(), 
     c("Other", "Douglas")
   )
   
   # expect character casting works 
-  expect_equal(.sum_to_cast_categorical(test_col, "chr") %>% class, "character")
+  expect_equal(.sum_to_cast_categorical(test_col, "chr") |> class(), "character")
   
   # expect logical casting works 
-  test_col_lgl <- test_col %>% 
-    forcats::fct_collapse(Douglas = "Douglas", other_level = "Not Douglas") %>% 
+  test_col_lgl <- test_col |> 
+    forcats::fct_collapse(Douglas = "Douglas", other_level = "Not Douglas") |> 
     as.integer() - 1
-  expect_equal(.sum_to_cast_categorical(test_col_lgl, "lgl") %>% class, "logical")
+  expect_equal(.sum_to_cast_categorical(test_col_lgl, "lgl") |> class(), "logical")
   
   # expect invalid casting with incorrect type
   expect_error(
@@ -36,10 +36,10 @@ test_that("sum_to_cast_numeric basic functionality", {
   test_col <- acs_conf[["age"]]
   
   # expect integer casting works
-  expect_equal(.sum_to_cast_numeric(acs_conf[["age"]], "int") %>% class, "integer")
+  expect_equal(.sum_to_cast_numeric(acs_conf[["age"]], "int") |> class(), "integer")
   
   # expect double casting works
-  expect_equal(.sum_to_cast_numeric(acs_conf[["age"]], "dbl") %>% class, "numeric")
+  expect_equal(.sum_to_cast_numeric(acs_conf[["age"]], "dbl") |> class(), "numeric")
   
   # expect invalid casting with incorrect type
   expect_error(
@@ -53,11 +53,11 @@ test_that("sum_to_cast_numeric basic functionality", {
 test_that("schema coerce_to_doubles", {
   
   # create roadmap with modified numeric types...
-  old_roadmap <- roadmap(conf_data = acs_conf %>%
+  old_roadmap <- roadmap(conf_data = acs_conf |>
                             dplyr::mutate(age = as.integer(age),
                                           wgt = as.integer(wgt)),
-                          start_data = acs_start %>%
-                            dplyr::mutate(wgt = as.integer(wgt))) %>%
+                          start_data = acs_start |>
+                            dplyr::mutate(wgt = as.integer(wgt))) |>
     # ...then specify coerce_to_doubles
     update_schema(coerce_to_doubles = TRUE)
   
@@ -89,12 +89,12 @@ test_that("schema coerce_to_doubles", {
 test_that("schema coerce_to_factors from chr and lgl", {
   
   # create roadmap with modified categorical types...
-  old_roadmap <- roadmap(conf_data = acs_conf %>%
+  old_roadmap <- roadmap(conf_data = acs_conf |>
                            dplyr::mutate(sex = (sex == "Female"),
                                          marst = as.character(marst)), 
-                         start_data = acs_start %>%
+                         start_data = acs_start |>
                            dplyr::mutate(sex = (sex == "Female"),
-                                         marst = as.character(marst))) %>%
+                                         marst = as.character(marst))) |>
     # ...then specify coerce_to_doubles
     update_schema(coerce_to_factors = TRUE)
   
@@ -130,7 +130,7 @@ test_that("schema coerce_to_factors from chr and lgl", {
 test_that("schema enforce factors with updated levels", {
   
   # create roadmap with new factor levels
-  old_roadmap <- roadmap(conf_data = acs_conf, start_data = acs_start) %>%
+  old_roadmap <- roadmap(conf_data = acs_conf, start_data = acs_start) |>
     update_schema(col_schema = list(
       "county" = list(
         # example with adding one new level
@@ -183,7 +183,7 @@ test_that("schema enforce factors with updated levels", {
 
 test_that("schema custom na_value", {
   
-  old_roadmap <- roadmap(conf_data = acs_conf, start_data = acs_start) %>%
+  old_roadmap <- roadmap(conf_data = acs_conf, start_data = acs_start) |>
     update_schema(col_schema = list(
       "age" = list("na_value" = 0),
       "classwkr" = list("na_value" = "N/A")),
@@ -215,7 +215,7 @@ test_that("schema custom na_value", {
 
 test_that("schema with na_factor_to_level", {
   
-  old_roadmap <- roadmap(conf_data = acs_conf, start_data = acs_start) %>%
+  old_roadmap <- roadmap(conf_data = acs_conf, start_data = acs_start) |>
     update_schema(col_schema = list(
       "age" = list("na_value" = 0),
       "classwkr" = list("na_value" = "N/A")),
@@ -240,7 +240,7 @@ test_that("schema with na_factor_to_level", {
 
 test_that("schema updates without NA indicators", {
   
-  old_roadmap <- roadmap(conf_data = acs_conf, start_data = acs_start) %>%
+  old_roadmap <- roadmap(conf_data = acs_conf, start_data = acs_start) |>
     update_schema(na_numeric_to_ind = FALSE)
   
   new_roadmap <- enforce_schema(old_roadmap)
@@ -253,7 +253,7 @@ test_that("schema updates without NA indicators", {
 
 test_that("schema_updates with NA indicators", {
   
-  old_roadmap <- roadmap(conf_data = acs_conf, start_data = acs_start) %>%
+  old_roadmap <- roadmap(conf_data = acs_conf, start_data = acs_start) |>
     update_schema(na_numeric_to_ind = TRUE)
   
   new_roadmap <- enforce_schema(old_roadmap)
@@ -279,10 +279,10 @@ test_that("schema_updates with NA indicators", {
 test_that("schema_updates with NA indicators in first position", {
   
   old_roadmap <- roadmap(
-    conf_data = acs_conf %>%
+    conf_data = acs_conf |>
       dplyr::select(dplyr::all_of(c(names(acs_start), "inctot"))), 
     start_data = acs_start
-  ) %>%
+  ) |>
     update_schema(na_numeric_to_ind = TRUE)
   
   new_roadmap <- enforce_schema(old_roadmap)

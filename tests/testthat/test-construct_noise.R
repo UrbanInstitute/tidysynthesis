@@ -122,7 +122,7 @@ test_that("construct_noise() correctly handles variables without variation ", {
     fctr_var2 = factor(c("a", "b", "c"))
   )
   
-  start_data <- conf_data %>%
+  start_data <- conf_data |>
     dplyr::select(start)
   
   roadmap <- roadmap(conf_data = conf_data, start_data = start_data) |>

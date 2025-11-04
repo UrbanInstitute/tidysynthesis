@@ -12,7 +12,7 @@ assign_constraints_num <- function(synth_data, constraints) {
   num_constraints <- nrow(constraints)
 
   # Create a new min col and max col for each constraint
-  synth_data <- synth_data %>%
+  synth_data <- synth_data |>
     dplyr::mutate(
       .assigned_min = -Inf,
       .assigned_max = Inf
@@ -21,7 +21,7 @@ assign_constraints_num <- function(synth_data, constraints) {
 
   for (cond in 1:num_constraints) {
 
-    synth_data <- synth_data %>%
+    synth_data <- synth_data |>
       dplyr::mutate(
         .assigned_min = dplyr::case_when(
           is.na(eval(parse(text = constraints[cond, ]$conditions))) 
@@ -93,22 +93,22 @@ assign_constraints_cat <- function(synth_data, constraints) {
   }
   
   # next, assign identifiers to these conditions...
-  conditions <- dplyr::bind_cols(cat_conditions) %>%
-    dplyr::group_by(dplyr::across(dplyr::all_of(col_names))) %>% 
-    dplyr::mutate(.condition_id = dplyr::cur_group_id()) %>% 
+  conditions <- dplyr::bind_cols(cat_conditions) |>
+    dplyr::group_by(dplyr::across(dplyr::all_of(col_names))) |> 
+    dplyr::mutate(.condition_id = dplyr::cur_group_id()) |> 
     dplyr::ungroup()
   
   # ...and select only the unique combinations (to avoid evaluating every
   # potential constraint combination)
-  condition_defs <- conditions %>% 
+  condition_defs <- conditions |> 
     dplyr::distinct() 
   
   # based on these identifiers, add dummy variables to make it possible to 
   # link constraints to the condition combinations where they appear
   constraint_types <- dplyr::bind_cols(
     constraints, 
-    data.frame(diag(n_constraints)) %>% 
-      stats::setNames(col_names) %>% 
+    data.frame(diag(n_constraints)) |> 
+      stats::setNames(col_names) |> 
       dplyr::mutate(dplyr::across(dplyr::everything(), as.logical))
   )
   
@@ -134,16 +134,16 @@ assign_constraints_cat <- function(synth_data, constraints) {
   )
   
   # create condition definitions by...
-  condition_defs_final <- condition_defs_expanded %>%
-    dplyr::group_by(dplyr::across(dplyr::all_of(c(".condition_id")))) %>%
+  condition_defs_final <- condition_defs_expanded |>
+    dplyr::group_by(dplyr::across(dplyr::all_of(c(".condition_id")))) |>
     dplyr::summarise(
       # collecting all allowed and forbidden values by case...
       allowed_vals = list(.data[["allowed"]][!is.na(.data[["allowed"]])]),
       allowed_mode = any(!is.na(.data[["allowed"]])),
       forbidden_vals = list(.data[["forbidden"]][!is.na(.data[["forbidden"]])]),
       forbidden_mode = any(!is.na(.data[["forbidden"]]))
-    ) %>%
-    dplyr::ungroup() %>%
+    ) |>
+    dplyr::ungroup() |>
     dplyr::mutate(
       # define the condition mode where allowed precedes forbidden precedes none
       .condition_mode = dplyr::case_when(
@@ -157,7 +157,7 @@ assign_constraints_cat <- function(synth_data, constraints) {
         .condition_mode == "exclusion" ~ forbidden_vals,
         TRUE ~ NA
       )
-    ) %>%
+    ) |>
     dplyr::select(
       dplyr::all_of(
         c(".condition_id", ".condition_mode", ".condition_vals")

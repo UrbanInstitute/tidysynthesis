@@ -1,6 +1,6 @@
 model <- NULL
 new_data <- NULL
-conf_model_data <- mtcars %>% 
+conf_model_data <- mtcars |> 
   dplyr::mutate(gear = factor(.data[["gear"]]))
 col_schema <- list(
   "dtype" = "fct",

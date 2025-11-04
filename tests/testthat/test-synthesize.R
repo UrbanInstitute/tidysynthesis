@@ -8,14 +8,14 @@ roadmap <- roadmap(conf_data = mtcars,
 
 roadmap4 <- roadmap(
   conf_data = mtcars,
-  start_data = dplyr::select(mtcars, cyl, vs, am, gear, carb) %>%
+  start_data = dplyr::select(mtcars, cyl, vs, am, gear, carb) |>
     dplyr::sample_n(size = 50, replace = TRUE)
 ) |> 
   add_sequence_numeric(everything(), method = "correlation", cor_var = "mpg")
 
 # synth_specs 
-dt_mod <- parsnip::decision_tree() %>%
-  parsnip::set_engine(engine = "rpart") %>%
+dt_mod <- parsnip::decision_tree() |>
+  parsnip::set_engine(engine = "rpart") |>
   parsnip::set_mode(mode = "regression")
 
 synth_spec <- synth_spec(default_regression_model = dt_mod,
@@ -49,7 +49,7 @@ test_that("synthesize() works with extractors", {
   expect_warning(
     presynth2 <- presynth(
       roadmap = roadmap,
-      synth_spec = synth_spec %>%
+      synth_spec = synth_spec |>
         update_synth_spec(
           default_extractor = parsnip::extract_fit_engine
         )
@@ -70,7 +70,7 @@ test_that("synthesize() returns correct number of replicates", {
   
   expect_warning(
     presynth3 <- presynth(
-      roadmap = roadmap %>%
+      roadmap = roadmap |>
         update_replicates(model_sample_replicates = 2),
       synth_spec = synth_spec
     )

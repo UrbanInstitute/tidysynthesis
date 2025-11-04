@@ -20,7 +20,7 @@ Redefine \code{NA} value for a dataset.
 \examples{
 
 # create custom NA filter
-example_na_custom <- example_na \%>\%
+example_na_custom <- example_na |>
   tidyr::replace_na(
     list("wages" = -999)
   )

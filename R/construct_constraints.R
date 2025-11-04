@@ -18,7 +18,7 @@ construct_constraints <- function(roadmap) {
               roadmap$constraints$max_z_cat)
   
   # unpack roadmap constraints while respecting _NA variables
-  built_constraints <- vector(mode = "list", length = length(vs_names)) %>%
+  built_constraints <- vector(mode = "list", length = length(vs_names)) |>
     rlang::set_names(vs_names)
   
   # for each visit_sequence variable...

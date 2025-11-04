@@ -22,7 +22,7 @@
         return("classification")
       }
     }
-  ) %>%
+  ) |>
     stats::setNames(visit_sequence)
   
   return(mode)

@@ -17,8 +17,8 @@
 #'   x = rnorm(n = 1000)
 #' )
 #' 
-#' adj <- recipes::recipe(y ~ x, data = data) %>%
-#'   recipes::step_BoxCox(recipes::all_outcomes()) %>%
+#' adj <- recipes::recipe(y ~ x, data = data) |>
+#'   recipes::step_BoxCox(recipes::all_outcomes()) |>
 #'   recipes::prep()
 #'   
 #' invert(
@@ -45,8 +45,8 @@ invert <- function(object, predictions, ...)
 #'   x = rnorm(n = 1000)
 #' )
 #' 
-#' adj <- recipes::recipe(y ~ x, data = data) %>%
-#'   recipes::step_BoxCox(recipes::all_outcomes()) %>%
+#' adj <- recipes::recipe(y ~ x, data = data) |>
+#'   recipes::step_BoxCox(recipes::all_outcomes()) |>
 #'   recipes::prep()
 #'   
 #' invert(
@@ -92,8 +92,8 @@ invert.step_BoxCox <- function(object, predictions, ...) {
 #'   x = rnorm(n = 1000)
 #' )
 #' 
-#' adj <- recipes::recipe(y ~ x, data = data) %>%
-#'   recipes::step_log(recipes::all_outcomes()) %>%
+#' adj <- recipes::recipe(y ~ x, data = data) |>
+#'   recipes::step_log(recipes::all_outcomes()) |>
 #'   recipes::prep()
 #'   
 #' invert(

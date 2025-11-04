@@ -1,5 +1,5 @@
-rpart_mod <- parsnip::decision_tree() %>% 
-  parsnip::set_engine(engine = "rpart") %>%
+rpart_mod <- parsnip::decision_tree() |> 
+  parsnip::set_engine(engine = "rpart") |>
   parsnip::set_mode(mode = "regression")
 
 default_noise <- noise()
@@ -52,8 +52,8 @@ test_that("synthesize_j() throws error with no sampler specified ", {
 
 test_that("synthesize_j() returns the correct prediction ", {
   
-  rpart_mod <- parsnip::decision_tree() %>% 
-    parsnip::set_engine(engine = "rpart") %>%
+  rpart_mod <- parsnip::decision_tree() |> 
+    parsnip::set_engine(engine = "rpart") |>
     parsnip::set_mode(mode = "regression")
   
   mtcars_rec <- recipes::recipe(mpg ~ cyl + disp + hp, data = mtcars)
@@ -90,11 +90,11 @@ test_that("synthesize_j() returns the correct prediction with constraints ", {
     conf_data = dplyr::slice_head(mtcars, n = 1),
     start_data = dplyr::select(dplyr::slice_head(mtcars, n = 1), 
                                cyl, disp, hp)
-  ) %>%
+  ) |>
     add_sequence_manual(mpg)
   
-  rpart_mod <- parsnip::decision_tree() %>% 
-    parsnip::set_engine(engine = "rpart") %>%
+  rpart_mod <- parsnip::decision_tree() |> 
+    parsnip::set_engine(engine = "rpart") |>
     parsnip::set_mode(mode = "regression")
   
   mtcars_rec <- recipes::recipe(mpg ~ cyl + disp + hp, data = mtcars)

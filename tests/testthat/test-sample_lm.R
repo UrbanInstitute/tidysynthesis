@@ -1,7 +1,7 @@
-acs_conf <- acs_conf %>%
+acs_conf <- acs_conf |>
   tidyr::drop_na() 
 
-acs_start <- acs_start %>%
+acs_start <- acs_start |>
   tidyr::drop_na() 
 
 # roadmaps
@@ -17,22 +17,22 @@ roadmap <- roadmap(
 
 
 
-lm_mod <- parsnip::linear_reg() %>%
-  parsnip::set_engine("lm") %>%
+lm_mod <- parsnip::linear_reg() |>
+  parsnip::set_engine("lm") |>
   parsnip::set_mode(mode = "regression")
 
 # create a decision tree for the categorical variables
-rpart_mod <- parsnip::decision_tree() %>%
-  parsnip::set_engine("rpart") %>%
+rpart_mod <- parsnip::decision_tree() |>
+  parsnip::set_engine("rpart") |>
   parsnip::set_mode(mode = "classification")
 
 test_that("sample_lm() doesn't work with classification models", {
   
   classification_rec <- recipes::recipe(classwkr ~ ., data = acs_conf)
   
-  model_class <- workflows::workflow() %>%
-    workflows::add_model(spec = rpart_mod) %>%
-    workflows::add_recipe(recipe = classification_rec) %>%
+  model_class <- workflows::workflow() |>
+    workflows::add_model(spec = rpart_mod) |>
+    workflows::add_recipe(recipe = classification_rec) |>
     parsnip::fit(data = acs_conf)
   
   expect_error(
@@ -49,9 +49,9 @@ test_that("sample_lm() works with regression", {
   
   regression_rec <- recipes::recipe(inctot ~ ., data = acs_conf)
   
-  model_reg <- workflows::workflow() %>%
-    workflows::add_model(spec = lm_mod) %>%
-    workflows::add_recipe(recipe = regression_rec) %>%
+  model_reg <- workflows::workflow() |>
+    workflows::add_model(spec = lm_mod) |>
+    workflows::add_recipe(recipe = regression_rec) |>
     parsnip::fit(data = acs_conf)
   
   set.seed(1)
@@ -156,8 +156,8 @@ acs_rec <- recipes::recipe(inctot ~ ., data = acs_conf)
 # acs_rec <- construct_recipes(roadmap = roadmap)
 
 # create model workflow
-model_wf <- workflows::workflow() %>%
-  workflows::add_model(lm_mod) %>%
+model_wf <- workflows::workflow() |>
+  workflows::add_model(lm_mod) |>
   workflows::add_recipe(acs_rec) #acs_rec[["inctot"]])
 
 test_that("Test sample_lm() with no variation in outcome", {
@@ -167,7 +167,7 @@ test_that("Test sample_lm() with no variation in outcome", {
   roadmap[["conf_data"]]$inctot <- 10
   
   # fit the model with the edited confidential data
-  fitted_model <- model_wf %>%
+  fitted_model <- model_wf |>
     parsnip::fit(data = roadmap[["conf_data"]])
   
   # sample values
@@ -188,7 +188,7 @@ test_that("Test sample_lm()", {
   roadmap[["conf_data"]]$inctot <- c(rep(10, times = 389), rep(20, times = 388))
   
   # fit the model with the edited confidential data
-  fitted_model <- model_wf %>%
+  fitted_model <- model_wf |>
     parsnip::fit(data = roadmap[["conf_data"]])
   
   # sample values
@@ -213,7 +213,7 @@ test_that("Test sample_lm() with perfect model", {
   )
   
   # fit the model with the edited confidential data
-  fitted_model <- model_wf %>%
+  fitted_model <- model_wf |>
     parsnip::fit(data = roadmap[["conf_data"]])
   
   # sample values

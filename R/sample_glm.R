@@ -12,18 +12,18 @@
 #' 
 #' @examples
 #' 
-#' acs_conf <- acs_conf %>%
+#' acs_conf <- acs_conf |>
 #'   tidyr::drop_na()
 #' 
-#' logistic_mod <- parsnip::logistic_reg() %>%
-#'   parsnip::set_engine("glm") %>%
+#' logistic_mod <- parsnip::logistic_reg() |>
+#'   parsnip::set_engine("glm") |>
 #'   parsnip::set_mode(mode = "classification")
 #' 
 #' classification_rec <- recipes::recipe(hcovany ~ ., data = acs_conf)
 #' 
-#' model_class <- workflows::workflow() %>%
-#'   workflows::add_model(spec = logistic_mod) %>%
-#'   workflows::add_recipe(recipe = classification_rec) %>%
+#' model_class <- workflows::workflow() |>
+#'   workflows::add_model(spec = logistic_mod) |>
+#'   workflows::add_recipe(recipe = classification_rec) |>
 #'   parsnip::fit(data = acs_conf)
 #' 
 #' set.seed(1)
@@ -45,13 +45,13 @@ sample_glm <- function(model, new_data, conf_data) {
     }
       
     probs <- stats::predict(
-      model, new_data = new_data, type = "prob") %>% 
+      model, new_data = new_data, type = "prob") |> 
       dplyr::rename_all(~ stringr::str_remove(string = ., pattern = "^.pred_"))
     
     levels <- names(probs)
     
-    y_hat <- purrr::pmap(probs, ~ c(...)) %>%
-      purrr::map_chr(~ sample(levels, size = 1, prob = .x)) %>%
+    y_hat <- purrr::pmap(probs, ~ c(...)) |>
+      purrr::map_chr(~ sample(levels, size = 1, prob = .x)) |>
       factor(levels = levels)
     
     return(y_hat)

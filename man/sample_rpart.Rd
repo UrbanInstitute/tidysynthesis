@@ -24,15 +24,15 @@ Sample the conditional distribution created by a CART model
 }
 \examples{
 
-rpart_mod_reg <- parsnip::decision_tree() \%>\%
-  parsnip::set_engine("rpart") \%>\%
+rpart_mod_reg <- parsnip::decision_tree() |>
+  parsnip::set_engine("rpart") |>
   parsnip::set_mode(mode = "regression")
 
  regression_rec <- recipes::recipe(inctot ~ ., data = acs_conf)
  
- model_reg <- workflows::workflow() \%>\%
-   workflows::add_model(spec = rpart_mod_reg) \%>\%
-   workflows::add_recipe(recipe = regression_rec) \%>\%
+ model_reg <- workflows::workflow() |>
+   workflows::add_model(spec = rpart_mod_reg) |>
+   workflows::add_recipe(recipe = regression_rec) |>
    parsnip::fit(data = acs_conf)
  
  set.seed(1)
@@ -43,15 +43,15 @@ rpart_mod_reg <- parsnip::decision_tree() \%>\%
  )
  
 
-rpart_mod_class <- parsnip::decision_tree() \%>\%
-  parsnip::set_engine("rpart") \%>\%
+rpart_mod_class <- parsnip::decision_tree() |>
+  parsnip::set_engine("rpart") |>
   parsnip::set_mode(mode = "classification")
 
 classification_rec <- recipes::recipe(hcovany ~ ., data = acs_conf)
 
-model_reg <- workflows::workflow() \%>\%
-  workflows::add_model(spec = rpart_mod_class) \%>\%
-  workflows::add_recipe(recipe = classification_rec) \%>\%
+model_reg <- workflows::workflow() |>
+  workflows::add_model(spec = rpart_mod_class) |>
+  workflows::add_recipe(recipe = classification_rec) |>
   parsnip::fit(data = acs_conf)
 
 set.seed(1)

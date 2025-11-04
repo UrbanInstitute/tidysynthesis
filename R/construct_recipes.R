@@ -29,7 +29,7 @@
 #' )
 #' 
 #' step1 <- function(x) {
-#' x %>%
+#' x |>
 #'   recipes::step_center(recipes::all_predictors(), id = "center")
 #' }
 #' 
@@ -44,7 +44,7 @@
 #' # Hybrid approach
 #' 
 #' step2 <- function(x) {
-#'   x %>%
+#'   x |>
 #'     recipes::step_scale(recipes::all_predictors(), id = "scale")
 #' }
 #' 
@@ -151,8 +151,8 @@ construct_recipes <- function(
       recipes::recipe(
         x = utils::head(conf_data_drop), 
         vars = c(predictors[[jth_formula]], outcomes[jth_formula])
-      ) %>%
-      recipes::update_role(outcomes[jth_formula], new_role = "outcome") %>%
+      ) |>
+      recipes::update_role(outcomes[jth_formula], new_role = "outcome") |>
       recipes::update_role(predictors[[jth_formula]], new_role = "predictor") 
     
   }
@@ -226,7 +226,7 @@ construct_recipes <- function(
       synth_recipes[[m]] <- purrr::map(
         full_steps[m], \(.x) {
           if (.is_steps(.x)) {
-            synth_recipes[[m]] %>% .x
+            .x(synth_recipes[[m]])
           } else {
             synth_recipes[[m]]
           }

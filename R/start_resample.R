@@ -76,24 +76,24 @@ start_resample <- function(
         stats::rgeom(n = n, prob = p) - stats::rgeom(n = n, prob = p)
       }
       
-      result_card <- start_data %>% 
+      result_card <- start_data |> 
         # first, compute cardinality of all observed records
-        dplyr::group_by(dplyr::across(dplyr::everything())) %>% 
-        dplyr::tally(name = "obs_n") %>%
+        dplyr::group_by(dplyr::across(dplyr::everything())) |> 
+        dplyr::tally(name = "obs_n") |>
         dplyr::ungroup()
       
       # next, add geometric noise according to inverse noise scale, clipped
       # from below at 0
-      result <- result_card %>%
+      result <- result_card |>
         dplyr::mutate(
           noisy_n = pmax(0, .data[["obs_n"]] + geom_noise(dplyr::n())),
           prop_n = .data[["noisy_n"]] / sum(.data[["noisy_n"]]),
           # renormalize and resample the record cardinalities
           weight_n = c(
             stats::rmultinom(n = 1, size = n, prob = .data[["prop_n"]]))
-        ) %>%
+        ) |>
         # "uncount" records and remove auxiliary columns
-        tidyr::uncount(weights = .data[["weight_n"]]) %>%
+        tidyr::uncount(weights = .data[["weight_n"]]) |>
         dplyr::select(
           -dplyr::all_of(c("obs_n", "noisy_n", "prop_n", "weight_n")))
       
@@ -121,33 +121,33 @@ start_resample <- function(
         stats::rgeom(n = n, prob = p) - stats::rgeom(n = n, prob = p)
       }
       
-      result_card <- start_data %>% 
+      result_card <- start_data |> 
         # recast each level as factor 
         dplyr::mutate(
           dplyr::across(
             -dplyr::where(base::is.factor),
             \(x) { factor(x, exclude = NULL) }
-          )) %>%
+          )) |>
         # compute cardinality of all observed records
         dplyr::group_by(
           dplyr::across(dplyr::everything()), 
-          .drop = FALSE) %>% 
-        dplyr::tally(name = "obs_n") %>%
+          .drop = FALSE) |> 
+        dplyr::tally(name = "obs_n") |>
         dplyr::ungroup() 
       
       # next, add geometric noise according to inverse noise scale, clipped
       # from below at 0. See https://randorithms.com/2020/10/09/geometric-mechanism.html
       # for a description
-      result <- result_card %>% 
+      result <- result_card |> 
         dplyr::mutate(
           noisy_n = pmax(0, .data[["obs_n"]] + geom_noise(dplyr::n())),
           prop_n = .data[["noisy_n"]] / sum(.data[["noisy_n"]]),
           # renormalize and resample the record cardinalities
           weight_n = c(
             stats::rmultinom(n = 1, size = n, prob = .data[["prop_n"]]))
-        ) %>%
+        ) |>
         # "uncount" records and remove auxiliary columns
-        tidyr::uncount(weights = .data[["weight_n"]]) %>%
+        tidyr::uncount(weights = .data[["weight_n"]]) |>
         dplyr::select(
           -dplyr::all_of(c("obs_n", "noisy_n", "prop_n", "weight_n")))
       

@@ -50,25 +50,25 @@
 #' 
 #' @examples
 #' 
-#' rpart_mod <- parsnip::decision_tree() %>%
-#'   parsnip::set_engine(engine = "rpart") %>%
+#' rpart_mod <- parsnip::decision_tree() |>
+#'   parsnip::set_engine(engine = "rpart") |>
 #'   parsnip::set_mode(mode = "regression")
 #' 
-#' lm_mod <- parsnip::linear_reg() %>% 
-#'   parsnip::set_engine("lm") %>%
+#' lm_mod <- parsnip::linear_reg() |> 
+#'   parsnip::set_engine("lm") |>
 #'   parsnip::set_mode(mode = "regression")
 #' 
 #' step1 <- function(x) {
-#'  x %>%
+#'  x |>
 #'    recipes::step_center(recipes::all_predictors(), id = "center")
 #' }
 #'
 #' step2 <- function(x) {
-#'   x %>%
+#'   x |>
 #'     recipes::step_scale(recipes::all_predictors(), id = "scale")
 #' }
 #' 
-#' step3 <- function(x) { x %>% step1 %>% step2 }
+#' step3 <- function(x) { x |> step1() |> step2() }
 #' 
 #' 
 #' synth_spec(
@@ -344,8 +344,8 @@ print.synth_spec <- function(x, ...) {
 #' 
 #' synth_spec <- synth_spec()
 #' 
-#' lm_mod <- parsnip::linear_reg() %>% 
-#'   parsnip::set_engine("lm") %>%
+#' lm_mod <- parsnip::linear_reg() |> 
+#'   parsnip::set_engine("lm") |>
 #'   parsnip::set_mode(mode = "regression")
 #' 
 #' update_synth_spec(
@@ -489,8 +489,8 @@ NULL
 #' 
 #' synth_spec <- synth_spec()
 #' 
-#' dt_reg_mod <- parsnip::decision_tree() %>%
-#'   parsnip::set_engine("rpart") %>%
+#' dt_reg_mod <- parsnip::decision_tree() |>
+#'   parsnip::set_engine("rpart") |>
 #'   parsnip::set_mode("regression")
 #'
 #' add_custom_models(
@@ -526,8 +526,8 @@ add_custom_models <- function(synth_spec, ...) {
 #' 
 #' synth_spec <- synth_spec()
 #' 
-#' dt_reg_mod <- parsnip::decision_tree() %>%
-#'   parsnip::set_engine("rpart") %>%
+#' dt_reg_mod <- parsnip::decision_tree() |>
+#'   parsnip::set_engine("rpart") |>
 #'   parsnip::set_mode("regression")
 #'
 #' update_custom_models(
@@ -556,8 +556,8 @@ update_custom_models <- function(synth_spec, ...) {
 #'
 #' synth_spec <- synth_spec()
 #' 
-#' dt_reg_mod <- parsnip::decision_tree() %>%
-#'   parsnip::set_engine("rpart") %>%
+#' dt_reg_mod <- parsnip::decision_tree() |>
+#'   parsnip::set_engine("rpart") |>
 #'   parsnip::set_mode("regression")
 #'
 #' synth_spec <- update_custom_models(
@@ -609,7 +609,7 @@ NULL
 #' synth_spec <- synth_spec()
 #' 
 #' step1 <- function(x) {
-#'   x %>% recipes::step_center(recipes::all_predictors(), id = "center")
+#'   x |> recipes::step_center(recipes::all_predictors(), id = "center")
 #' }
 #' 
 #' add_custom_steps(
@@ -646,7 +646,7 @@ add_custom_steps <- function(synth_spec, ...) {
 #' synth_spec <- synth_spec()
 #' 
 #' step1 <- function(x) {
-#'   x %>% recipes::step_center(recipes::all_predictors(), id = "center")
+#'   x |> recipes::step_center(recipes::all_predictors(), id = "center")
 #' }
 #' 
 #' update_custom_steps(
@@ -676,7 +676,7 @@ update_custom_steps <- function(synth_spec, ...) {
 #' synth_spec <- synth_spec()
 #' 
 #' step1 <- function(x) {
-#'   x %>% recipes::step_center(recipes::all_predictors(), id = "center")
+#'   x |> recipes::step_center(recipes::all_predictors(), id = "center")
 #' }
 #' 
 #' synth_spec <- add_custom_steps(

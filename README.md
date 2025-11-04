@@ -78,9 +78,9 @@ example:
 ``` r
 # create an example roadmap
 roadmap(conf_data = example_conf_data, 
-        start_data = example_start_data) %>%
+        start_data = example_start_data) |>
   # add an example visit_sequence using the API
-  add_sequence_manual(var1, var2) %>%
+  add_sequence_manual(var1, var2) |>
   # update the example schema using the API
   update_schema(col_schema = list("var1" = list("dtype" = "fct")))
 ```
@@ -157,9 +157,9 @@ library(palmerpenguins)
 library(tidyverse)
 library(tidysynthesis)
 
-penguins_complete <- penguins %>%
-  select(-year) %>%
-  filter(complete.cases(.)) %>%
+penguins_complete <- penguins |>
+  select(-year) |>
+  drop_na() |>
   mutate(
     flipper_length_mm = as.numeric(flipper_length_mm),
     body_mass_g = as.numeric(body_mass_g)
@@ -173,17 +173,17 @@ specified by the roadmap below.
 set.seed(20220218)
 
 # create "starting data"
-starting_data <- penguins_complete %>% 
-  group_by(island) %>%
-  slice_sample(n = 5) %>%
-  select(species, island, sex) %>%
+starting_data <- penguins_complete |> 
+  group_by(island) |>
+  slice_sample(n = 5) |>
+  select(species, island, sex) |>
   ungroup()
 
 # create roadmap
 rm <- roadmap(
   conf_data = penguins_complete,
   start_data = starting_data
-) %>% 
+) |> 
   add_sequence_numeric(
     dplyr::where(is.numeric), 
     method = "correlation", 
@@ -201,8 +201,8 @@ residual standard error.
 ``` r
 # synth_spec
 
-lm_mod <- parsnip::linear_reg() %>% 
-  parsnip::set_engine(engine = "lm") %>%
+lm_mod <- parsnip::linear_reg() |> 
+  parsnip::set_engine(engine = "lm") |>
   parsnip::set_mode(mode = "regression")
 
 synth_spec1 <- synth_spec(
@@ -261,8 +261,8 @@ regression tree model. Notice how all of the other objects from example
 1 can be reused.
 
 ``` r
-dt_mod <- parsnip::decision_tree() %>%
-  parsnip::set_engine(engine = "rpart") %>%
+dt_mod <- parsnip::decision_tree() |>
+  parsnip::set_engine(engine = "rpart") |>
   parsnip::set_mode(mode = "regression")
 
 synth_spec2 <- synth_spec(
@@ -332,7 +332,7 @@ noise_spec <- noise(
   n_ntiles = 20
 )
 
-synth_spec3 <- synth_spec2 %>%
+synth_spec3 <- synth_spec2 |>
   update_synth_spec(
     default_regression_noise = noise_spec
   )
@@ -419,7 +419,7 @@ constraints4 <- constraints(
 )
 
 presynth4 <- presynth(
-  roadmap = rm %>%
+  roadmap = rm |>
     add_constraints(constraints4),
   synth_spec = synth_spec3
 )
@@ -473,7 +473,7 @@ for different kinds of replicate specification).
 replicates5 <- replicates(model_sample_replicates = 5)
 
 presynth5 <- presynth(
-  roadmap = rm %>%
+  roadmap = rm |>
     add_replicates(replicates5),
   synth_spec = synth_spec2
 )

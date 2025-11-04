@@ -5,8 +5,8 @@ base_rmap <- roadmap(conf_data = mtcars,
     add_sequence_numeric(everything(), method = "correlation", cor_var = "mpg")
 
 # synth_specs 
-dt_mod <- parsnip::decision_tree() %>%
-  parsnip::set_engine(engine = "rpart") %>%
+dt_mod <- parsnip::decision_tree() |>
+  parsnip::set_engine(engine = "rpart") |>
   parsnip::set_mode(mode = "regression")
 
 base_ss <- synth_spec(default_regression_model = dt_mod,
@@ -16,12 +16,12 @@ test_that("start_data_replicates basic functionality", {
   
   # ensure that adding new start_data_replicates correctly modifies
   # the output dataframe size
-  new_rmap <- base_rmap %>%
+  new_rmap <- base_rmap |>
     update_start_method(
       start_func = start_resample, 
       support = "observed",
       n = 20
-    ) %>% 
+    ) |> 
     update_replicates(
       start_data_replicates = 3
     )
@@ -38,7 +38,7 @@ test_that("start_data_replicates basic functionality", {
 test_that("model_sample_replicates basic functionality", {
   
   # generate model-sample replicates
-  new_rmap <- base_rmap %>%
+  new_rmap <- base_rmap |>
     update_replicates(
       model_sample_replicates = 2
     )
@@ -58,12 +58,12 @@ test_that("model_sample_replicates basic functionality", {
 test_that("end_to_end_replicates basic functionality", {
   
   # generate end-to-end replicates
-  new_rmap <- base_rmap %>%
+  new_rmap <- base_rmap |>
     update_start_method(
       start_func = start_resample, 
       support = "observed",
       n = 20
-    ) %>% 
+    ) |> 
     update_replicates(
       end_to_end_replicates = 3
     )
@@ -85,12 +85,12 @@ test_that("end_to_end_replicates basic functionality", {
 test_that("replicates combined functionality", {
   
   # generate replicates with every setting > 1
-  new_rmap <- base_rmap %>%
+  new_rmap <- base_rmap |>
     update_start_method(
       start_func = start_resample, 
       support = "observed",
       n = 20
-    ) %>% 
+    ) |> 
     update_replicates(
       start_data_replicates = 2,
       model_sample_replicates = 3,

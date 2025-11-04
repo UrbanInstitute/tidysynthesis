@@ -155,7 +155,7 @@ test_that("construct_samplers() correctly handles variables without variation ",
     fctr_var2 = factor(c("a", "b", "c"))
   )
   
-  start_data <- conf_data %>%
+  start_data <- conf_data |>
     dplyr::select(start)
   
   roadmap <- roadmap(conf_data = conf_data, start_data = start_data) |>
@@ -175,7 +175,7 @@ test_that("construct_samplers() correctly handles variables without variation ",
 test_that("construct_samplers() works identically with length 1 sequence", {
   
   rmap <- roadmap(
-    conf_data = df %>% dplyr::select(carat, price),
+    conf_data = df |> dplyr::select(carat, price),
     start_data = df_start
   )
   

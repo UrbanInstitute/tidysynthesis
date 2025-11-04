@@ -46,7 +46,7 @@ rm <- roadmap(
 )
 
 step1 <- function(x) {
-x \%>\%
+x |>
   recipes::step_center(recipes::all_predictors(), id = "center")
 }
 
@@ -61,7 +61,7 @@ construct_recipes(
 # Hybrid approach
 
 step2 <- function(x) {
-  x \%>\%
+  x |>
     recipes::step_scale(recipes::all_predictors(), id = "scale")
 }
 

@@ -211,7 +211,7 @@ NULL
     .f = \(x, idx) { 
       stats::setNames(rep(list(idx), length(x[["vars"]])), x[["vars"]])
     }
-  ) %>% unlist()
+  ) |> unlist()
   
   # for each custom entry
   for (i in seq_along(custom_comps)) {

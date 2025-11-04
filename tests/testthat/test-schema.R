@@ -49,7 +49,7 @@ test_that("Basic schema object properties", {
 
 test_that("schema encodes no_variation variables properly", {
   
-  test_schema <- schema(conf_data = acs_conf %>% 
+  test_schema <- schema(conf_data = acs_conf |> 
                           dplyr::mutate(const = 1),
                         start_data = acs_start)
   
@@ -62,7 +62,7 @@ test_that("col_schema encodes tibble dtypes", {
   
   # when manually casting columns to new tibble dtypes...
   test_schema <- schema(
-    conf_data = acs_conf %>% 
+    conf_data = acs_conf |> 
       dplyr::mutate(age = as.integer(age),
                     transit_time = as.logical(transit_time)),
     start_data = acs_start
@@ -153,7 +153,7 @@ test_that("validate_schema expected errors", {
   # error if columns from col_schema not in conf_data
   expect_error(
     validate_schema(
-      acs_roadmap %>%
+      acs_roadmap |>
         update_schema(col_schema = list("not_a_column" = list("dtype" = "dbl")))
     ),
     regexp = "`col_schema` included unknown name(s) not_a_column",
@@ -163,7 +163,7 @@ test_that("validate_schema expected errors", {
   # error if unsupported dtype provided
   expect_error(
     validate_schema(
-      acs_roadmap %>%
+      acs_roadmap |>
         update_schema(col_schema = list("gq" = list("dtype" = "notatype")))
     ),
     regexp = "`col_schema` included unsupported dtype(s) notatype",
@@ -173,7 +173,7 @@ test_that("validate_schema expected errors", {
   # error if unsupported col_schema fields provided
   expect_error(
     validate_schema(
-      acs_roadmap %>%
+      acs_roadmap |>
         update_schema(col_schema = list("gq" = list("notafield" = "dbl")))
     ),
     regexp = "Invalid `col_schema` field names for variable(s) gq",
@@ -188,7 +188,7 @@ test_that("validate_schema expected warning messages", {
   # message if data contains variable with no variation
   expect_message(
     validate_schema(
-      roadmap(conf_data = acs_conf %>% dplyr::mutate(novar = 1),
+      roadmap(conf_data = acs_conf |> dplyr::mutate(novar = 1),
               start_data = acs_start)
     )
   )
@@ -197,7 +197,7 @@ test_that("validate_schema expected warning messages", {
   expect_message(
     validate_schema(
       roadmap(
-        conf_data = acs_conf %>% dplyr::mutate(
+        conf_data = acs_conf |> dplyr::mutate(
           hcovany = factor(hcovany, 
                            levels = c("No health insurance coverage", 
                                       "With health insurance coverage", 
@@ -218,7 +218,7 @@ test_that("add_schema functionality", {
   old_roadmap <- acs_roadmap
   new_schema <- schema(conf_data = acs_conf, start_data = acs_start,
                        enforce = FALSE)
-  new_roadmap <- old_roadmap %>%
+  new_roadmap <- old_roadmap |>
     add_schema(new_schema)
   
   # expect new object is a roadmap
@@ -232,7 +232,7 @@ test_that("add_schema functionality", {
 test_that("update_schema functionality", {
   
   old_roadmap <- acs_roadmap
-  new_roadmap <- old_roadmap %>% 
+  new_roadmap <- old_roadmap |> 
     update_schema(col_schema = list("wgt" = list("dtype" = "int")),
                   enforce = FALSE)
   

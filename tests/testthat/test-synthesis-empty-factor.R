@@ -1,15 +1,15 @@
-data <- dplyr::select(mtcars, cyl, mpg, disp, vs) %>%
+data <- dplyr::select(mtcars, cyl, mpg, disp, vs) |>
   dplyr::mutate(vs = factor(vs, levels = c("0", "1", "2")))
 
 set.seed(20231218)
-start_data <- dplyr::select(data, cyl, vs) %>%
+start_data <- dplyr::select(data, cyl, vs) |>
   dplyr::slice_sample(n = 20)
 
 # roadmap
 roadmap <- roadmap(
   conf_data = data,
   start_data = start_data
-) %>%
+) |>
   add_sequence_manual(mpg, disp)
 
 # synth_spec
@@ -17,12 +17,12 @@ step1 <- function(x) {
   recipes::step_center(x, recipes::all_numeric_predictors())
 }
 
-rpart_mod_cat <- parsnip::decision_tree() %>% 
-  parsnip::set_mode("classification") %>%
+rpart_mod_cat <- parsnip::decision_tree() |> 
+  parsnip::set_mode("classification") |>
   parsnip::set_engine("rpart")
 
-rpart_mod_num <- parsnip::decision_tree() %>%
-  parsnip::set_mode("regression") %>%
+rpart_mod_num <- parsnip::decision_tree() |>
+  parsnip::set_mode("regression") |>
   parsnip::set_engine("rpart")
 
 
@@ -62,7 +62,7 @@ test_that("synthesize() runs without error with empty factor levels", {
   
   expect_warning(
     presynth <- presynth(
-      roadmap = roadmap %>%
+      roadmap = roadmap |>
         add_constraints(constraints),
       synth_spec = synth_spec
     )

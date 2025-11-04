@@ -7,23 +7,23 @@ roadmap <- roadmap(
 ) |>
   add_sequence_numeric(everything(), method = "correlation", cor_var = "mpg")
 
-mtcars_rec <- recipes::recipe(data = conf_data, formula = mpg ~ .) %>%
+mtcars_rec <- recipes::recipe(data = conf_data, formula = mpg ~ .) |>
   recipes::step_center(mpg)
 
-dt_reg_mod <- parsnip::decision_tree() %>%
-  parsnip::set_engine("rpart") %>%
+dt_reg_mod <- parsnip::decision_tree() |>
+  parsnip::set_engine("rpart") |>
   parsnip::set_mode("regression")
 
-dt_class_mod <- parsnip::decision_tree() %>%
-  parsnip::set_engine("rpart") %>%
+dt_class_mod <- parsnip::decision_tree() |>
+  parsnip::set_engine("rpart") |>
   parsnip::set_mode("classification")
 
 step1 <- function(x) {
-  x %>% recipes::step_center(recipes::all_predictors(), id = "center")
+  x |> recipes::step_center(recipes::all_predictors(), id = "center")
 }
 
 step2 <- function(x) {
-  x %>% recipes::step_scale(recipes::all_predictors(), id = "scale")
+  x |> recipes::step_scale(recipes::all_predictors(), id = "scale")
 }
 
 noise1 <- noise(
