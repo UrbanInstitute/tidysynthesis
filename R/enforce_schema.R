@@ -57,10 +57,10 @@
 #'
 #' @examples
 #'   
-#' roadmap <- roadmap(conf_data = acs_conf, start_data = acs_start) %>%
+#' rm <- roadmap(conf_data = acs_conf, start_data = acs_start) %>%
 #'   update_schema(na_numeric_to_ind = TRUE)
 #'
-#' enforce_schema(roadmap)
+#' enforce_schema(rm)
 #' 
 #' @export
 enforce_schema <- function(roadmap) {

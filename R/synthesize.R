@@ -8,7 +8,7 @@
 #' @examples
 #' 
 #' # create roadmap
-#' roadmap <- roadmap(
+#' rm <- roadmap(
 #'   conf_data = acs_conf_nw,
 #'   start_data = acs_start_nw
 #' ) 
@@ -31,7 +31,7 @@
 #' # create a presynth object
 #' # use defaults for noise, constraints, and replicates
 #' presynth1 <- presynth(
-#'   roadmap = roadmap,
+#'   roadmap = rm,
 #'   synth_spec = synth_spec1
 #' )
 #' 

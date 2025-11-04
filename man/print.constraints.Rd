@@ -17,7 +17,7 @@ Print the constraints object to the console with formatting
 }
 \examples{
 
-roadmap <- roadmap(
+rm <- roadmap(
   conf_data = acs_conf_nw,
   start_data = acs_start_nw
 )
@@ -27,7 +27,7 @@ constraints_df_num <-
                   "transit_time", 0, 300, "TRUE")
 
 constraints <- constraints(
-  schema = roadmap[["schema"]],
+  schema = rm[["schema"]],
   constraints_df_num = constraints_df_num,
   max_z_num = 0
 )

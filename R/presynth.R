@@ -7,8 +7,6 @@
 #' 
 #' @return A list of built models, recipes, samplers, etc.
 #' 
-#' @export 
-#'
 .construct_workflows <- function(roadmap, synth_spec) {
   
   # construct presynth components
@@ -85,7 +83,7 @@
 #' @examples
 #'
 #' # create roadmap
-#' roadmap <- roadmap(
+#' rm <- roadmap(
 #'   conf_data = acs_conf_nw,
 #'   start_data = acs_start_nw
 #' ) 
@@ -108,7 +106,7 @@
 #' # create a presynth object
 #' # use defaults for noise, constraints, and replicates
 #' presynth(
-#'   roadmap = roadmap,
+#'   roadmap = rm,
 #'   synth_spec = synth_spec1
 #' )
 #'
@@ -294,7 +292,7 @@ is_presynth <- function(x) {
 #' @examples
 #' 
 #' # create roadmap
-#' roadmap <- roadmap(
+#' rm <- roadmap(
 #'   conf_data = acs_conf_nw,
 #'   start_data = acs_start_nw
 #' ) 
@@ -317,7 +315,7 @@ is_presynth <- function(x) {
 #' # create a presynth object
 #' # use defaults for noise, constraints, and replicates
 #' presynth <- presynth(
-#'   roadmap = roadmap,
+#'   roadmap = rm,
 #'   synth_spec = synth_spec1
 #' )
 #' 
@@ -347,7 +345,7 @@ print.presynth <- function(x, ...) {
 #' @examples
 #' 
 #' # create roadmap
-#' roadmap <- roadmap(
+#' rm <- roadmap(
 #'   conf_data = acs_conf_nw,
 #'   start_data = acs_start_nw
 #' ) 
@@ -370,7 +368,7 @@ print.presynth <- function(x, ...) {
 #' # create a presynth object
 #' # use defaults for noise, constraints, and replicates
 #' presynth <- presynth(
-#'   roadmap = roadmap,
+#'   roadmap = rm,
 #'   synth_spec = synth_spec1
 #' )
 #' 
