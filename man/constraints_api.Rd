@@ -22,6 +22,12 @@ reset_constraints(roadmap)
 }
 \value{
 A new \code{roadmap} object.
+
+A roadmap object with added constraints.
+
+A roadmap object with updated constraints.
+
+A roadmap object with reset constraints.
 }
 \description{
 Add, update, or reset a \code{constraints} object within an existing \code{roadmap}.
@@ -64,6 +70,7 @@ constraints <- constraints(
 
 rm |>
   update_constraints(constraints)
+
 
 rm <- roadmap(
   conf_data = acs_conf_nw,

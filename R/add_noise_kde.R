@@ -8,6 +8,7 @@
 #' ntiles lack unique bounds.
 #'
 #' @return A data frame with ntiles and bandwidths
+#' @noRd
 #'
 .calc_bandwidths <- function(baseline, n, ties_method = "collapse") {
   
@@ -56,6 +57,7 @@
 #' before the quantiles are computed.
 #'
 #' @return A numeric vector of ntiles
+#' @noRd
 #'
 .create_ntiles <- function(x_bounds, 
                            y_ntiles, 

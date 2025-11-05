@@ -8,6 +8,7 @@
 #' 
 #' @return A named list of lists mapping variable names to their `constraint`
 #' dataframes and `max_z` values
+#' @noRd
 #' 
 construct_constraints <- function(roadmap) {
   

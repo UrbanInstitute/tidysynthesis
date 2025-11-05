@@ -21,6 +21,12 @@ mapping variable names to \code{model_spec} objects from \code{library(parsnip)}
 }
 \value{
 A new \code{synth_spec} object.
+
+A new \code{synth_spec} object with added custom models.
+
+A new \code{synth_spec} object with updated custom models.
+
+A new \code{synth_spec} object with removed custom models.
 }
 \description{
 Add, update, or remove custom models from a \code{synth_spec} object

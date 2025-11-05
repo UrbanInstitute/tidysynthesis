@@ -36,6 +36,8 @@ ks_distance <- yardstick::new_numeric_metric(
 
 #' @rdname ks_distance
 #' 
+#' @return A single numeric value (or `NA`).
+#' 
 #' @examples
 #' 
 #' ks1 <- data.frame(x = 1:100, y = 101:200)
@@ -58,6 +60,8 @@ ks_distance.data.frame <- function(data, truth, estimate, na_rm = TRUE, case_wei
 }
 
 #' @rdname ks_distance
+#' 
+#' @return A single numeric value (or `NA`).
 #' 
 #' @examples
 #' 

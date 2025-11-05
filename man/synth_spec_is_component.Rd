@@ -2,29 +2,7 @@
 % Please edit documentation in R/synth_component_utils.R
 \name{synth_spec_is_component}
 \alias{synth_spec_is_component}
-\alias{.is_model}
-\alias{.is_recipe}
-\alias{.is_steps}
-\alias{.is_sampler}
-\alias{.is_tuner}
-\alias{.is_noise}
-\alias{.is_extractor}
 \title{Inspections for \code{synth_spec} components}
-\usage{
-.is_model(z)
-
-.is_recipe(z)
-
-.is_steps(z)
-
-.is_sampler(z)
-
-.is_tuner(z)
-
-.is_noise(z)
-
-.is_extractor(z)
-}
 \arguments{
 \item{z}{Object}
 }

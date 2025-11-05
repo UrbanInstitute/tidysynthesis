@@ -5,11 +5,11 @@
 #' @param noise_func A function that adds noise to 
 #' @param ... Optional named additional arguments to pass to `noise_func(...)`
 #' 
-#' @returns A `noise` object
+#' @return A `noise` object
 #' 
 #' @examples
 #' 
-# create default noise object
+#' # create default noise object
 #' noise()
 #' 
 #' # create noise object for classification
@@ -68,6 +68,8 @@ is_noise <- function(x) {
 #' @param ... further arguments passed to or from other methods (not currently
 #'   used).
 #'
+#' @return Invisibly returns the input `noise` object.
+#' 
 #' @examples
 #' 
 #' print(noise())
@@ -94,6 +96,7 @@ print.noise <- function(x, ...) {
 #' @param noise A `noise` S3 object
 #' 
 #' @return A vector of noisy predictions with the same length as `pred`
+#' @noRd
 #' 
 exec_noise_func <- function(model,
                             new_data,

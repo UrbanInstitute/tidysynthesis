@@ -262,15 +262,17 @@ validate_schema <- function(roadmap) {
 #' @param ... further arguments passed to or from other methods (not currently
 #'   used).
 #' 
+#' @return Invisibly returns the input `schema` object.
+#' 
 #' @examples
 #' 
 #' # default inferred schema
-#' schema <- schema(
+#' schema1 <- schema(
 #'   conf_data = acs_conf_nw,
 #'   start_data = acs_start_nw
 #' )
 #' 
-#' print(schema)
+#' print(schema1)
 #' 
 #' @export
 print.schema <- function(x, ...) {
@@ -301,6 +303,8 @@ NULL
 
 #'
 #' @rdname schema_api
+#' 
+#' @return A roadmap object with added schema.
 #' 
 #' @examples
 #' 
@@ -334,6 +338,8 @@ add_schema <- function(roadmap, schema) {
 
 #'
 #' @rdname schema_api
+#' 
+#' @return A roadmap object with updated schema.
 #' 
 #' @examples
 #' 
@@ -391,6 +397,8 @@ update_schema <- function(roadmap, ...) {
 
 #'
 #' @rdname schema_api
+#' 
+#' @return A roadmap object with reset schema.
 #' 
 #' @examples
 #' 

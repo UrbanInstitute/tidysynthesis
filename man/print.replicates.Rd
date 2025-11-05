@@ -12,17 +12,20 @@
 \item{...}{further arguments passed to or from other methods (not currently
 used).}
 }
+\value{
+Invisibly returns the input \code{replicates} object.
+}
 \description{
 Print the replicates object to the console with formatting
 }
 \examples{
 
-replicates <- replicates(
+rep <- replicates(
   start_data_replicates = 2,
   model_sample_replicates = 2,
   end_to_end_replicates = 2
 )
   
-print(replicates)
-  
+print(rep)
+
 }

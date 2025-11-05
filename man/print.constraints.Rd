@@ -12,6 +12,9 @@
 \item{...}{further arguments passed to or from other methods (not currently
 used).}
 }
+\value{
+Invisibly returns the input \code{constraints} object.
+}
 \description{
 Print the constraints object to the console with formatting
 }

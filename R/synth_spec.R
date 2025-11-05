@@ -269,7 +269,8 @@ synth_spec <- function(
 #' Check if object is `synth_spec`
 #' 
 #' @param z Object
-#' @return Logical 
+#' @return Logical
+#' @noRd
 #'  
 #' 
 is_synth_spec <- function(z) {
@@ -283,7 +284,9 @@ is_synth_spec <- function(z) {
 #' @param x A `replicates` object
 #' @param ... further arguments passed to or from other methods (not currently
 #'   used).
-#'   
+#' 
+#' @return A `synth_spec` object
+#'
 #' @examples
 #' 
 #' synth_spec <- synth_spec()
@@ -485,6 +488,8 @@ NULL
 #'
 #' @rdname synth_spec_model_api
 #' 
+#' @return A new `synth_spec` object with added custom models.
+#' 
 #' @examples
 #' 
 #' synth_spec <- synth_spec()
@@ -522,6 +527,8 @@ add_custom_models <- function(synth_spec, ...) {
 #'
 #' @rdname synth_spec_model_api
 #' 
+#' @return A new `synth_spec` object with updated custom models.
+#' 
 #' @examples
 #' 
 #' synth_spec <- synth_spec()
@@ -551,6 +558,8 @@ update_custom_models <- function(synth_spec, ...) {
 
 #'
 #' @rdname synth_spec_model_api
+#' 
+#' @return A new `synth_spec` object with removed custom models.
 #' 
 #' @examples
 #'
@@ -604,6 +613,8 @@ NULL
 #'
 #' @rdname synth_spec_recipes_api
 #' 
+#' @return A new `synth_spec` object with added custom steps.
+#' 
 #' @examples
 #'
 #' synth_spec <- synth_spec()
@@ -641,6 +652,8 @@ add_custom_steps <- function(synth_spec, ...) {
 #'
 #' @rdname synth_spec_recipes_api
 #' 
+#' @return A new `synth_spec` object with updated custom steps.
+#' 
 #' @examples
 #' 
 #' synth_spec <- synth_spec()
@@ -670,6 +683,8 @@ update_custom_steps <- function(synth_spec, ...) {
 
 #'
 #' @rdname synth_spec_recipes_api
+#' 
+#' @return A new `synth_spec` object with removed custom steps.
 #' 
 #' @examples
 #' 
@@ -716,6 +731,8 @@ NULL
 #'
 #' @rdname synth_spec_sampler_api
 #' 
+#' @return A new `synth_spec` object with added custom samplers.
+#' 
 #' @examples
 #'
 #' synth_spec <- synth_spec()
@@ -747,6 +764,8 @@ add_custom_samplers <- function(synth_spec, ...) {
 #'
 #' @rdname synth_spec_sampler_api
 #' 
+#' @return A new `synth_spec` object with updated custom samplers.
+#' 
 #' @examples
 #'
 #' synth_spec <- synth_spec()
@@ -772,6 +791,8 @@ update_custom_samplers <- function(synth_spec, ...) {
 
 #'
 #' @rdname synth_spec_sampler_api
+#' 
+#' @return A new `synth_spec` object with removed custom samplers.
 #' 
 #' @examples
 #'
@@ -815,6 +836,8 @@ NULL
 #'
 #' @rdname synth_spec_noise_api
 #' 
+#' @return A new `synth_spec` object with added custom noise.
+#' 
 #' @examples
 #' 
 #' synth_spec <- synth_spec()
@@ -853,6 +876,9 @@ add_custom_noise <- function(synth_spec, ...) {
 
 #'
 #' @rdname synth_spec_sampler_api
+#' 
+#' @return A new `synth_spec` object with updated custom noise.
+#' 
 #' @examples
 #' 
 #' synth_spec <- synth_spec()
@@ -886,6 +912,9 @@ update_custom_noise <- function(synth_spec, ...) {
 
 #'
 #' @rdname synth_spec_sampler_api
+#' 
+#' @return A new `synth_spec` object with removed custom noise.
+#' 
 #' @examples
 #' 
 #' synth_spec <- synth_spec()
@@ -936,6 +965,8 @@ NULL
 #'
 #' @rdname synth_spec_tuner_api
 #' 
+#' @return A new `synth_spec` object with added custom tuners.
+#' 
 #' @examples
 #' 
 #' synth_spec <- synth_spec()
@@ -972,6 +1003,9 @@ add_custom_tuners <- function(synth_spec, ...) {
 
 #'
 #' @rdname synth_spec_tuner_api
+#' 
+#' @return A new `synth_spec` object with updated custom tuners.
+#' 
 #' @examples
 #' 
 #' synth_spec <- synth_spec()
@@ -1003,6 +1037,9 @@ update_custom_tuners <- function(synth_spec, ...) {
 
 #'
 #' @rdname synth_spec_tuner_api
+#' 
+#' @return A new `synth_spec` object with removed custom tuners.
+#' 
 #' @examples
 #' 
 #' synth_spec <- synth_spec()
@@ -1052,6 +1089,8 @@ NULL
 #'
 #' @rdname synth_spec_extractor_api
 #' 
+#' @return A new `synth_spec` object with added custom extractors.
+#' 
 #' @examples
 #' 
 #' synth_spec <- synth_spec()
@@ -1082,6 +1121,9 @@ add_custom_extractors <- function(synth_spec, ...) {
 
 #'
 #' @rdname synth_spec_extractor_api
+#' 
+#' @return A new `synth_spec` object with updated custom extractors.
+#' 
 #' @examples
 #' 
 #' synth_spec <- synth_spec()
@@ -1107,6 +1149,8 @@ update_custom_extractors <- function(synth_spec, ...) {
 
 #'
 #' @rdname synth_spec_extractor_api
+#' 
+#' @return A new `synth_spec` object with removed custom extractors.
 #' 
 #' @examples
 #' 

@@ -21,6 +21,12 @@ remove_custom_steps(synth_spec)
 }
 \value{
 A new \code{synth_spec} object.
+
+A new \code{synth_spec} object with added custom steps.
+
+A new \code{synth_spec} object with updated custom steps.
+
+A new \code{synth_spec} object with removed custom steps.
 }
 \description{
 Add, update, or remove recipe recipes from a \code{synth_spec} object

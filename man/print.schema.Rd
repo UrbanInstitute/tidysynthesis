@@ -12,17 +12,20 @@
 \item{...}{further arguments passed to or from other methods (not currently
 used).}
 }
+\value{
+Invisibly returns the input \code{schema} object.
+}
 \description{
 Print the schema object to the console with formatting
 }
 \examples{
 
 # default inferred schema
-schema <- schema(
+schema1 <- schema(
   conf_data = acs_conf_nw,
   start_data = acs_start_nw
 )
 
-print(schema)
+print(schema1)
 
 }

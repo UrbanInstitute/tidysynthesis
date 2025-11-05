@@ -12,6 +12,9 @@
 \item{...}{further arguments passed to or from other methods (not currently
 used).}
 }
+\value{
+Invisibly returns the input \code{noise} object.
+}
 \description{
 Print the noise object to the console with formatting
 }

@@ -14,6 +14,7 @@
 #' @return A `constraints` object.
 #' 
 #' @examples
+#' 
 #' constraints(
 #'   schema = schema(
 #'     conf_data = mtcars |> dplyr::mutate(vs = factor(vs)),
@@ -279,6 +280,7 @@ is_constraints <- function(x) {
 #' Validate constraints
 #' 
 #' @param roadmap A `roadmap` object
+#' @noRd
 #' 
 validate_constraints <- function(roadmap) {
   
@@ -516,6 +518,8 @@ NULL
 #'
 #' @rdname constraints_api
 #' 
+#' @return A roadmap object with added constraints.
+#'
 #' @examples
 #' 
 #' rm <- roadmap(
@@ -555,6 +559,8 @@ add_constraints <- function(roadmap, constraints) {
 #'
 #' @rdname constraints_api
 #' 
+#' @return A roadmap object with updated constraints. 
+#'
 #' @examples
 #' 
 #' rm <- roadmap(
@@ -624,7 +630,10 @@ update_constraints <- function(roadmap, ...) {
 #'
 #' @rdname constraints_api
 #' 
+#' @return A roadmap object with reset constraints.
+#'
 #' @examples
+#' 
 #' rm <- roadmap(
 #'   conf_data = acs_conf_nw,
 #'   start_data = acs_start_nw
@@ -664,6 +673,8 @@ reset_constraints <- function(roadmap) {
 #' @param x A `constraints` object
 #' @param ... further arguments passed to or from other methods (not currently
 #'   used).
+#'
+#' @return Invisibly returns the input `constraints` object. 
 #'
 #' @examples
 #'

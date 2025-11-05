@@ -2,8 +2,6 @@
 #' Add or reset a `visit_sequence` object within an existing `roadmap`.
 #'
 #' @param roadmap A `roadmap` object
-#' @param visit_sequence A `visit_sequence` object. 
-#' @param ... Optional additional parameters.
 #' 
 #' @return A new `roadmap` object.
 #'
@@ -15,6 +13,10 @@ NULL
 
 #'
 #' @rdname visit_sequence_api
+#' 
+#' @param visit_sequence A `visit_sequence` object. 
+#' 
+#' @noRd
 #' 
 add_visit_sequence <- function(roadmap, visit_sequence) {
   
@@ -38,6 +40,10 @@ add_visit_sequence <- function(roadmap, visit_sequence) {
 
 #'
 #' @rdname visit_sequence_api
+#' 
+#' @param ... Optional additional parameters.
+#' 
+#' @return A roadmap with an updated visit_sequence.
 #' 
 #' @examples
 #' 
@@ -111,6 +117,8 @@ update_visit_sequence <- function(roadmap, ...) {
 #'
 #' @rdname visit_sequence_api
 #'
+#' @return A new `roadmap` object with reset visit_sequence.
+#' 
 #' @examples
 #' 
 #' rm <- roadmap(

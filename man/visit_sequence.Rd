@@ -21,6 +21,7 @@ A \code{visit_sequence} object.
 Generate a visit sequence.
 }
 \examples{
+
 df <- data.frame(
   factor_var = c("1", "1", "2"),
   vara = c(10000, 20000, 100000),
@@ -31,14 +32,19 @@ df <- data.frame(
 
 start_df <- dplyr::select(df, factor_var)
 
-schema1 <- schema(conf_data = dplyr::select(df, -weight),
-                  start_data = start_df)
+schema1 <- schema(
+  conf_data = dplyr::select(df, -weight),
+  start_data = start_df
+)
+                  
 vs1 <- visit_sequence(
   schema = schema1
 )
 
-schema2 <- schema(conf_data = df,
-                  start_data = start_df)
+schema2 <- schema(
+  conf_data = df,
+  start_data = start_df
+)
 
 vs2 <- visit_sequence(
   schema = schema2,

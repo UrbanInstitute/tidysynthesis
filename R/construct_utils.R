@@ -5,6 +5,7 @@
 #' @param roadmap A `roadmap` S3 object.
 #' 
 #' @return A named vector of `regression` and `classification` strings
+#' @noRd
 #' 
 .extract_mode <- function(roadmap) {
   
@@ -43,6 +44,7 @@
 #' of the correct type.
 #' @param obj_name A string describing the object name, used only for printing
 #' explanatory error messages.
+#' @noRd
 #' 
 .validate_construct_inputs_required <- function(
     visit_sequence, 
@@ -170,6 +172,7 @@
 #' of the correct type.
 #' @param obj_name A string describing the object name, used only for printing
 #' explanatory error messages.
+#' @noRd
 #' 
 .validate_construct_inputs_optional <- function(
     visit_sequence, 

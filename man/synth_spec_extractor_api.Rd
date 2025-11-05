@@ -21,6 +21,12 @@ mapping variable names to extractors.}
 }
 \value{
 A new \code{synth_spec} object.
+
+A new \code{synth_spec} object with added custom extractors.
+
+A new \code{synth_spec} object with updated custom extractors.
+
+A new \code{synth_spec} object with removed custom extractors.
 }
 \description{
 Add, update, or remove extractors from a \code{synth_spec} object

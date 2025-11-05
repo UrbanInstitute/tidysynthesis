@@ -73,6 +73,7 @@ is_start_method <- function(x) {
 #' @param roadmap A `roadmap` object
 #' 
 #' @return A `data.frame`
+#' @noRd
 #' 
 exec_start_method <- function(roadmap) {
   
@@ -101,6 +102,7 @@ exec_start_method <- function(roadmap) {
 #' @param roadmap A `roadmap` object.
 #' 
 #' @return NULL
+#' @noRd
 #' 
 validate_start_method <- function(roadmap) {
   
@@ -136,6 +138,21 @@ NULL
 
 #'
 #' @rdname start_method_api
+#' 
+#' @return A new `roadmap` object with added start_method.
+#' 
+#' @examples 
+#' 
+#' rm <- roadmap( 
+#'  conf_data = acs_conf_nw,
+#'  start_data = acs_start_nw,
+#' )
+#' 
+#' add_start_method(
+#'   roadmap = rm,
+#'   start_method = start_method()
+#' )
+#'
 #' @export 
 #' 
 add_start_method <- function(roadmap, start_method) {
@@ -156,8 +173,21 @@ add_start_method <- function(roadmap, start_method) {
 
 #'
 #' @rdname start_method_api
-#' @export 
 #' 
+#' @return A new `roadmap` object with updated start_method.
+#' @examples
+#' 
+#' rm <- roadmap( 
+#'  conf_data = acs_conf_nw,
+#'  start_data = acs_start_nw
+#' )
+#' 
+#' update_start_method(
+#'   roadmap = rm,
+#'   start_method = start_method()
+#' )
+#'
+#' @export
 update_start_method <- function(roadmap, ...) {
   
   stopifnot("`roadmap` must be a roadmap object" = { is_roadmap(roadmap) })
@@ -185,8 +215,21 @@ update_start_method <- function(roadmap, ...) {
 
 #'
 #' @rdname start_method_api
-#' @export 
 #' 
+#' @return A new `roadmap` object with removed start_method.
+#' 
+#' @examples
+#' rm <- roadmap( 
+#'  conf_data = acs_conf_nw,
+#'  start_data = acs_start_nw,
+#'  start_method = start_method()
+#' )
+#' 
+#' remove_start_method(
+#'   roadmap = rm
+#' )
+#' 
+#' @export
 remove_start_method <- function(roadmap) {
   
   stopifnot("`roadmap` must be a roadmap object" = { is_roadmap(roadmap) })
@@ -198,6 +241,19 @@ remove_start_method <- function(roadmap) {
   
 }
 
+#' 
+#'  Print the start_method object to the console with formatting
+#' 
+#' @param x A `start_method` object
+#' @param ... further arguments passed to or from other methods (not currently
+#'   used).
+#'
+#' @return A `start_method` object
+#' 
+#' @examples  
+#' 
+#' print(start_method())
+#' 
 #' @export
 print.start_method <- function(x, ...) {
   

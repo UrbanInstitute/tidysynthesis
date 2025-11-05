@@ -6,6 +6,7 @@
 #' @param synth_spec A `synth_spec` object
 #' 
 #' @return A list of built models, recipes, samplers, etc.
+#' @noRd
 #' 
 .construct_workflows <- function(roadmap, synth_spec) {
   
@@ -127,6 +128,7 @@ presynth <- function(roadmap,
 #' 
 #' @param roadmap A `roadmap` object
 #' @param synth_spec A `synth_spec` object
+#' @noRd
 #' 
 new_presynth <- function(roadmap,
                          synth_spec) {
@@ -165,7 +167,8 @@ new_presynth <- function(roadmap,
 #' Check if object is `presynth`
 #' 
 #' @param x Object
-#' @return Logical 
+#' @return Logical
+#' @noRd
 #'  
 is_presynth <- function(x) {
   inherits(x, "presynth")
@@ -182,6 +185,7 @@ is_presynth <- function(x) {
 #' @param presynth A `presynth` object
 #' 
 #' @return NULL
+#' @noRd
 #' 
 .validate_presynth <- function(presynth) {
   
@@ -287,7 +291,7 @@ is_presynth <- function(x) {
 #' @param ... further arguments passed to or from other methods (not currently
 #'   used).
 #' 
-#' @returns A `presynth` object
+#' @return A `presynth` object
 #' 
 #' @examples
 #' 

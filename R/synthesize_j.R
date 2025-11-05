@@ -20,6 +20,7 @@
 #' @param p A function for tracking progress created with progressr
 #'
 #' @return A list with an estimated model and a data frame of predictions
+#' @noRd
 #' 
 #' @importFrom rlang :=
 #'
