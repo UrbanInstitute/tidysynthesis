@@ -34,6 +34,7 @@ A \code{constraints} object.
 Create a constraints object
 }
 \examples{
+
 constraints(
   schema = schema(
     conf_data = mtcars |> dplyr::mutate(vs = factor(vs)),

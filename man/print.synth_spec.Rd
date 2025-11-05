@@ -12,6 +12,9 @@
 \item{...}{further arguments passed to or from other methods (not currently
 used).}
 }
+\value{
+A \code{synth_spec} object
+}
 \description{
 Print the replicates object to the console with formatting
 }

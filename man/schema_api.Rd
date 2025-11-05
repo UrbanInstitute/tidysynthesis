@@ -22,6 +22,12 @@ reset_schema(roadmap)
 }
 \value{
 A new \code{roadmap} object.
+
+A roadmap object with added schema.
+
+A roadmap object with updated schema.
+
+A roadmap object with reset schema.
 }
 \description{
 Add, update, or reset a \code{schema} object within an existing \code{roadmap}.

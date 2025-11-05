@@ -22,6 +22,12 @@ reset_replicates(roadmap)
 }
 \value{
 A new \code{roadmap} object.
+
+A new \code{roadmap} object with the added \code{replicates}.
+
+A new \code{roadmap} object with updated \code{replicates}.
+
+A new \code{roadmap} object with reset \code{replicates}.
 }
 \description{
 Add, update, or reset a \code{replicates} object within an existing \code{roadmap}.

@@ -4,6 +4,7 @@
 #' 
 #' @return A named list of lists mapping variable names to their `col_schema`
 #' specifications.
+#' @noRd
 #' 
 construct_col_schema <- function(roadmap) {
   

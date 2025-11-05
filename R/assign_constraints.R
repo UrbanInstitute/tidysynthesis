@@ -5,6 +5,7 @@
 #' constructor.
 #'
 #' @return A synthetic data frame with a `min` and `max` column added.
+#' @noRd
 #'
 #' @importFrom rlang .data
 assign_constraints_num <- function(synth_data, constraints) {
@@ -63,6 +64,7 @@ assign_constraints_num <- function(synth_data, constraints) {
 #' constructor.
 #'
 #' @return A list of two data.frames: `synth_data` and `condition_defs`
+#' @noRd
 #'
 #' @importFrom rlang .data
 #' 

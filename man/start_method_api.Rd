@@ -22,7 +22,47 @@ remove_start_method(roadmap)
 }
 \value{
 A new \code{roadmap} object.
+
+A new \code{roadmap} object with added start_method.
+
+A new \code{roadmap} object with updated start_method.
+
+A new \code{roadmap} object with removed start_method.
 }
 \description{
 Add, update, or reset a start method within an existing \code{roadmap}.
+}
+\examples{
+
+rm <- roadmap( 
+ conf_data = acs_conf_nw,
+ start_data = acs_start_nw,
+)
+
+add_start_method(
+  roadmap = rm,
+  start_method = start_method()
+)
+
+
+rm <- roadmap( 
+ conf_data = acs_conf_nw,
+ start_data = acs_start_nw
+)
+
+update_start_method(
+  roadmap = rm,
+  start_method = start_method()
+)
+
+rm <- roadmap( 
+ conf_data = acs_conf_nw,
+ start_data = acs_start_nw,
+ start_method = start_method()
+)
+
+remove_start_method(
+  roadmap = rm
+)
+
 }

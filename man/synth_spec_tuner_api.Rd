@@ -21,6 +21,12 @@ mapping variable names to tuners.}
 }
 \value{
 A new \code{synth_spec} object.
+
+A new \code{synth_spec} object with added custom tuners.
+
+A new \code{synth_spec} object with updated custom tuners.
+
+A new \code{synth_spec} object with removed custom tuners.
 }
 \description{
 Add, update, or remove tuners from a \code{synth_spec} object

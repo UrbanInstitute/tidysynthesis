@@ -118,6 +118,22 @@ invert.step_log <- function(object, predictions, ...) {
 #'
 #' @return A tibble with the Yeo_johnson transformation inverted for .pred 
 #' 
+#' @examples 
+#' 
+#' data <- tibble::tibble(
+#'   y = rlnorm(n = 1000, meanlog = 0, sdlog = 1),
+#'   x = rnorm(n = 1000)
+#' )
+#' 
+#' adj <- recipes::recipe(y ~ x, data = data) |>
+#'   recipes::step_YeoJohnson(recipes::all_outcomes()) |>
+#'   recipes::prep()
+#'   
+#' invert(
+#'   object = adj$steps[[1]], 
+#'   predictions = tibble::tibble(.pred = adj[["template"]][["y"]])
+#' )
+#' 
 #' @export
 invert.step_YeoJohnson <- function(object, predictions, ...) {
 

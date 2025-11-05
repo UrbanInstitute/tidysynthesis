@@ -21,6 +21,7 @@
 #' @param store_ldiversity A vector for storing ldiversity
 #'
 #' @return A list with synthetic values and calulcated ldiveristy
+#' @noRd
 #'
 generate_predictions <- function(model,
                                  new_data,

@@ -27,6 +27,16 @@ mapping variable names to samplers.}
 }
 \value{
 A new \code{synth_spec} object.
+
+A new \code{synth_spec} object with added custom samplers.
+
+A new \code{synth_spec} object with updated custom samplers.
+
+A new \code{synth_spec} object with removed custom samplers.
+
+A new \code{synth_spec} object with updated custom noise.
+
+A new \code{synth_spec} object with removed custom noise.
 }
 \description{
 Add, update, or remove samplers from a \code{synth_spec} object

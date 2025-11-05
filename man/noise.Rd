@@ -23,6 +23,7 @@ Create a noise object
 }
 \examples{
 
+# create default noise object
 noise()
 
 # create noise object for classification

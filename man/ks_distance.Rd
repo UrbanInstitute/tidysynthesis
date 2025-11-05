@@ -36,6 +36,10 @@ case_weights are added to tidysynthesis.}
 }
 \value{
 For \code{ks_distance_vec()}, a single numeric value (or \code{NA}).
+
+A single numeric value (or \code{NA}).
+
+A single numeric value (or \code{NA}).
 }
 \description{
 Kolmogorov-Smirnov distance

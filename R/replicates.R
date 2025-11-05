@@ -135,16 +135,18 @@ validate_replicates <- function(roadmap) {
 #' @param ... further arguments passed to or from other methods (not currently
 #'   used).
 #'   
+#' @return Invisibly returns the input `replicates` object. 
+#' 
 #' @examples
 #' 
-#' replicates <- replicates(
+#' rep <- replicates(
 #'   start_data_replicates = 2,
 #'   model_sample_replicates = 2,
 #'   end_to_end_replicates = 2
 #' )
 #'   
-#' print(replicates)
-#'   
+#' print(rep)
+#' 
 #' @export
 print.replicates <- function(x, ...) {
 
@@ -180,6 +182,8 @@ NULL
 #'
 #' @rdname replicates_api
 #' 
+#' @return A new `roadmap` object with the added `replicates`.
+#' 
 #' @examples
 #' 
 #' rm <- roadmap(
@@ -210,6 +214,8 @@ add_replicates <- function(roadmap, replicates) {
 
 #'
 #' @rdname replicates_api
+#' 
+#' @return A new `roadmap` object with updated `replicates`.
 #' 
 #' @examples
 #' 
@@ -247,6 +253,8 @@ update_replicates <- function(roadmap, ...) {
 
 #'
 #' @rdname replicates_api
+#' 
+#' @return A new `roadmap` object with reset `replicates`.
 #' 
 #' @examples
 #' 
