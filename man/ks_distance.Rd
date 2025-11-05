@@ -21,11 +21,11 @@ estimate arguments.}
 \item{truth}{The column identifier for the true results (that is numeric).
 This should be an unquoted column name although this argument is passed by
 expression and supports quasiquotation (you can unquote column names). For
-\verb{⁠_vec(})⁠ functions, a numeric vector.}
+\verb{_vec()} functions, a numeric vector.}
 
 \item{estimate}{The column identifier for the predicted results (that is
 also numeric). As with truth this can be specified different ways but the
-primary method is to use an unquoted variable name. For \verb{⁠_vec(})⁠ functions,
+primary method is to use an unquoted variable name. For \verb{_vec()} functions,
 a numeric vector.}
 
 \item{na_rm}{A \code{logical} value indicating whether \code{NA} values should be
