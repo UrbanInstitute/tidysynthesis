@@ -2,7 +2,7 @@ Package: tidysynthesis
 Title: A Common API for Synthesizing Data
 Version: 0.1.2
 Authors@R: 
-    c(person(given = "Aaron", 
+    c(person(given = "Aaron R.", 
              family = "Williams", 
              email = "awilliams@urban.org", 
              role = c("aut", "cre"),
