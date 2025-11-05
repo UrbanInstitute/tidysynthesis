@@ -9,7 +9,7 @@ add_sequence_factor(roadmap, ..., method = c("entropy", "gini"))
 \arguments{
 \item{roadmap}{A \code{roadmap} object}
 
-\item{...}{\if{html}{\out{<tidy-select>}} One or more unquoted expressions separated by
+\item{...}{\verb{<tidy-select>} One or more unquoted expressions separated by
 commas. Variable names can be used as if they were positions in the data
 frame, so expressions like x:y can be used to select a range of variables.}
 

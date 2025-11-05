@@ -156,7 +156,7 @@ reset_visit_sequence <- function(roadmap) {
 #' Add to visit sequence using a manual method
 #'
 #' @param roadmap A `roadmap` object.
-#' @param ... <tidy-select> One or more unquoted expressions separated by 
+#' @param ... `<tidy-select>` One or more unquoted expressions separated by 
 #' commas. Variable names can be used as if they were positions in the data 
 #' frame, so expressions like x:y can be used to select a range of variables.
 #'
@@ -209,7 +209,7 @@ add_sequence_manual <- function(roadmap, ...) {
 #' Add to visit sequence for numeric variables
 #'
 #' @param roadmap A `roadmap` object
-#' @param ... <tidy-select> One or more unquoted expressions separated by 
+#' @param ... `<tidy-select>` One or more unquoted expressions separated by 
 #' commas. Variable names can be used as if they were positions in the data 
 #' frame, so expressions like x:y can be used to select a range of variables.
 #' @param method A quoted name for the method used to sort the visit_sequence
@@ -456,7 +456,7 @@ add_sequence_numeric <- function(
 #' Add to visit sequence for factor variables
 #'
 #' @param roadmap A `roadmap` object
-#' @param ... <tidy-select> One or more unquoted expressions separated by 
+#' @param ... `<tidy-select>` One or more unquoted expressions separated by 
 #' commas. Variable names can be used as if they were positions in the data 
 #' frame, so expressions like x:y can be used to select a range of variables.
 #' @param method A quoted name for the method used to sort the visit_sequence.
