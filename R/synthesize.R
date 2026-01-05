@@ -58,7 +58,10 @@ synthesize <- function(presynth,
   if (end2end_reps == 1) {
     
     # use default synthesis
-    return(.synthesize(presynth = presynth, progress = progress))
+    return(.synthesize(presynth = presynth, 
+                       progress = progress,
+                       keep_workflows = keep_workflows,
+                       keep_partial = keep_partial))
     
   } else {
     
@@ -67,7 +70,10 @@ synthesize <- function(presynth,
       purrr::map(
         .x = 1:end2end_reps,
         .f = \(x) {
-          .synthesize(presynth = presynth, progress = progress)
+          .synthesize(presynth = presynth, 
+                      progress = progress,
+                      keep_workflows = keep_workflows,
+                      keep_partial = keep_partial)
         }
       )
     )
@@ -246,17 +252,18 @@ synthesize <- function(presynth,
             
           }
           
-          return(engine_output)
-          
         },
         error = \(e) {
           
           if (keep_partial) {
             
-            stop_var_name <- col_schema[[var_j]]
+            force({
+              error_var_name <- vs_names[var_j]
+            })
             
             warning(
-              "Error encountered in variable "
+              paste0("Error encountered in variable '", error_var_name, "'. \n",
+                     as.character(e))
             )
             
             return(
@@ -278,6 +285,8 @@ synthesize <- function(presynth,
       )
       
     }
+    
+    return(engine_output)
     
   }
   
@@ -375,18 +384,16 @@ synthesize <- function(presynth,
     
   }
   
-  # presynth caching logic 
+  # caching workflows logic 
   keep_roadmap <- NULL
   keep_synth_spec <- NULL
   keep_workflow <- NULL
-  keep_roles <- NULL
   
   if (keep_workflows) {
     
     keep_roadmap <- presynth$roadmap
     keep_synth_spec <- presynth$synth_spec
     keep_workflow <- presynth$workflows
-    keep_roles <- presynth$roles
     
   }
   
@@ -405,6 +412,12 @@ synthesize <- function(presynth,
       synthesis_time = unname(syntheses$jth_synthesis_time)
     )
     
+    # update roles
+    output_roles <- presynth$roles 
+    for (n in colnames(syntheses$synth_data)) {
+      output_roles[n] <- "synthesized"
+    }
+    
     # create postsynth object
     postsynth <- postsynth(
       synthetic_data = syntheses$synth_data,
@@ -417,7 +430,7 @@ synthesize <- function(presynth,
       roadmap = keep_roadmap,
       synth_spec = keep_synth_spec,
       workflows = keep_workflow,
-      roles = keep_roles
+      roles = output_roles
     )
     
     return(postsynth)
@@ -434,6 +447,12 @@ synthesize <- function(presynth,
       synth_end_time <- Sys.time()
       as.numeric(synth_end_time - synth_start_time, units = "secs")
       
+      # update roles
+      output_roles <- presynth$roles 
+      for (n in colnames(syntheses[[replicate_number]]$synth_data)) {
+        output_roles[n] <- "synthesized"
+      }
+      
       # create the postsynth object
       postsynths[[replicate_number]] <- postsynth(
         synthetic_data = syntheses[[replicate_number]]$synth_data,
@@ -448,7 +467,7 @@ synthesize <- function(presynth,
         roadmap = keep_roadmap,
         synth_spec = keep_synth_spec,
         workflows = keep_workflow,
-        roles = keep_roles
+        roles = output_roles
       )
 
     }

@@ -4,12 +4,24 @@
 \alias{synthesize}
 \title{Synthesize a data set}
 \usage{
-synthesize(presynth, progress = FALSE)
+synthesize(
+  presynth,
+  progress = FALSE,
+  keep_workflows = FALSE,
+  keep_partial = FALSE
+)
 }
 \arguments{
 \item{presynth}{A \code{presynth} object created by \code{presynth()}.}
 
-\item{progress}{A single logical. Should a progress be displayed?}
+\item{progress}{Logical, if true, displays progress. Default is \code{False}, no
+progress displayed..}
+
+\item{keep_workflows}{Logical, if true, returns derived roadmap components
+in \code{postsynth}(s). Default is \code{False}.}
+
+\item{keep_partial}{Logical, if true, saves partial synthesis to output.
+Default is \code{False}, no intermediate outputs saved.}
 }
 \value{
 A postsynth object.
