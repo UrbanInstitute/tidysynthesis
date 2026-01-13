@@ -3,7 +3,6 @@
 #' 
 #' Postsynth objects are automatically created by `synthesize()`; package
 #' users should never need to manually create instances.
-#' 
 #' @param synthetic_data A synthetic data set.
 #' @param jth_preprocessing A list of recipes from `library(recipe)`.
 #' @param total_synthesis_time A double with the total time of synthesis.

@@ -1,12 +1,12 @@
 #' Synthesize a data set
 #'
 #' @param presynth A `presynth` object created by `presynth()`.
-#' @param progress Logical, if true, displays progress. Default is `False`, no 
-#' progress displayed..
-#' @param keep_workflows Logical, if true, returns derived roadmap components 
-#' in `postsynth`(s). Default is `False`. 
-#' @param keep_partial Logical, if true, saves partial synthesis to output. 
-#' Default is `False`, no intermediate outputs saved. 
+#' @param progress Logical, if TRUE, displays progress. Default is `FALSE`, no 
+#' progress displayed.
+#' @param keep_workflows Logical, if TRUE, returns derived roadmap components 
+#' in `postsynth`(s). Default is `FALSE`. 
+#' @param keep_partial Logical, if TRUE, saves partial synthesis to output. 
+#' Default is `FALSE`, no intermediate outputs saved. 
 #'
 #' @return A postsynth object.
 #' 
@@ -414,9 +414,7 @@ synthesize <- function(presynth,
     
     # update roles
     output_roles <- presynth$roles 
-    for (n in colnames(syntheses$synth_data)) {
-      output_roles[n] <- "synthesized"
-    }
+    output_roles[colnames(syntheses$synth_data)] <- "synthesized"
     
     # create postsynth object
     postsynth <- postsynth(
@@ -449,9 +447,8 @@ synthesize <- function(presynth,
       
       # update roles
       output_roles <- presynth$roles 
-      for (n in colnames(syntheses[[replicate_number]]$synth_data)) {
-        output_roles[n] <- "synthesized"
-      }
+      output_roles[
+        colnames(syntheses[[replicate_number]]$synth_data)] <- "synthesized"
       
       # create the postsynth object
       postsynths[[replicate_number]] <- postsynth(

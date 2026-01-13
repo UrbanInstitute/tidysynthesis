@@ -14,14 +14,14 @@ synthesize(
 \arguments{
 \item{presynth}{A \code{presynth} object created by \code{presynth()}.}
 
-\item{progress}{Logical, if true, displays progress. Default is \code{False}, no
-progress displayed..}
+\item{progress}{Logical, if TRUE, displays progress. Default is \code{FALSE}, no
+progress displayed.}
 
-\item{keep_workflows}{Logical, if true, returns derived roadmap components
-in \code{postsynth}(s). Default is \code{False}.}
+\item{keep_workflows}{Logical, if TRUE, returns derived roadmap components
+in \code{postsynth}(s). Default is \code{FALSE}.}
 
-\item{keep_partial}{Logical, if true, saves partial synthesis to output.
-Default is \code{False}, no intermediate outputs saved.}
+\item{keep_partial}{Logical, if TRUE, saves partial synthesis to output.
+Default is \code{FALSE}, no intermediate outputs saved.}
 }
 \value{
 A postsynth object.
