@@ -1,5 +1,6 @@
 
-# tidysynthesis <img src="man/figures/logo.png" align="right" height="138" />
+# tidysynthesis ![Tidysynthesis Logo](man/figures/logo.png)
+
 
 This repository contains the tidysynthesis R package for generating
 synthetic data. Complete documentation is available is available at the
