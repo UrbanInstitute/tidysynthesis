@@ -73,6 +73,33 @@
 }
 
 
+#'
+#' Construct tidysynthesis roles from a `roadmap`
+#' 
+#' @param roadmap A `roadmap` object
+#' 
+#' @return A named vector of roles
+#' @noRd
+#' 
+#
+.init_roles <- function(roadmap) {
+  
+  # assign each start variable "start" role
+  start_vars <- stats::setNames(
+    rep("start", length(names(roadmap[["start_data"]]))), 
+    names(roadmap[["start_data"]])
+  )
+  
+  # assign each visit sequence variable "unsynthesized" role
+  seq_vars <- stats::setNames(
+    rep("unsynthesized", 
+        length(roadmap[["visit_sequence"]][["visit_sequence"]])),
+    roadmap[["visit_sequence"]][["visit_sequence"]]
+  )
+  
+  return(c(start_vars, seq_vars))
+  
+}
 
 #' Create a presynth object
 #'
@@ -149,11 +176,15 @@ new_presynth <- function(roadmap,
   # create workflows 
   workflows <- .construct_workflows(roadmap, synth_spec)
   
+  # create role
+  roles <- .init_roles(roadmap)
+  
   # create presynth
   presynth <- list(
     roadmap = roadmap,
     synth_spec = synth_spec,
-    workflows = workflows
+    workflows = workflows,
+    roles = roles
   )
   presynth <- structure(presynth, class = "presynth")
   
@@ -434,6 +465,11 @@ update_presynth <- function(presynth,
     roadmap = presynth[["roadmap"]], 
     synth_spec = presynth[["synth_spec"]]
   )
+  
+  # finally, reconstruct roles
+  presynth[["roles"]] <- .init_roles(presynth[["roadmap"]])
+  
+  # validate
   .validate_presynth(presynth)
   
   return(presynth)

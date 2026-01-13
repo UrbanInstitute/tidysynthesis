@@ -1,11 +1,18 @@
+#' 
 #' Create a postsynth object
-#'
+#' 
+#' Postsynth objects are automatically created by `synthesize()`; package
+#' users should never need to manually create instances.
 #' @param synthetic_data A synthetic data set.
 #' @param jth_preprocessing A list of recipes from `library(recipe)`.
 #' @param total_synthesis_time A double with the total time of synthesis.
 #' @param jth_synthesis_time A vector or dataframe of synthesis times. 
 #' @param extractions A list with extracted output from the synthesis model.
 #' @param ldiversity A vector or dataframe of ldiversity stats. 
+#' @param roadmap A `roadmap` instance.
+#' @param synth_spec A `synth_spec` instance.
+#' @param workflows A named list of constructed synthesis components.
+#' @param roles A vector mapping variable names to `presynth` roles. 
 #'
 #' @return A `postsynth` object.
 #' @noRd
@@ -15,7 +22,11 @@ postsynth <- function(synthetic_data,
                       total_synthesis_time,
                       jth_synthesis_time,
                       extractions,
-                      ldiversity) {
+                      ldiversity,
+                      roadmap = NULL,
+                      synth_spec = NULL,
+                      workflows = NULL,
+                      roles = NULL) {
   
   # create new_postsynth
   postsynth <- new_postsynth(synthetic_data = synthetic_data,
@@ -23,14 +34,22 @@ postsynth <- function(synthetic_data,
                              total_synthesis_time = total_synthesis_time,
                              jth_synthesis_time = jth_synthesis_time,
                              extractions = extractions,
-                             ldiversity = ldiversity)
+                             ldiversity = ldiversity,
+                             roadmap = roadmap,
+                             synth_spec = synth_spec,
+                             workflows = workflows,
+                             roles = roles)
   
   return(postsynth)    
   
 }
 
 # constructor (for experienced users only)
-new_postsynth <- function(synthetic_data,
+new_postsynth <- function(roadmap,
+                          synth_spec,
+                          workflows,
+                          roles,
+                          synthetic_data,
                           jth_preprocessing,
                           total_synthesis_time,
                           jth_synthesis_time,
@@ -46,11 +65,15 @@ new_postsynth <- function(synthetic_data,
     total_synthesis_time = total_synthesis_time,
     jth_synthesis_time = jth_synthesis_time,
     extractions = extractions,
-    ldiversity = ldiversity
+    ldiversity = ldiversity,
+    roadmap = roadmap,
+    synth_spec = synth_spec,
+    workflows = workflows,
+    roles = roles
   )
   
   # create class
-  postsynth <- structure(postsynth, class = "postsynth")
+  postsynth <- structure(postsynth, class = c("postsynth", "presynth"))
   
   return(postsynth)
   
