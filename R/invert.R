@@ -2,12 +2,29 @@
 #'
 #' @rdname invert
 #' @aliases invert invert.recipe
-#' @author Aaron R. Williams
 #' @concept postprocessing
 #' 
 #' @param object A recipe after fitting a model
 #' @param predictions A data frame with .pred
 #' @param ... Other arguments 
+#' 
+#' @return A tibble with inverted model-generated values
+#' 
+#' @examples
+#' 
+#' data <- tibble::tibble(
+#'   y = rlnorm(n = 1000, meanlog = 0, sdlog = 1),
+#'   x = rnorm(n = 1000)
+#' )
+#' 
+#' adj <- recipes::recipe(y ~ x, data = data) |>
+#'   recipes::step_BoxCox(recipes::all_outcomes()) |>
+#'   recipes::prep()
+#'   
+#' invert(
+#'   object = adj$steps[[1]], 
+#'   predictions = tibble::tibble(.pred = adj[["template"]][["y"]])
+#' )
 #' 
 #' @export
 invert <- function(object, predictions, ...)
@@ -19,6 +36,24 @@ invert <- function(object, predictions, ...)
 #' @param predictions A data frame with .pred
 #' @param ... Other arguments 
 #'
+#' @return A tibble with the Box-Cox transformation inverted for .pred
+#' 
+#' @examples
+#' 
+#' data <- tibble::tibble(
+#'   y = rlnorm(n = 1000, meanlog = 0, sdlog = 1),
+#'   x = rnorm(n = 1000)
+#' )
+#' 
+#' adj <- recipes::recipe(y ~ x, data = data) |>
+#'   recipes::step_BoxCox(recipes::all_outcomes()) |>
+#'   recipes::prep()
+#'   
+#' invert(
+#'   object = adj$steps[[1]], 
+#'   predictions = tibble::tibble(.pred = adj[["template"]][["y"]])
+#' )
+#' 
 #' @export
 invert.step_BoxCox <- function(object, predictions, ...) {
   
@@ -48,6 +83,24 @@ invert.step_BoxCox <- function(object, predictions, ...) {
 #' @param predictions A data frame with .pred
 #' @param ... Other arguments 
 #'
+#' @return A tibble with the log transformation inverted for .pred 
+#'
+#' @examples
+#' 
+#' data <- tibble::tibble(
+#'   y = rlnorm(n = 1000, meanlog = 0, sdlog = 1),
+#'   x = rnorm(n = 1000)
+#' )
+#' 
+#' adj <- recipes::recipe(y ~ x, data = data) |>
+#'   recipes::step_log(recipes::all_outcomes()) |>
+#'   recipes::prep()
+#'   
+#' invert(
+#'   object = adj$steps[[1]], 
+#'   predictions = tibble::tibble(.pred = adj[["template"]][["y"]])
+#' )
+#'
 #' @export
 invert.step_log <- function(object, predictions, ...) {
 
@@ -63,7 +116,23 @@ invert.step_log <- function(object, predictions, ...) {
 #' @param predictions A data frame with .pred
 #' @param ... Other arguments
 #'
-#' @return A tibble with Yeo_johnson transformation inverted for .pred 
+#' @return A tibble with the Yeo_johnson transformation inverted for .pred 
+#' 
+#' @examples 
+#' 
+#' data <- tibble::tibble(
+#'   y = rlnorm(n = 1000, meanlog = 0, sdlog = 1),
+#'   x = rnorm(n = 1000)
+#' )
+#' 
+#' adj <- recipes::recipe(y ~ x, data = data) |>
+#'   recipes::step_YeoJohnson(recipes::all_outcomes()) |>
+#'   recipes::prep()
+#'   
+#' invert(
+#'   object = adj$steps[[1]], 
+#'   predictions = tibble::tibble(.pred = adj[["template"]][["y"]])
+#' )
 #' 
 #' @export
 invert.step_YeoJohnson <- function(object, predictions, ...) {
@@ -81,9 +150,9 @@ invert.step_YeoJohnson <- function(object, predictions, ...) {
       
     } else {
       
-      predictions[, ".pred"] <- yeo_johnson(y = predictions[, ".pred", drop = TRUE], 
-                                            lambda = lambda,
-                                            inverse = TRUE)
+      predictions[, ".pred"] <- VGAM::yeo.johnson(y = predictions[, ".pred", drop = TRUE], 
+                                                  lambda = lambda,
+                                                  inverse = TRUE)
       
     }
     

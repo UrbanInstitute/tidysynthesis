@@ -17,3 +17,22 @@ A \code{data.frame}
 \description{
 Redefine \code{NA} value for a dataset.
 }
+\examples{
+
+# create custom NA filter
+example_na_custom <- example_na |>
+  tidyr::replace_na(
+    list("wages" = -999)
+  )
+
+example_na_expanded_custom <- enforce_custom_na(
+  data = example_na_custom,
+  col_schema = list(
+    "wages" = list(
+      dtype = "dbl",
+      na_value = -999
+     )
+   )
+ )
+
+}

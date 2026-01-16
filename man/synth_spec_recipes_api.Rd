@@ -21,7 +21,53 @@ remove_custom_steps(synth_spec)
 }
 \value{
 A new \code{synth_spec} object.
+
+A new \code{synth_spec} object with added custom steps.
+
+A new \code{synth_spec} object with updated custom steps.
+
+A new \code{synth_spec} object with removed custom steps.
 }
 \description{
 Add, update, or remove recipe recipes from a \code{synth_spec} object
+}
+\examples{
+
+synth_spec <- synth_spec()
+
+step1 <- function(x) {
+  x |> recipes::step_center(recipes::all_predictors(), id = "center")
+}
+
+add_custom_steps(
+  synth_spec = synth_spec, 
+  list("vars" = c("a", "b", "c"), "steps" = step1)
+)
+
+
+synth_spec <- synth_spec()
+
+step1 <- function(x) {
+  x |> recipes::step_center(recipes::all_predictors(), id = "center")
+}
+
+update_custom_steps(
+  synth_spec = synth_spec, 
+  list("vars" = c("a", "b", "c"), "steps" = step1)
+)
+
+
+synth_spec <- synth_spec()
+
+step1 <- function(x) {
+  x |> recipes::step_center(recipes::all_predictors(), id = "center")
+}
+
+synth_spec <- add_custom_steps(
+  synth_spec = synth_spec, 
+  list("vars" = c("a", "b", "c"), "steps" = step1)
+)
+
+remove_custom_steps(synth_spec = synth_spec)
+
 }

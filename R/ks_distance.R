@@ -5,10 +5,10 @@
 #' @param truth The column identifier for the true results (that is numeric). 
 #' This should be an unquoted column name although this argument is passed by 
 #' expression and supports quasiquotation (you can unquote column names). For 
-#' `⁠_vec(`)⁠ functions, a numeric vector.
+#' `_vec()` functions, a numeric vector.
 #' @param estimate The column identifier for the predicted results (that is 
 #' also numeric). As with truth this can be specified different ways but the 
-#' primary method is to use an unquoted variable name. For `⁠_vec(`)⁠ functions, 
+#' primary method is to use an unquoted variable name. For `_vec()` functions, 
 #' a numeric vector.
 #' @param na_rm A `logical` value indicating whether `NA` values should be 
 #' stripped before the computation proceeds.
@@ -18,8 +18,13 @@
 #'
 #' @return For `ks_distance_vec()`, a single numeric value (or `NA`).
 #' 
+#' @examples
+#' 
+#' ks1 <- data.frame(x = 1:100, y = 101:200)
+#' 
+#' ks_distance(data = ks1, truth = x, estimate = y)
+#' 
 #' @export
-#'
 ks_distance <- function(data, ...) {
   UseMethod("ks_distance")
 }
@@ -30,6 +35,15 @@ ks_distance <- yardstick::new_numeric_metric(
 )
 
 #' @rdname ks_distance
+#' 
+#' @return A single numeric value (or `NA`).
+#' 
+#' @examples
+#' 
+#' ks1 <- data.frame(x = 1:100, y = 101:200)
+#' 
+#' ks_distance(data = ks1, truth = x, estimate = y)
+#' 
 #' @export
 ks_distance.data.frame <- function(data, truth, estimate, na_rm = TRUE, case_weights = NULL, ...) {
   
@@ -45,8 +59,17 @@ ks_distance.data.frame <- function(data, truth, estimate, na_rm = TRUE, case_wei
   
 }
 
-#' @export
 #' @rdname ks_distance
+#' 
+#' @return A single numeric value (or `NA`).
+#' 
+#' @examples
+#' 
+#' ks1 <- data.frame(x = 1:100, y = 101:200)
+#' 
+#' ks_distance_vec(truth = ks1$x, estimate = ks1$y)
+#' 
+#' @export
 ks_distance_vec <- function(truth, estimate, na_rm = TRUE, case_weights = NULL, ...) {
   
   yardstick::check_numeric_metric(truth, estimate, case_weights)

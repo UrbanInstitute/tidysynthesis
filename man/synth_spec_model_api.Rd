@@ -21,7 +21,53 @@ mapping variable names to \code{model_spec} objects from \code{library(parsnip)}
 }
 \value{
 A new \code{synth_spec} object.
+
+A new \code{synth_spec} object with added custom models.
+
+A new \code{synth_spec} object with updated custom models.
+
+A new \code{synth_spec} object with removed custom models.
 }
 \description{
 Add, update, or remove custom models from a \code{synth_spec} object
+}
+\examples{
+
+synth_spec <- synth_spec()
+
+dt_reg_mod <- parsnip::decision_tree() |>
+  parsnip::set_engine("rpart") |>
+  parsnip::set_mode("regression")
+
+add_custom_models(
+  synth_spec = synth_spec, 
+  list("vars" = c("a", "b", "c"), "model" = dt_reg_mod)
+)
+
+
+synth_spec <- synth_spec()
+
+dt_reg_mod <- parsnip::decision_tree() |>
+  parsnip::set_engine("rpart") |>
+  parsnip::set_mode("regression")
+
+update_custom_models(
+  synth_spec = synth_spec, 
+  list("vars" = c("a", "b", "c"), "model" = dt_reg_mod)
+)
+
+
+synth_spec <- synth_spec()
+
+dt_reg_mod <- parsnip::decision_tree() |>
+  parsnip::set_engine("rpart") |>
+  parsnip::set_mode("regression")
+
+synth_spec <- update_custom_models(
+  synth_spec = synth_spec, 
+  list("vars" = c("a", "b", "c"), "model" = dt_reg_mod)
+)
+
+remove_custom_models(synth_spec = synth_spec)
+
 }

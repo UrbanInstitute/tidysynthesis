@@ -19,8 +19,20 @@ test_that("Convert NA to 'NA'", {
 
 test_that("'NA' already in the data throws an error", {
 
-  expect_error(convert_na_to_level(data = data.frame(x2 = c("1", "2", "NA"))))
-  expect_error(convert_na_to_level(data = data.frame(x3 = factor(c("1", "2", "NA")))))
-  expect_error(convert_na_to_level(data = data.frame(factor(c("b", "NA", "a"), ordered = TRUE))))
+  expect_error(
+    convert_na_to_level(data = data.frame(x2 = c("1", "2", "NA"))),
+    regexp = "Can't convert NA to level 'NA' because level 'NA' already exists",
+    fixed = FALSE
+  )
+  expect_error(
+    convert_na_to_level(data = data.frame(x3 = factor(c("1", "2", "NA")))),
+    regexp = "Can't convert NA to level 'NA' because level 'NA' already exists",
+    fixed = FALSE
+  )
+  expect_error(
+    convert_na_to_level(data = data.frame(factor(c("b", "NA", "a"), ordered = TRUE))),
+    regexp = "Can't convert NA to level 'NA' because level 'NA' already exists",
+    fixed = FALSE
+  )
 
 })

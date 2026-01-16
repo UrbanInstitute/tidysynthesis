@@ -13,12 +13,12 @@ roadmap <- roadmap(conf_data = df, start_data = df_start)
 
 
 step1 <- function(x) {
-  x %>%
+  x |>
     recipes::step_center(recipes::all_predictors(), id = "center")
 }
 
 step2 <- function(x) {
-  x %>%
+  x |>
     recipes::step_scale(recipes::all_predictors(), id = "scale")
 }
 
@@ -45,7 +45,9 @@ test_that("input errors work correctly", {
     construct_recipes(
       roadmap = "apple", 
       default_regression_steps = step1
-    )
+    ),
+    regexp = "`roadmap` must be a roadmap object",
+    fixed = TRUE
   )
   
   # recipes must be a function
@@ -53,14 +55,18 @@ test_that("input errors work correctly", {
     construct_recipes(
       roadmap = roadmap, 
       default_regression_steps = "banana"
-    )
+    ),
+    regexp = "Default regression step(s) has incorrect type",
+    fixed = TRUE
   )
   
   expect_error(
     construct_recipes(
       roadmap = roadmap, 
       default_classification_steps = "banana"
-    )
+    ),
+    regexp = "Default classification step(s) has incorrect type",
+    fixed = TRUE
   )
   
   # custom recipes must be a list of functions
@@ -69,7 +75,9 @@ test_that("input errors work correctly", {
       roadmap = roadmap, 
       default_regression_steps = step1,
       custom_steps = "apple"
-    )
+    ),
+    regexp = "subscript out of bounds",
+    fixed = TRUE
   )
   
   # custom recipes must be correctly specified
@@ -80,7 +88,9 @@ test_that("input errors work correctly", {
       default_classification_steps = step1,
       custom_steps = list(list("vars" = c("price", "wrong_var"), 
                                "steps" = step2))
-    )
+    ),
+    regexp = "Custom step(s) list has variables not in visit_sequence: wrong_var",
+    fixed = TRUE
   )
   
   # custom recipes should not have duplicate vars
@@ -93,7 +103,9 @@ test_that("input errors work correctly", {
                                "steps" = step1),
                           list("vars" = c("price"), 
                                "steps" = step2))
-    )
+    ),
+    regexp = "Custom step(s) list has repeated variable names: price",
+    fixed = TRUE
   )
   
 })
@@ -193,7 +205,9 @@ test_that("try to break the custom recipes", {
     construct_recipes(
       roadmap = roadmap, 
       custom_steps = too_few_vars
-    )
+    ),
+    regexp = "Can't pluck from a function at level 1.",
+    fixed = FALSE
   )
   
   # incorrect variables
@@ -206,7 +220,9 @@ test_that("try to break the custom recipes", {
     construct_recipes(
       roadmap = roadmap, 
       custom_steps = incorrect_vars
-    )
+    ),
+    regexp = "Can't pluck from a function at level 1.",
+    fixed = FALSE
   )
   
 })
@@ -221,7 +237,7 @@ test_that("construct_recipes() correctly handles variables without variation ", 
     fctr_var2 = factor(c("a", "b", "c"))
   )
   
-  start_data <- conf_data %>%
+  start_data <- conf_data |>
     dplyr::select(start)
   
   roadmap <- roadmap(conf_data = conf_data, start_data = start_data) |>
@@ -245,7 +261,7 @@ test_that("construct_recipes() can handle large visit sequences ", {
   
   nvar <- 600
   
-  data <- purrr::map(.x = 1:nvar, ~tibble::tibble(x = rnorm(n = 1000))) %>%
+  data <- purrr::map(.x = 1:nvar, ~tibble::tibble(x = rnorm(n = 1000))) |>
     purrr::reduce(cbind)
   
   names(data) <- paste0("var", 1:nvar)
@@ -271,7 +287,7 @@ test_that("construct_recipes() can handle large visit sequences ", {
 
 
 step1 <- function(x) {
-  x %>%
+  x |>
     recipes::step_center(recipes::all_predictors(), id = "center")
 }
 

@@ -53,7 +53,7 @@ test_that("add_noise_disc_laplace reproduces with either direct var or eDP", {
     pred = pred,
     variance = test_var
   )
-  
+
   set.seed(1)
   noisy_preds2 <- add_noise_disc_laplace(
     model = model,
@@ -100,7 +100,8 @@ test_that("add_noise_disc_laplace error handling", {
       outcome_var = outcome_var,
       col_schema = col_schema,
       pred = pred
-    )
+    ),
+    regexp = "Must specify either `variance` or both `epsilon` and `sensitivity`."
   )
   
   # too many variance parameters specified
@@ -114,7 +115,8 @@ test_that("add_noise_disc_laplace error handling", {
       pred = pred,
       variance = 1,
       epsilon = 2
-    )
+    ),
+    regexp = "If using variance, epsilon and sensitivity cannot be specified."
   )
   
   # not enough variance parameters specified
@@ -127,7 +129,8 @@ test_that("add_noise_disc_laplace error handling", {
       col_schema = col_schema,
       pred = pred,
       epsilon = 2
-    )
+    ),
+    regexp = "Must specify either `variance` or both `epsilon` and `sensitivity`."
   )
   
   # incorrect increment 
@@ -141,7 +144,8 @@ test_that("add_noise_disc_laplace error handling", {
       pred = pred,
       variance = 1,
       increment = 0
-    )
+    ),
+    regexp = "add_noise_disc_laplace increment must be greater than 0."
   )
   
 })

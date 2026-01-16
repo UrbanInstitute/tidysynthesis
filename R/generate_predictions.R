@@ -21,6 +21,7 @@
 #' @param store_ldiversity A vector for storing ldiversity
 #'
 #' @return A list with synthetic values and calulcated ldiveristy
+#' @noRd
 #'
 generate_predictions <- function(model,
                                  new_data,
@@ -79,7 +80,7 @@ generate_predictions <- function(model,
     pred <- garnish(
       predictions = tibble::tibble(.pred = pred), 
       object = model
-    ) %>%
+    ) |>
       dplyr::pull()
     
   }
@@ -113,7 +114,7 @@ generate_predictions <- function(model,
       # find failures & index
       pass_index <- dplyr::bind_cols(new_data, pred = pred)
       
-      pass_index <- pass_index %>%
+      pass_index <- pass_index |>
         dplyr::mutate(
           fail_constraint = (
             (.data$pred <= .data$.assigned_min) | 
@@ -126,13 +127,13 @@ generate_predictions <- function(model,
     } else if (col_schema[["dtype"]] == "fct") {
       
       # find failures & index
-      pass_index <- dplyr::bind_cols(new_data, pred = pred) %>%
+      pass_index <- dplyr::bind_cols(new_data, pred = pred) |>
         dplyr::mutate(fail_constraint = FALSE)
       
-      pass_index <- pass_index %>%
+      pass_index <- pass_index |>
         # for each .condition_id, i.e. sets of conditions where the 
         # categorical constraints apply...
-        dplyr::group_by(dplyr::across(dplyr::all_of(c(".condition_id")))) %>%
+        dplyr::group_by(dplyr::across(dplyr::all_of(c(".condition_id")))) |>
         # modify each group where .x = subset of rows in group and .y is 
         # the .condition_id
         dplyr::group_modify(
@@ -151,7 +152,7 @@ generate_predictions <- function(model,
             }
             return(.x)
           } 
-        ) %>%
+        ) |>
         dplyr::ungroup()
       
       fail_constraint <- any(pass_index$fail_constraint)
@@ -167,9 +168,9 @@ generate_predictions <- function(model,
       if (col_schema[["dtype"]] == "dbl") {
         
         # when z = 0, hard bound
-        pass_index <- pass_index %>%
-          dplyr::mutate(pred = pmax(.data$.assigned_min, .data$pred)) %>%
-          dplyr::mutate(pred = pmin(.data$.assigned_max, .data$pred)) %>%
+        pass_index <- pass_index |>
+          dplyr::mutate(pred = pmax(.data$.assigned_min, .data$pred)) |>
+          dplyr::mutate(pred = pmin(.data$.assigned_max, .data$pred)) |>
           dplyr::select("index", "pred")
         
         # and set predictions
@@ -181,8 +182,8 @@ generate_predictions <- function(model,
       } else {
       
         # when z = 0, sample from allowed conditions
-        pass_index <- pass_index %>%
-          dplyr::group_by(dplyr::across(dplyr::all_of(c(".condition_id")))) %>%
+        pass_index <- pass_index |>
+          dplyr::group_by(dplyr::across(dplyr::all_of(c(".condition_id")))) |>
           dplyr::group_modify(
             .f = \(.x, .y) { 
               cid <- as.integer(.y)
@@ -207,8 +208,8 @@ generate_predictions <- function(model,
               
               return(.x)
             } 
-          ) %>%
-          dplyr::ungroup() %>%
+          ) |>
+          dplyr::ungroup() |>
           dplyr::select("index", "pred")
         
         # and set predictions

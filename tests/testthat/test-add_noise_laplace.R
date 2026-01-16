@@ -75,7 +75,8 @@ test_that("add_noise_laplace error handling", {
       outcome_var = outcome_var,
       col_schema = col_schema,
       pred = pred
-    )
+    ),
+    regexp = "Must specify either `variance` or both `epsilon` and `sensitivity`."
   )
   
   # too many variance parameters specified
@@ -89,7 +90,9 @@ test_that("add_noise_laplace error handling", {
       pred = pred,
       variance = 1,
       epsilon = 2
-    )
+    ),
+    regexp = "Cannot use non-null variance with non-null epsilon or sensitivity.",
+    fixed = TRUE
   )
   
   # not enough variance parameters specified
@@ -102,7 +105,8 @@ test_that("add_noise_laplace error handling", {
       col_schema = col_schema,
       pred = pred,
       epsilon = 2
-    )
+    ),
+    regexp = "Must specify either `variance` or both `epsilon` and `sensitivity`.",
+    fixed = TRUE
   )
-  
 })

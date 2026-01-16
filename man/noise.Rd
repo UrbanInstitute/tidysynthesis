@@ -15,6 +15,30 @@ noise(add_noise = FALSE, mode = "regression", noise_func = NULL, ...)
 
 \item{...}{Optional named additional arguments to pass to \code{noise_func(...)}}
 }
+\value{
+A \code{noise} object
+}
 \description{
 Create a noise object
+}
+\examples{
+
+# create default noise object
+noise()
+
+# create noise object for classification
+noise(
+  add_noise = TRUE,
+  mode = "classification",
+  noise_func = add_noise_cat_unif
+)
+
+# create noise object for regression
+noise(
+  add_noise = TRUE,
+  mode = "regression",
+  noise_func = add_noise_kde,
+  n_ntiles = 10
+)
+
 }

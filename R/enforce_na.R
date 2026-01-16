@@ -6,8 +6,13 @@
 #' are labelled missing in an _NA variable to missing in the corresponding 
 #' variable
 #' 
-#' @export
+#' @examples
 #' 
+#' example_na_expanded <- expand_na(data = example_na)
+#' 
+#' enforce_na(data = example_na_expanded)
+#' 
+#' @export
 enforce_na <- function(data) {
   
   # create vectors with variable names

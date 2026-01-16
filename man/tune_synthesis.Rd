@@ -33,3 +33,61 @@ A \code{post_tunesynth} object.
 \description{
 Generate syntheses from multiple \code{presynth} objects.
 }
+\examples{
+
+rm <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+) 
+
+dt_mod_reg <- parsnip::decision_tree() |>
+  parsnip::set_engine(engine = "rpart") |>
+  parsnip::set_mode(mode = "regression")
+
+dt_mod_reg_cp <- parsnip::decision_tree(cost_complexity = 0.01) |>
+  parsnip::set_engine(engine = "rpart") |>
+  parsnip::set_mode(mode = "regression")
+
+dt_mod_class <- parsnip::decision_tree() |>
+  parsnip::set_engine(engine = "rpart") |>
+  parsnip::set_mode(mode = "classification")
+
+# synth specs
+synth_spec1 <- synth_spec(
+  default_regression_model = dt_mod_reg,
+  default_regression_sampler = sample_rpart,
+  default_classification_model = dt_mod_class,
+  default_classification_sampler = sample_rpart
+)
+
+synth_spec2 <- synth_spec(
+  default_regression_model = dt_mod_reg_cp,
+  default_regression_sampler = sample_rpart,
+  default_classification_model = dt_mod_class,
+  default_classification_sampler = sample_rpart
+)
+
+
+presynth1 <- presynth(
+  roadmap = rm,
+  synth_spec = synth_spec1
+)
+
+presynth2 <- presynth(
+  roadmap = rm,
+  synth_spec = synth_spec2
+)
+
+postproc_f_null <- function(synth_id, synth_name, postsynth) {
+  return(postsynth[["synthetic_data"]])
+}
+
+tune_synthesis(
+  presynths = list(presynth1, presynth2),
+  postprocessing_func = postproc_f_null,
+  seed = 12345
+)
+
+
+
+}

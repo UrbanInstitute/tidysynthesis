@@ -15,34 +15,46 @@ roadmap <- roadmap(conf_data = df, start_data = df_start)
 test_that("input errors work correctly", {
   
   # type checking
-  expect_error(construct_samplers(roadmap = "no"))
+  expect_error(
+    construct_samplers(roadmap = "no"),
+    regexp = "`roadmap` must be a roadmap object",
+    fixed = TRUE
+  )
   
   # no samplers specified
   expect_error(
     construct_samplers(
       roadmap = roadmap
-    )
+    ),
+    regexp = "No sampler(s) specified",
+    fixed = TRUE
   )
   
   expect_error(
     construct_samplers(
       roadmap = roadmap,
       default_regression_sampler = "notasampler"
-    )
+    ),
+    regexp = "Default regression sampler(s) has incorrect type",
+    fixed = TRUE
   )
   
   expect_error(
     construct_samplers(
       roadmap = roadmap,
       default_classification_sampler = "notasampler"
-    )
+    ),
+    regexp = "Default classification sampler(s) has incorrect type",
+    fixed = TRUE
   )
   
   expect_error(
     construct_samplers(
       roadmap = roadmap,
       custom_samplers = "notsamplers"
-    )
+    ),
+    regexp = "Custom sampler(s) list missing variable without sampler(s) specification: colorcutpricetable",
+    fixed = TRUE
   )
   
   # inclusion checking for missing custom specifications
@@ -52,7 +64,9 @@ test_that("input errors work correctly", {
       custom_samplers = list(
         list("vars" = c("color", "cut"), "sampler" = sample_ranger)
       )
-    )
+    ),
+    regexp = "Custom sampler(s) list missing variable without sampler(s) specification: pricetable",
+    fixed = TRUE
   )
   
   # duplicate custom specifications
@@ -63,7 +77,9 @@ test_that("input errors work correctly", {
         list("vars" = c("color", "cut"), "sampler" = sample_ranger),
         list("vars" = c("price", "table", "color"), "sampler" = sample_ranger)
       )
-    )
+    ),
+    regexp = "Custom sampler(s) list has repeated variable names: color",
+    fixed = TRUE
   )
   
   # including only regression or classification samplers when both are needed
@@ -71,14 +87,18 @@ test_that("input errors work correctly", {
     construct_samplers(
       roadmap = roadmap,
       default_regression_sampler = sample_rpart
-    )
+    ),
+    regexp = "Variables missing sampler(s) specification: color, cut",
+    fixed = TRUE
   )
   
   expect_error(
     construct_samplers(
       roadmap = roadmap,
       default_classification_sampler = sample_rpart
-    )
+    ),
+    regexp = "Variables missing sampler(s) specification: price, table",
+    fixed = TRUE
   )
   
 })
@@ -135,7 +155,7 @@ test_that("construct_samplers() correctly handles variables without variation ",
     fctr_var2 = factor(c("a", "b", "c"))
   )
   
-  start_data <- conf_data %>%
+  start_data <- conf_data |>
     dplyr::select(start)
   
   roadmap <- roadmap(conf_data = conf_data, start_data = start_data) |>
@@ -155,7 +175,7 @@ test_that("construct_samplers() correctly handles variables without variation ",
 test_that("construct_samplers() works identically with length 1 sequence", {
   
   rmap <- roadmap(
-    conf_data = df %>% dplyr::select(carat, price),
+    conf_data = df |> dplyr::select(carat, price),
     start_data = df_start
   )
   

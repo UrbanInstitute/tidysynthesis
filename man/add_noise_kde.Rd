@@ -57,3 +57,16 @@ A numeric vector with noise added to each prediction
 Add normal noise to predicted values with variances calculated for ntiles
 using Gaussian kernel density estimators
 }
+\examples{
+
+add_noise_kde(
+  model = NULL,
+  new_data = tibble::tibble(x = 1:100),
+  conf_model_data = tibble::tibble(x = 1:100),
+  outcome_var = "x",
+  col_schema = NULL,
+  pred = 1:100,
+  n_ntiles = 4
+)
+
+}

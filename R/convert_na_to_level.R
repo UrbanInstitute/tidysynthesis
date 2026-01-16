@@ -1,12 +1,21 @@
-#' 
 #' Convert `NA` values to `"NA"` for categorical variables
 #'
 #' @param data A data frame or tibble
 #'
 #' @return A data frame or tibble with `NA` converted to `"NA"`
 #' 
-#' @export
+#' @examples
 #' 
+#' data <- data.frame(
+#'   x1 = c(1, 2, NA),
+#'   x2 = c("1", "2", NA),
+#'   x3 = factor(c("1", "2", NA)),
+#'   x4 = factor(c("b", NA, "a"), levels = c("b", NA, "a"), ordered = TRUE)
+#' )
+#' 
+#' convert_na_to_level(data)
+#' 
+#' @export
 convert_na_to_level <- function(data) {
   
   na_to_level <- function(x) {
@@ -49,7 +58,7 @@ convert_na_to_level <- function(data) {
     
   }
 
-  data_converted <- data %>%
+  data_converted <- data |>
     dplyr::mutate(dplyr::across(.cols = dplyr::everything(), .fns = na_to_level))
   
   return(data_converted)

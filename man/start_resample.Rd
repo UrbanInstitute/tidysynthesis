@@ -23,6 +23,17 @@ budget under epsilon differential privacy.}
 \item{support}{A string that specifies the method of resampling from the \code{start_data}
 domain.}
 }
+\value{
+A \code{start_method} object for resampling starting data
+}
 \description{
 Specify a resampling scheme for start_data
+}
+\examples{
+ 
+ 
+start_method(
+  start_func = start_resample, n = 1000
+)
+ 
 }

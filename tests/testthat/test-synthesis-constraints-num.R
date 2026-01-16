@@ -1,8 +1,8 @@
-data <- dplyr::select(mtcars, cyl, mpg, disp, vs) %>%
+data <- dplyr::select(mtcars, cyl, mpg, disp, vs) |>
   dplyr::mutate(
     cyl_factor = factor(cyl),
     vs = factor(vs, levels = c("0", "1", "2"))
-  ) %>%
+  ) |>
   dplyr::mutate(cyl = dplyr::if_else(cyl == 6, NA, cyl))
 
 start_data <- dplyr::select(data, cyl)
@@ -20,21 +20,21 @@ constraints_df_num <- tibble::tribble(
 
 
 roadmap1 <- roadmap(conf_data = data, 
-                    start_data = start_data) %>%
-  add_sequence_manual(cyl_factor, mpg, disp, vs) %>%
+                    start_data = start_data) |>
+  add_sequence_manual(cyl_factor, mpg, disp, vs) |>
   update_constraints(constraints_df_num = constraints_df_num,
                      max_z_num = 0)
 
 roadmap2 <- roadmap(conf_data = data, 
-                    start_data = start_data) %>%
-  add_sequence_manual(cyl_factor, mpg, disp, vs) %>%
+                    start_data = start_data) |>
+  add_sequence_manual(cyl_factor, mpg, disp, vs) |>
   update_constraints(constraints_df_num = constraints_df_num,
                      max_z_num = 3)
 
 step1 <- function(x) {
   
-  x %>%
-    recipes::step_center(recipes::all_numeric_predictors()) %>%
+  x |>
+    recipes::step_center(recipes::all_numeric_predictors()) |>
     recipes::step_impute_mean(cyl)
   
 }
@@ -48,12 +48,12 @@ noise1 <- noise(
 )
 
 # algos
-rpart_mod_cat <- parsnip::decision_tree() %>% 
-  parsnip::set_mode("classification") %>%
+rpart_mod_cat <- parsnip::decision_tree() |> 
+  parsnip::set_mode("classification") |>
   parsnip::set_engine("rpart")
 
-rpart_mod_num <- parsnip::decision_tree() %>%
-  parsnip::set_mode("regression") %>%
+rpart_mod_num <- parsnip::decision_tree() |>
+  parsnip::set_mode("regression") |>
   parsnip::set_engine("rpart")
 
 
@@ -120,11 +120,11 @@ test_that("constraints enforced properly", {
   for (s in list(synth1, synth2)) {
     
     expect_true(all(s$synthetic_data$mpg > 0))
-    expect_true(all(s$synthetic_data %>%
-                      dplyr::filter(cyl == 8) %>%
+    expect_true(all(s$synthetic_data |>
+                      dplyr::filter(cyl == 8) |>
                       dplyr::pull(mpg) < 12))
-    expect_true(all(s$synthetic_data %>%
-                      dplyr::filter(cyl == 6) %>%
+    expect_true(all(s$synthetic_data |>
+                      dplyr::filter(cyl == 6) |>
                       dplyr::pull(mpg) < 15))
     
   }

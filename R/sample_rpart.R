@@ -8,6 +8,46 @@
 #' 
 #' @return A numeric vector of predictions
 #' 
+#' @examples
+#' 
+#' rpart_mod_reg <- parsnip::decision_tree() |>
+#'   parsnip::set_engine("rpart") |>
+#'   parsnip::set_mode(mode = "regression")
+#' 
+#'  regression_rec <- recipes::recipe(inctot ~ ., data = acs_conf)
+#'  
+#'  model_reg <- workflows::workflow() |>
+#'    workflows::add_model(spec = rpart_mod_reg) |>
+#'    workflows::add_recipe(recipe = regression_rec) |>
+#'    parsnip::fit(data = acs_conf)
+#'  
+#'  set.seed(1)
+#'  sample1 <- sample_rpart(
+#'    model = model_reg, 
+#'    new_data = acs_conf[1:3, ], 
+#'    conf_data = acs_conf
+#'  )
+#'  
+#' @examples
+#' 
+#' rpart_mod_class <- parsnip::decision_tree() |>
+#'   parsnip::set_engine("rpart") |>
+#'   parsnip::set_mode(mode = "classification")
+#' 
+#' classification_rec <- recipes::recipe(hcovany ~ ., data = acs_conf)
+#' 
+#' model_reg <- workflows::workflow() |>
+#'   workflows::add_model(spec = rpart_mod_class) |>
+#'   workflows::add_recipe(recipe = classification_rec) |>
+#'   parsnip::fit(data = acs_conf)
+#' 
+#' set.seed(1)
+#' sample1 <- sample_rpart(
+#'   model = model_reg, 
+#'   new_data = acs_conf[1:10, ], 
+#'   conf_data = acs_conf
+#' )
+#' 
 #' @export
 sample_rpart <- function(model, new_data, conf_data, ignore_zeros = TRUE) {
   
@@ -86,7 +126,7 @@ sample_rpart <- function(model, new_data, conf_data, ignore_zeros = TRUE) {
     nodes_synth <- data.frame(
       index = seq.int(length(nodes_synth)),
       nodes_synth_before = nodes_synth
-    ) %>%
+    ) |>
       dplyr::arrange(.data$nodes_synth_before)
     
     # predict the node for each observation in the confidential data
@@ -114,9 +154,9 @@ sample_rpart <- function(model, new_data, conf_data, ignore_zeros = TRUE) {
       ) 
     
     # sample values from the donors and calculate ldiversity
-    sampled_values <- donors %>%
-      dplyr::group_by(.data$nodes) %>%
-      tidyr::nest() %>%
+    sampled_values <- donors |>
+      dplyr::group_by(.data$nodes) |>
+      tidyr::nest() |>
       dplyr::mutate(
         yhat = purrr::map(
           .x = .data$data, 
@@ -126,13 +166,13 @@ sample_rpart <- function(model, new_data, conf_data, ignore_zeros = TRUE) {
           .x = .data$data, 
           .f = function(i) calc_ldiversity(i$y)
         )
-      ) %>%
-      dplyr::ungroup() %>%
+      ) |>
+      dplyr::ungroup() |>
       dplyr::select(dplyr::all_of(c("nodes", "yhat", "ldiversity")))
     
     # unnest the sampled values
-    sampled_values <- sampled_values %>%
-      tidyr::unnest(cols = c("yhat", "ldiversity")) %>%
+    sampled_values <- sampled_values |>
+      tidyr::unnest(cols = c("yhat", "ldiversity")) |>
       dplyr::arrange(.data$nodes)
     
     # combine and sort so the predicted values match the order of the synthetic 
@@ -141,7 +181,7 @@ sample_rpart <- function(model, new_data, conf_data, ignore_zeros = TRUE) {
       dplyr::bind_cols(
         nodes_synth,
         sampled_values,
-      ) %>%
+      ) |>
       dplyr::arrange(.data$index)
     
     # pull and return the vectors or interest

@@ -4,8 +4,8 @@
 #' @param predictions A data frame of predictions with a variable .pred
 #'
 #' @return A vector of transformed predictions
+#' @noRd
 #' 
-#' @export
 garnish <- function(object, predictions) {
   
   # subset to the steps that affect the outcome variable

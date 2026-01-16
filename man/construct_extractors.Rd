@@ -23,3 +23,48 @@ A named list of extractors
 \description{
 Construct a list of extractors for parsnip models
 }
+\examples{
+
+# construct_extractors() can create a sequence of extractors using a fully-default 
+# approach, a hybrid approach, or a fully-customized approach. All approaches
+# require a roadmap and extractors. 
+
+rm <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+)
+
+# Fully-default approach
+
+construct_extractors(
+  roadmap = rm, 
+  default_extractor = parsnip::extract_fit_engine
+)
+
+# Hybrid approach
+
+construct_extractors(
+  roadmap = rm, 
+  default_extractor = parsnip::extract_fit_engine,
+  custom_extractors = list(
+    list(vars = "hcovany", extractor = parsnip::extract_parameter_dials)
+  )
+)
+
+# Fully-customized approach
+
+construct_extractors(
+  roadmap = rm, 
+  custom_extractors = list(
+    list(
+      vars = c("hcovany", "empstat", "classwkr"), 
+      extractor = parsnip::extract_fit_engine
+    ),
+    list(
+      vars = c("age", "famsize", "transit_time", "inctot"), 
+      extractor = parsnip::extract_parameter_dials
+    )
+  )
+)
+
+}

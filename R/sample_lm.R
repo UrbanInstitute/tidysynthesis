@@ -6,6 +6,26 @@
 #'
 #' @return A numeric vector of predictions
 #' 
+#' @examples
+#' 
+#' lm_mod <- parsnip::linear_reg() |>
+#'   parsnip::set_engine("lm") |>
+#'   parsnip::set_mode(mode = "regression")
+#' 
+#' regression_rec <- recipes::recipe(inctot ~ ., data = acs_conf)
+#' 
+#' model_reg <- workflows::workflow() |>
+#'   workflows::add_model(spec = lm_mod) |>
+#'   workflows::add_recipe(recipe = regression_rec) |>
+#'   parsnip::fit(data = acs_conf)
+#' 
+#' set.seed(1)
+#' sample1 <- sample_lm(
+#'   model = model_reg, 
+#'   new_data = acs_conf[1:3, ], 
+#'   conf_data = acs_conf
+#' )
+#' 
 #' @export
 sample_lm <- function(model, new_data, conf_data) {
   

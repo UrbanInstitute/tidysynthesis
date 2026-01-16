@@ -14,9 +14,10 @@
 #' @return A `constraints` object.
 #' 
 #' @examples
+#' 
 #' constraints(
 #'   schema = schema(
-#'     conf_data = mtcars %>% dplyr::mutate(vs = factor(vs)),
+#'     conf_data = mtcars |> dplyr::mutate(vs = factor(vs)),
 #'     start_data = dplyr::select(mtcars, cyl)
 #'   ),
 #'   constraints_df_num = tibble::tribble(
@@ -279,8 +280,7 @@ is_constraints <- function(x) {
 #' Validate constraints
 #' 
 #' @param roadmap A `roadmap` object
-#' 
-#' @export 
+#' @noRd
 #' 
 validate_constraints <- function(roadmap) {
   
@@ -517,8 +517,30 @@ NULL
 
 #'
 #' @rdname constraints_api
-#' @export 
 #' 
+#' @return A roadmap object with added constraints.
+#'
+#' @examples
+#' 
+#' rm <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' )
+#' 
+#' constraints_df_num <- 
+#'   tibble::tribble(~var, ~min, ~max, ~conditions,
+#'                   "transit_time", 0, 300, "TRUE")
+#' 
+#' constraints <- constraints(
+#'   schema = rm[["schema"]],
+#'   constraints_df_num = constraints_df_num,
+#'   max_z_num = 0
+#' )
+#' 
+#' rm |>
+#'   add_constraints(constraints)
+#' 
+#' @export 
 add_constraints <- function(roadmap, constraints) {
   
   stopifnot(
@@ -536,8 +558,30 @@ add_constraints <- function(roadmap, constraints) {
 
 #'
 #' @rdname constraints_api
-#' @export 
 #' 
+#' @return A roadmap object with updated constraints. 
+#'
+#' @examples
+#' 
+#' rm <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' )
+#' 
+#' constraints_df_num <- 
+#'   tibble::tribble(~var, ~min, ~max, ~conditions,
+#'                   "transit_time", 0, 300, "TRUE")
+#' 
+#' constraints <- constraints(
+#'   schema = rm[["schema"]],
+#'   constraints_df_num = constraints_df_num,
+#'   max_z_num = 0
+#' )
+#' 
+#' rm |>
+#'   update_constraints(constraints)
+#'
+#' @export 
 update_constraints <- function(roadmap, ...) {
   
   stopifnot(
@@ -585,8 +629,32 @@ update_constraints <- function(roadmap, ...) {
 
 #'
 #' @rdname constraints_api
-#' @export 
 #' 
+#' @return A roadmap object with reset constraints.
+#'
+#' @examples
+#' 
+#' rm <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' )
+#' 
+#' constraints_df_num <- 
+#'   tibble::tribble(~var, ~min, ~max, ~conditions,
+#'                   "transit_time", 0, 300, "TRUE")
+#' 
+#' constraints <- constraints(
+#'   schema = rm[["schema"]],
+#'   constraints_df_num = constraints_df_num,
+#'   max_z_num = 0
+#' )
+#' 
+#' rm <- rm |>
+#'   add_constraints(constraints)
+#' 
+#' reset_constraints(rm)
+#' 
+#' @export 
 reset_constraints <- function(roadmap) {
   
   stopifnot(
@@ -600,6 +668,33 @@ reset_constraints <- function(roadmap) {
 }
 
 #'
+#' Print the constraints object to the console with formatting
+#'
+#' @param x A `constraints` object
+#' @param ... further arguments passed to or from other methods (not currently
+#'   used).
+#'
+#' @return Invisibly returns the input `constraints` object. 
+#'
+#' @examples
+#'
+#' rm <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' )
+#' 
+#' constraints_df_num <- 
+#'   tibble::tribble(~var, ~min, ~max, ~conditions,
+#'                   "transit_time", 0, 300, "TRUE")
+#' 
+#' constraints <- constraints(
+#'   schema = rm[["schema"]],
+#'   constraints_df_num = constraints_df_num,
+#'   max_z_num = 0
+#' )
+#' 
+#' print(constraints)
+#' 
 #' @export 
 print.constraints <- function(x, ...) {
   
@@ -608,7 +703,7 @@ print.constraints <- function(x, ...) {
     
     if (is.data.frame(z)) { return( base::nrow(z)) } else { return(0) }
     
-  }) %>%
+  }) |>
     stats::setNames(names(x$constraints_num))
   
   cat("Numeric constraints specified per variable: \n")
@@ -624,7 +719,7 @@ print.constraints <- function(x, ...) {
     
     if (is.data.frame(z)) { return( base::nrow(z)) } else { return(0) }
     
-  }) %>%
+  }) |>
     stats::setNames(names(x$constraints_cat))
   
   cat("Categorical constraints specified per variable: \n")

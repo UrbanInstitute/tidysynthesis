@@ -1,27 +1,27 @@
-dt_reg_mod <- parsnip::decision_tree() %>%
-  parsnip::set_engine("rpart") %>%
+dt_reg_mod <- parsnip::decision_tree() |>
+  parsnip::set_engine("rpart") |>
   parsnip::set_mode("regression")
 
-dt_class_mod <- parsnip::decision_tree() %>%
-  parsnip::set_engine("rpart") %>%
+dt_class_mod <- parsnip::decision_tree() |>
+  parsnip::set_engine("rpart") |>
   parsnip::set_mode("classification")
 
-lm_mod <- parsnip::linear_reg() %>%
-  parsnip::set_engine("lm") %>%
+lm_mod <- parsnip::linear_reg() |>
+  parsnip::set_engine("lm") |>
   parsnip::set_mode(mode = "regression")
 
-logistic_mod <- parsnip::logistic_reg() %>%
-  parsnip::set_engine("glm") %>%
+logistic_mod <- parsnip::logistic_reg() |>
+  parsnip::set_engine("glm") |>
   parsnip::set_mode(mode = "classification")
 
-rf_mod <- parsnip::rand_forest(trees = 500, min_n = 1) %>%
-  parsnip::set_engine(engine = "ranger") %>%
+rf_mod <- parsnip::rand_forest(trees = 500, min_n = 1) |>
+  parsnip::set_engine(engine = "ranger") |>
   parsnip::set_mode(mode = "classification")
 
 
 
 step1 <- function(x) {
-  x %>%
+  x |>
     recipes::step_center(recipes::all_predictors(), id = "center")
 }
 
@@ -63,45 +63,59 @@ test_that("validate_custom_components works as expected", {
       list(list("vars" = c("a", "b"), "model" = dt_reg_mod),
            "not_a_list"), 
       "model"
-    )
-    
+    ),
+    regexp = "Some custom model elements are not lists.",
+    fixed = TRUE
   )
+
   # error when providing incorrect list names
   expect_error(
     .validate_custom_components(
       list(list("notvars" = c("a", "b"), "model" = dt_reg_mod)), "model"
-    )
+    ),
+    regexp = "Some custom model elements are missing the two required \n         sublist names, 'vars' and 'model'",
+    fixed = TRUE
   )
   
   expect_error(
     .validate_custom_components(
       list(list("vars" = c("a", "b"), "notmodel" = dt_reg_mod)), "model"
-    )
+    ),
+    regexp = "Some custom model elements are missing the two required \n         sublist names, 'vars' and 'model'",
+    fixed = TRUE
   )
   
   expect_error(
     .validate_custom_components(
       list(list("vars" = c("a", "b"), "model" = dt_reg_mod, "a" = 1)), "model"
-    )
+    ),
+    regexp = "Some custom model elements are missing the two required \n         sublist names, 'vars' and 'model'",
+    fixed = TRUE
   )
   
   # error when providing incorrect types
   expect_error(
     .validate_custom_components(
       list(list("vars" = c(1, 2), "model" = dt_reg_mod)), "model"
-    )
+    ),
+    regexp = "Some custom model variable names are not strings.",
+    fixed = TRUE
   )
   
   expect_error(
     .validate_custom_components(
       list(list("vars" = c("a", "b"), "model" = "not a model")), "model"
-    )
+    ),
+    regexp = "Some custom model elements have incorrect type.",
+    fixed = TRUE
   )
   
   expect_error(
     .validate_custom_components(
       list(list("vars" = c("a", "b"), "model" = dt_reg_mod)), "tuner"
-    )
+    ),
+    regexp = "Some custom tuner elements are missing the two required \n         sublist names, 'vars' and 'tuner'",
+    fixed = TRUE
   )
   
 })
@@ -123,8 +137,16 @@ test_that(".map_model_to_default_sampler", {
   )
   
   # type checking
-  expect_error(.map_model_to_default_sampler("not a model"))
-  expect_error(.map_model_to_default_sampler(parsnip::boost_tree()))
+  expect_error(
+    .map_model_to_default_sampler("not a model"),
+    regexp = ".is_model(model) is not TRUE",
+    fixed = TRUE
+  )
+  expect_error(
+    .map_model_to_default_sampler(parsnip::boost_tree()),
+    regexp = "Unrecognized engine: xgboost. Please either supply\n         a specific sampler or use a recognized engine:rpart, ranger, lm, glm",
+    fixed = TRUE
+  )
   
 })
 

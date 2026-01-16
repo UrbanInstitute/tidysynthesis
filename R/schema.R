@@ -100,14 +100,14 @@ new_schema <- function(conf_data,
   synth_vars <- setdiff(names(conf_data), names(start_data))
   
   # next, infer variable names with no observed variation
-  no_variation <- conf_data %>%
-    dplyr::select(dplyr::all_of(synth_vars)) %>%
+  no_variation <- conf_data |>
+    dplyr::select(dplyr::all_of(synth_vars)) |>
     purrr::map_lgl(.f = ~ length(unique(.x)) == 1)
   
-  dtypes <- conf_data %>% 
+  dtypes <- conf_data |> 
     purrr::map(.f = ~ pillar::type_sum(.x))
   
-  col_schema_inf <- conf_data %>%
+  col_schema_inf <- conf_data |>
     purrr::map(.f = ~ list("dtype" = pillar::type_sum(.x),
                            "levels" = NULL,
                            "na_value" = NA))
@@ -116,7 +116,7 @@ new_schema <- function(conf_data,
   factor_cols <- col_schema_inf[dtypes == "fct"]
   for (fc in names(factor_cols)) {
     
-    col_schema_inf[[fc]][["levels"]] <- dplyr::pull(conf_data, fc) %>% 
+    col_schema_inf[[fc]][["levels"]] <- dplyr::pull(conf_data, fc) |> 
       levels()
     
   }
@@ -139,7 +139,7 @@ new_schema <- function(conf_data,
   }
   
   # calculate the proportions of values that are missing
-  col_schema_na <- conf_data %>%
+  col_schema_na <- conf_data |>
     purrr::map(.f = ~ mean(is.na(.x)))
   
   for (col in names(col_schema_inf)) {
@@ -256,6 +256,24 @@ validate_schema <- function(roadmap) {
   
 }
 
+#' Print the schema object to the console with formatting
+#'
+#' @param x A `schema` object
+#' @param ... further arguments passed to or from other methods (not currently
+#'   used).
+#' 
+#' @return Invisibly returns the input `schema` object.
+#' 
+#' @examples
+#' 
+#' # default inferred schema
+#' schema1 <- schema(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' )
+#' 
+#' print(schema1)
+#' 
 #' @export
 print.schema <- function(x, ...) {
   
@@ -285,8 +303,26 @@ NULL
 
 #'
 #' @rdname schema_api
-#' @export 
 #' 
+#' @return A roadmap object with added schema.
+#' 
+#' @examples
+#' 
+#' rm <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' )
+#' 
+#' acs_schema <- schema(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw,
+#'   na_numeric_to_ind = TRUE
+#' )
+#' 
+#' rm |>
+#'   add_schema(schema = acs_schema)
+#' 
+#' @export 
 add_schema <- function(roadmap, schema) { 
   
   stopifnot(
@@ -302,8 +338,20 @@ add_schema <- function(roadmap, schema) {
 
 #'
 #' @rdname schema_api
-#' @export 
 #' 
+#' @return A roadmap object with updated schema.
+#' 
+#' @examples
+#' 
+#' rm <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' )
+#' 
+#' rm |>
+#'   update_schema(na_numeric_to_ind = TRUE)
+#' 
+#' @export 
 update_schema <- function(roadmap, ...) {
   
   stopifnot("`roadmap` must be a roadmap object" = { is_roadmap(roadmap) })
@@ -349,8 +397,22 @@ update_schema <- function(roadmap, ...) {
 
 #'
 #' @rdname schema_api
-#' @export 
 #' 
+#' @return A roadmap object with reset schema.
+#' 
+#' @examples
+#' 
+#' rm <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' )
+#' 
+#' rm <- rm |>
+#'   update_schema(na_numeric_to_ind = TRUE)
+#' 
+#' reset_schema(roadmap = rm)
+#'   
+#' @export 
 reset_schema <- function(roadmap) {
   
   stopifnot("`roadmap` must be a roadmap object" = { is_roadmap(roadmap) })

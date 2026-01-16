@@ -30,27 +30,37 @@ test_that("Unspecified noise raises a warning, not an error", {
 test_that("input errors work correctly", {
   
   # type checking
-  expect_error(construct_noise(roadmap = "no"))
-  
   expect_error(
-    construct_noise(
-      roadmap = roadmap,
-      default_regression_noise = "notanoise"
-    )
+    construct_noise(roadmap = "no"),
+    regexp = "`roadmap` must be a roadmap object",
+    fixed = TRUE
   )
   
   expect_error(
     construct_noise(
       roadmap = roadmap,
-      default_classification_noise = "notanoise"
-    )
+      default_regression_noise = "notnoise"
+    ),
+    regexp = "Default regression noise(s) has incorrect type",
+    fixed = TRUE
+  )
+  
+  expect_error(
+    construct_noise(
+      roadmap = roadmap,
+      default_classification_noise = "notnoise"
+    ),
+    regexp = "Default classification noise(s) has incorrect type",
+    fixed = TRUE
   )
   
   expect_error(
     construct_noise(
       roadmap = roadmap,
       custom_noise = "notnoises"
-    )
+    ),
+    regexp = "subscript out of bounds",
+    fixed = TRUE
   )
   
 })
@@ -112,7 +122,7 @@ test_that("construct_noise() correctly handles variables without variation ", {
     fctr_var2 = factor(c("a", "b", "c"))
   )
   
-  start_data <- conf_data %>%
+  start_data <- conf_data |>
     dplyr::select(start)
   
   roadmap <- roadmap(conf_data = conf_data, start_data = start_data) |>

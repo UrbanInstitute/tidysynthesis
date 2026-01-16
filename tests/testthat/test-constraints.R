@@ -1,10 +1,10 @@
 # create a roadmap
-data <- dplyr::select(mtcars, mpg, cyl, disp, carb, vs, am, gear) %>%
+data <- dplyr::select(mtcars, mpg, cyl, disp, carb, vs, am, gear) |>
   dplyr::mutate(vs = factor(vs), 
                 am = factor(am),
                 gear = factor(gear))
 
-start_data <- dplyr::select(data, cyl) %>%
+start_data <- dplyr::select(data, cyl) |>
   dplyr::slice_sample(n = 30)
 
 schema <- schema(conf_data = data, start_data = start_data)
@@ -59,38 +59,56 @@ constraints_list_cat <- list(
 test_that("constraints() input errors work ", {
 
   # schema should be a schema
-  expect_error(constraints(schema = 1))
+  expect_error(
+    constraints(schema = 1),
+    regexp = "`schema` must be a schema object",
+    fixed = TRUE
+  )
 
   # numeric constraints should be a data.frame
-  expect_error(constraints(schema = schema, constraints_df_num = 1))
-  
+  expect_error(
+    constraints(
+      schema = schema, 
+      constraints_df_num = 1
+    ),
+    regexp = "`constraints_df_num` must be a data.frame if supplied",
+    fixed = TRUE
+  )
   # numeric constraints should be a properly formatted data.frame
   expect_error(
     constraints(
       schema = schema, 
-      constraints_df_num = constraints_df_num %>% 
+      constraints_df_num = constraints_df_num |> 
         dplyr::select(
           dplyr::all_of(
             c("var", "min", "max")
           )
         )
-    )
+    ),
+    regexp = "constraints_df_num missing required column(s): conditions",
+    fixed = TRUE
   )
   
   # categorical constraints should be a data.frame
-  expect_error(constraints(schema = schema, constraints_df_cat = 1))
+  expect_error(
+    constraints(schema = schema, constraints_df_cat = 1),
+    regexp = "`constraints_df_cat` must be a data.frame if supplied",
+    fixed = TRUE
+  )
   
   # numeric constraints should be a properly formatted data.frame
   expect_error(
     constraints(
       schema = schema, 
-      constraints_df_cat = constraints_df_cat %>% 
+      constraints_df_cat = constraints_df_cat |> 
         dplyr::select(
           dplyr::all_of(
             c("var", "allowed", "forbidden")
           )
         )
-    )
+    ),
+    regexp = "constraints_df_cat missing required column(s): conditions",
+    fixed = TRUE
   )
   
   # max_z_num should be a non-negative integer
@@ -99,7 +117,9 @@ test_that("constraints() input errors work ", {
       schema = schema, 
       constraints_df_num = constraints_df_num, 
       max_z_num = -1
-    )
+    ),
+    regexp = "`max_z_num` values must be non-negative",
+    fixed = TRUE
   )
   
   expect_error(
@@ -107,7 +127,9 @@ test_that("constraints() input errors work ", {
       schema = schema, 
       constraints_df_num = constraints_df_num, 
       max_z_num = 1.5
-    )
+    ),
+    regexp = "`max_z_num` values must be integers",
+    fixed = TRUE
   )
   
   # max_z_cat should be a non-negative integer
@@ -116,7 +138,9 @@ test_that("constraints() input errors work ", {
       schema = schema, 
       constraints_df_cat = constraints_df_cat, 
       max_z_num = -1
-    )
+    ),
+    regexp = "`max_z_num` values must be non-negative",
+    fixed = TRUE
   )
   
   expect_error(
@@ -124,7 +148,9 @@ test_that("constraints() input errors work ", {
       schema = schema, 
       constraints_df_cat = constraints_df_cat, 
       max_z_num = 1.5
-    )
+    ),
+    regexp = "`max_z_num` values must be integers",
+    fixed = TRUE
   )
 
 })
@@ -212,14 +238,14 @@ test_that("synthesize() works with constraints() ", {
   )
   
   roadmap <- roadmap(
-    conf_data = data %>% dplyr::select(-c(vs, am, gear)),
+    conf_data = data |> dplyr::select(-c(vs, am, gear)),
     start_data = start_data, 
     constraints = constraints_custom_p
-  ) %>%
+  ) |>
     add_sequence_numeric(everything(), method = "correlation", cor_var = "mpg")
   
-  dt_mod <- parsnip::decision_tree() %>%
-    parsnip::set_engine(engine = "rpart") %>%
+  dt_mod <- parsnip::decision_tree() |>
+    parsnip::set_engine(engine = "rpart") |>
     parsnip::set_mode(mode = "regression")
   
   
@@ -275,7 +301,9 @@ test_that("update_constraints invalid kwargs", {
         start_data = start_data, 
       ), 
       invalid_kwarg = constraints_df_cat
-    )
+    ),
+    regexp = "Invalid update_constraints argument: invalid_kwarg",
+    fixed = TRUE
   )
   
 })
@@ -321,17 +349,25 @@ test_that("print.constraints", {
 test_that("validate_constraints variable name checking", {
   
   # expect invalid variable names to raise error
-  expect_error({
-    rmap <- roadmap(conf_data = data, start_data = start_data)
-    rmap$constraints$constraints_num <- list("invalid" = constraints_df_num)
-    validate_constraints(rmap)
-  })
+  expect_error(
+    {
+      rmap <- roadmap(conf_data = data, start_data = start_data)
+      rmap$constraints$constraints_num <- list("invalid" = constraints_df_num)
+      validate_constraints(rmap)
+    },
+    regexp = "Numeric constraint variable(s) not set to be synthesized: invalid",
+    fixed = TRUE
+  )
   
-  expect_error({
-    rmap <- roadmap(conf_data = data, start_data = start_data)
-    rmap$constraints$constraints_cat <- list("invalid" = constraints_df_cat)
-    validate_constraints(rmap)
-  })
+  expect_error(
+    {
+      rmap <- roadmap(conf_data = data, start_data = start_data)
+      rmap$constraints$constraints_cat <- list("invalid" = constraints_df_cat)
+      validate_constraints(rmap)
+    },
+    regexp = "Categorical constraint variable(s) not set to be synthesized: invalid",
+    fixed = TRUE
+  )
   
 })
 

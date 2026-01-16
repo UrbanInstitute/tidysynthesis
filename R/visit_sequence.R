@@ -9,6 +9,7 @@
 #' @return A `visit_sequence` object.
 #'
 #' @examples
+#' 
 #' df <- data.frame(
 #'   factor_var = c("1", "1", "2"),
 #'   vara = c(10000, 20000, 100000),
@@ -19,14 +20,19 @@
 #' 
 #' start_df <- dplyr::select(df, factor_var)
 #' 
-#' schema1 <- schema(conf_data = dplyr::select(df, -weight),
-#'                   start_data = start_df)
+#' schema1 <- schema(
+#'   conf_data = dplyr::select(df, -weight),
+#'   start_data = start_df
+#' )
+#'                   
 #' vs1 <- visit_sequence(
 #'   schema = schema1
 #' )
 #' 
-#' schema2 <- schema(conf_data = df,
-#'                   start_data = start_df)
+#' schema2 <- schema(
+#'   conf_data = df,
+#'   start_data = start_df
+#' )
 #'
 #' vs2 <- visit_sequence(
 #'   schema = schema2,
@@ -62,6 +68,8 @@ visit_sequence <- function(schema,
 #'   visit sequence. 
 #'
 #' @return A `visit_sequence` object.
+#' 
+#' @noRd
 #' 
 new_visit_sequence <- function(schema, 
                                weight_var = NULL,
@@ -105,7 +113,7 @@ is_visit_sequence <- function(x) {
 #' 
 #' @return NULL
 #' 
-#' @export 
+#' @noRd
 #' 
 validate_visit_sequence <- function(roadmap) {
   
@@ -184,14 +192,31 @@ validate_visit_sequence <- function(roadmap) {
 }
 
 
+#' Print method for `visit_sequence` objects
+#' 
+#' @param x A `visit_sequence` object
+#' @param ... further arguments passed to or from other methods (not currently
+#'  used).
+#' 
+#' @return Invisibly returns the input `visit_sequence` object.
+#' 
+#' @examples
+#' 
+#' rm <- roadmap(
+#'   conf_data = acs_conf_nw, 
+#'   start_data = acs_start_nw
+#' )
+#' 
+#' print(rm[["visit_sequence"]])
+#'
 #' @export
 print.visit_sequence <- function(x, ...) {
   
   output <- tibble::tibble(
     method = as.character(x$visit_method),
     variable = as.character(x$visit_sequence)
-  ) %>%
-    dplyr::transmute(output = paste0(.data$method, ":", .data$variable)) %>%
+  ) |>
+    dplyr::transmute(output = paste0(.data$method, ":", .data$variable)) |>
     dplyr::pull(output)
   
   cat("Visit Sequence\n")

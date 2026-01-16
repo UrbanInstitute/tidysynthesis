@@ -14,10 +14,27 @@ invert(object, predictions, ...)
 
 \item{...}{Other arguments}
 }
+\value{
+A tibble with inverted model-generated values
+}
 \description{
 An S3 method for inverting a step
 }
-\author{
-Aaron R. Williams
+\examples{
+
+data <- tibble::tibble(
+  y = rlnorm(n = 1000, meanlog = 0, sdlog = 1),
+  x = rnorm(n = 1000)
+)
+
+adj <- recipes::recipe(y ~ x, data = data) |>
+  recipes::step_BoxCox(recipes::all_outcomes()) |>
+  recipes::prep()
+  
+invert(
+  object = adj$steps[[1]], 
+  predictions = tibble::tibble(.pred = adj[["template"]][["y"]])
+)
+
 }
 \concept{postprocessing}

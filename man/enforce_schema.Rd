@@ -16,3 +16,11 @@ information.
 \description{
 Enforce a \code{roadmap}'s \code{schema} on its existing data
 }
+\examples{
+  
+rm <- roadmap(conf_data = acs_conf, start_data = acs_start) |>
+  update_schema(na_numeric_to_ind = TRUE)
+
+enforce_schema(rm)
+
+}

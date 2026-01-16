@@ -6,8 +6,8 @@ roadmap <- roadmap(conf_data = mtcars,
   add_sequence_numeric(everything(), method = "correlation", cor_var = "mpg")
 
 
-dt_mod <- parsnip::decision_tree() %>%
-  parsnip::set_engine(engine = "rpart") %>%
+dt_mod <- parsnip::decision_tree() |>
+  parsnip::set_engine(engine = "rpart") |>
   parsnip::set_mode(mode = "regression")
 
 synth_spec <- synth_spec(default_regression_model = dt_mod,

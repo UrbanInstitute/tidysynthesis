@@ -55,8 +55,14 @@
 #' @return A `roadmap` object with modified `conf_data`, `start_data`, and `schema`
 #' information. 
 #'
-#' @export
+#' @examples
+#'   
+#' rm <- roadmap(conf_data = acs_conf, start_data = acs_start) |>
+#'   update_schema(na_numeric_to_ind = TRUE)
+#'
+#' enforce_schema(rm)
 #' 
+#' @export
 enforce_schema <- function(roadmap) {
   
   # create copies of the data for modification
@@ -74,12 +80,12 @@ enforce_schema <- function(roadmap) {
     
     for (nc in names(numeric_cols)) {
       
-      conf_data <- conf_data %>% 
+      conf_data <- conf_data |> 
         dplyr::mutate(dplyr::across(dplyr::all_of(c(nc)), 
                                     as.double))
       
       if (nc %in% names(start_data)) {
-        start_data <- start_data %>% 
+        start_data <- start_data |> 
           dplyr::mutate(dplyr::across(dplyr::all_of(c(nc)), 
                                       as.double))
       }
@@ -93,7 +99,7 @@ enforce_schema <- function(roadmap) {
     # else, cast according to user-specified types
     for (nc in names(numeric_cols)) {
       
-      conf_data <- conf_data %>%
+      conf_data <- conf_data |>
         dplyr::mutate(
           dplyr::across(
             dplyr::all_of(c(nc)),
@@ -103,7 +109,7 @@ enforce_schema <- function(roadmap) {
       
       if (nc %in% names(start_data)) {
         
-        start_data <- start_data %>%
+        start_data <- start_data |>
           dplyr::mutate(
             dplyr::across(
               dplyr::all_of(c(nc)),
@@ -127,7 +133,7 @@ enforce_schema <- function(roadmap) {
       if (!is.null(col_schema[[fc]][["levels"]])) {
         
         # apply factor levels to conf_data
-        conf_data <- conf_data %>% 
+        conf_data <- conf_data |> 
           dplyr::mutate(
             dplyr::across(
               dplyr::all_of(c(fc)), 
@@ -137,7 +143,7 @@ enforce_schema <- function(roadmap) {
         
         # apply to start_data if column exists in it
         if (fc %in% names(start_data)) {
-          start_data <- start_data %>% 
+          start_data <- start_data |> 
             dplyr::mutate(
               dplyr::across(
                 dplyr::all_of(c(fc)), 
@@ -152,7 +158,7 @@ enforce_schema <- function(roadmap) {
       } else {
         
         # apply factor levels to conf_data
-        conf_data <- conf_data %>% 
+        conf_data <- conf_data |> 
           dplyr::mutate(
             dplyr::across(
               dplyr::all_of(c(fc)), 
@@ -164,7 +170,7 @@ enforce_schema <- function(roadmap) {
         
         # apply to start_data if column exists in it
         if (fc %in% names(start_data)) {
-          start_data <- start_data %>%
+          start_data <- start_data |>
             dplyr::mutate(
               dplyr::across(
                 dplyr::all_of(c(fc)), 
@@ -184,7 +190,7 @@ enforce_schema <- function(roadmap) {
     # else, cast according to user-specified types
     for (fc in names(factor_cols)) {
       
-      conf_data <- conf_data %>%
+      conf_data <- conf_data |>
         dplyr::mutate(
           dplyr::across(
             dplyr::all_of(c(fc)),
@@ -199,7 +205,7 @@ enforce_schema <- function(roadmap) {
       
       if (fc %in% names(start_data)) {
         
-        start_data <- start_data %>%
+        start_data <- start_data |>
           dplyr::mutate(
             dplyr::across(
               dplyr::all_of(c(fc)),
@@ -305,8 +311,8 @@ enforce_schema <- function(roadmap) {
   roadmap$visit_sequence$visit_method <- vm
   
   # update no_variation variables
-  no_variation <- conf_data %>%
-    dplyr::select(dplyr::all_of(synth_vars)) %>%
+  no_variation <- conf_data |>
+    dplyr::select(dplyr::all_of(synth_vars)) |>
     purrr::map_lgl(.f = ~ length(unique(.x)) == 1)
   
   # update schema using API call

@@ -7,8 +7,47 @@
 #'
 #' @return A named list of samplers
 #' 
-#' @export
+#' @examples
 #' 
+#' # construct_samplers() can create a sequence of samplers using a fully-default 
+#' # approach, a hybrid approach, or a fully-customized approach. All approaches
+#' # require a roadmap and samplers. 
+#' 
+#' rm <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' )
+#' 
+#' # Fully-default approach
+#' 
+#' construct_samplers(
+#'   roadmap = rm, 
+#'   default_regression_sampler = sample_lm, 
+#'   default_classification_sampler = sample_rpart
+#' )
+#' 
+#' # Hybrid approach
+#' 
+#' construct_samplers(
+#'   roadmap = rm, 
+#'   default_regression_sampler = sample_lm,
+#'   default_classification_sampler = sample_rpart,
+#'   custom_samplers = list(
+#'     list(vars = "hcovany", sampler = sample_rpart)
+#'   )
+#' )
+#' 
+#' # Fully-customized approach
+#' 
+#' construct_samplers(
+#'   roadmap = rm, 
+#'   custom_samplers = list(
+#'     list(vars = c("hcovany", "empstat", "classwkr"), sampler = sample_rpart),
+#'     list(vars = c("age", "famsize", "transit_time", "inctot"), sampler = sample_lm)
+#'   )
+#' )
+#' 
+#' @export
 construct_samplers <- function(roadmap, 
                                default_regression_sampler = NULL,
                                default_classification_sampler = NULL,

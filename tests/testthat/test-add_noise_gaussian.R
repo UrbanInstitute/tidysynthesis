@@ -75,7 +75,9 @@ test_that("add_noise_gaussian error handling", {
       outcome_var = outcome_var,
       col_schema = col_schema,
       pred = pred
-    )
+    ),
+    regexp = "Must specify either `variance` or both `rho` and `sensitivity`.",
+    fixed = TRUE
   )
   
   # too many variance parameters specified
@@ -89,7 +91,9 @@ test_that("add_noise_gaussian error handling", {
       pred = pred,
       variance = 1,
       rho = 2
-    )
+    ),
+    regexp = "Cannot use non-null variance with non-null rho or sensitivity.",
+    fixed = TRUE
   )
   
   # not enough variance parameters specified
@@ -102,7 +106,9 @@ test_that("add_noise_gaussian error handling", {
       col_schema = col_schema,
       pred = pred,
       rho = 2
-    )
+    ),
+    regexp = "Must specify either `variance` or both `rho` and `sensitivity`.",
+    fixed = TRUE
   )
-  
+
 })

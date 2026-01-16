@@ -64,6 +64,7 @@ roadmap <- function(conf_data,
 #' @param constraints An optional `constraints` object. 
 #'
 #' @return A new `roadmap` object.
+#' @noRd
 #' 
 new_roadmap <- function(conf_data, 
                         start_data, 
@@ -184,6 +185,7 @@ is_roadmap <- function(x) {
 #' @param roadmap A `roadmap` object.
 #' 
 #' @return NULL
+#' @noRd
 #' 
 validate_roadmap <- function(roadmap) {
   
@@ -206,7 +208,22 @@ validate_roadmap <- function(roadmap) {
 }
 
 
-#' @export 
+
+#' @return Invisibly returns the input `replicates` object.
+#'
+#' @examples 
+#' 
+#' rm <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw,
+#'   start_method = start_method(
+#'     start_func = start_resample, n = 1000
+#'   )
+#' ) 
+#'
+#' print(rm)
+#' 
+#' @export  
 print.roadmap <- function(x, ...) {
   
   cat("Roadmap: \n")

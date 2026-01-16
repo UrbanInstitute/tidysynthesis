@@ -5,6 +5,12 @@
 #'
 #' @return A data frame with no _NA columns and NA values
 #' 
+#' @examples
+#' 
+#' example_na_expanded <- expand_na(data = example_na)
+#'
+#' collapse_na(data = example_na_expanded)
+#' 
 #' @export
 collapse_na <- function(data) {
   

@@ -8,13 +8,8 @@
 #' ntiles lack unique bounds.
 #'
 #' @return A data frame with ntiles and bandwidths
+#' @noRd
 #'
-#' @examples 
-#' 
-#' .calc_bandwidths(baseline = mtcars$mpg, n = 2)
-#'
-#' @export
-#' 
 .calc_bandwidths <- function(baseline, n, ties_method = "collapse") {
   
   # 1. break the baseline vector into ntiles based on bounds from the baseline data
@@ -39,7 +34,7 @@
                                .f = ~ density(.$baseline, 
                                               bw = "nrd0", 
                                               kernel = "gaussian")$bw)
-  ) %>%
+  ) |>
     dplyr::mutate(bandwidth = unname(.data$bandwidth))
   
   return(bandwidths)
@@ -62,8 +57,8 @@
 #' before the quantiles are computed.
 #'
 #' @return A numeric vector of ntiles
+#' @noRd
 #'
-#' @export
 .create_ntiles <- function(x_bounds, 
                            y_ntiles, 
                            n,
@@ -134,8 +129,8 @@
   # calculate candidate bounds using the ntile functions
   # we'll still need to deal with duplicates
   ntile_extremes <- data.frame(x_bounds = x_bounds, 
-                               ntile = dplyr::ntile(x_bounds, n = n)) %>%
-    dplyr::group_by(.data$ntile) %>%
+                               ntile = dplyr::ntile(x_bounds, n = n)) |>
+    dplyr::group_by(.data$ntile) |>
     dplyr::summarise(
       ntile_min = min(.data$x_bounds), 
       ntile_max = max(.data$x_bounds)
@@ -144,9 +139,9 @@
   derived_exclusions <- NULL
   if (ties_method == "exclusions") {
     
-    derived_exclusions <- ntile_extremes %>%
-      dplyr::filter(.data$ntile_min == .data$ntile_max) %>%
-      dplyr::pull(.data$ntile_min) %>%
+    derived_exclusions <- ntile_extremes |>
+      dplyr::filter(.data$ntile_min == .data$ntile_max) |>
+      dplyr::pull(.data$ntile_min) |>
       unique()
     
     if (length(derived_exclusions) == 0) { 
@@ -157,24 +152,24 @@
     
   }
   
-  candidate_bounds <- ntile_extremes %>%
-    dplyr::ungroup() %>%
+  candidate_bounds <- ntile_extremes |>
+    dplyr::ungroup() |>
     tidyr::pivot_longer(-dplyr::any_of("ntile"), 
                         names_to = "key", 
-                        values_to = "value") %>%
+                        values_to = "value") |>
     dplyr::arrange(.data$ntile, dplyr::desc(.data$key)) 
   
-  bounds <- candidate_bounds %>%
+  bounds <- candidate_bounds |>
     # drop the minimum value, which will be replaced with -Inf
-    dplyr::mutate(lead = dplyr::lead(.data$value, n = 1L)) %>%
-    dplyr::filter(.data$key == "ntile_max") %>%
+    dplyr::mutate(lead = dplyr::lead(.data$value, n = 1L)) |>
+    dplyr::filter(.data$key == "ntile_max") |>
     # calculating bounds as the average between the obs on either side of the cutpoint
-    dplyr::mutate(bounds = (.data$value + .data$lead) / 2) %>%
-    dplyr::slice(-dplyr::n()) %>%
+    dplyr::mutate(bounds = (.data$value + .data$lead) / 2) |>
+    dplyr::slice(-dplyr::n()) |>
     # only consider unique bounds
-    dplyr::filter(.data$value != .data$lead) %>%
-    dplyr::count(.data$bounds) %>%
-    dplyr::filter(.data$n == 1) %>%
+    dplyr::filter(.data$value != .data$lead) |>
+    dplyr::count(.data$bounds) |>
+    dplyr::filter(.data$n == 1) |>
     dplyr::pull(.data$bounds)
   
   bounds <- c(-Inf, bounds, Inf)
@@ -223,10 +218,19 @@
 #'
 #' @return A numeric vector with noise added to each prediction
 #' 
-#' @importFrom magrittr %>%
+#' @examples
 #' 
+#' add_noise_kde(
+#'   model = NULL,
+#'   new_data = tibble::tibble(x = 1:100),
+#'   conf_model_data = tibble::tibble(x = 1:100),
+#'   outcome_var = "x",
+#'   col_schema = NULL,
+#'   pred = 1:100,
+#'   n_ntiles = 4
+#' )
+#'
 #' @export
-#' 
 add_noise_kde <- function(model,
                           new_data,
                           conf_model_data,
@@ -312,7 +316,7 @@ add_noise_kde <- function(model,
       pred_with_noise = purrr::map2_dbl(.x = pred_ntiles$pred, 
                                         .y = pred_ntiles$bandwidth * sd_scale, 
                                         .f = ~ rnorm(n = 1, mean = .x, sd = .y))
-    ) %>%
+    ) |>
       dplyr::pull(pred_with_noise)
   } else {
     
@@ -325,7 +329,7 @@ add_noise_kde <- function(model,
                               true = as.numeric(.x), 
                               false = rnorm(n = 1, mean = .x, sd = .y))
       )
-    ) %>%
+    ) |>
       dplyr::pull(pred_with_noise)
     
   }

@@ -7,23 +7,23 @@ roadmap <- roadmap(
 ) |>
   add_sequence_numeric(everything(), method = "correlation", cor_var = "mpg")
 
-mtcars_rec <- recipes::recipe(data = conf_data, formula = mpg ~ .) %>%
+mtcars_rec <- recipes::recipe(data = conf_data, formula = mpg ~ .) |>
   recipes::step_center(mpg)
 
-dt_reg_mod <- parsnip::decision_tree() %>%
-  parsnip::set_engine("rpart") %>%
+dt_reg_mod <- parsnip::decision_tree() |>
+  parsnip::set_engine("rpart") |>
   parsnip::set_mode("regression")
 
-dt_class_mod <- parsnip::decision_tree() %>%
-  parsnip::set_engine("rpart") %>%
+dt_class_mod <- parsnip::decision_tree() |>
+  parsnip::set_engine("rpart") |>
   parsnip::set_mode("classification")
 
 step1 <- function(x) {
-  x %>% recipes::step_center(recipes::all_predictors(), id = "center")
+  x |> recipes::step_center(recipes::all_predictors(), id = "center")
 }
 
 step2 <- function(x) {
-  x %>% recipes::step_scale(recipes::all_predictors(), id = "scale")
+  x |> recipes::step_scale(recipes::all_predictors(), id = "scale")
 }
 
 noise1 <- noise(
@@ -56,55 +56,81 @@ test_that("synth_spec() fails with improper inputs", {
   
   # default input type checking
   expect_error(
-    synth_spec(default_regression_model = "notamodel")
+    synth_spec(default_regression_model = "notamodel"),
+    regexp = "`default_regression_model` must be a parsnip model_spec, \n    if specified",
+    fixed = TRUE
   )
   
   expect_error(
-    synth_spec(default_classification_model = "notamodel")
+    synth_spec(default_classification_model = "notamodel"),
+    regexp = "`default_classification_model` must be a parsnip model_spec, \n    if specified",
+    fixed = TRUE
   )
   
   expect_error(
-    synth_spec(default_regression_step = "notastep")
+    synth_spec(default_regression_step = "notastep"),
+    regexp = "`default_regression_steps` must be a function, if specified",
+    fixed = TRUE
   )
   
   expect_error(
-    synth_spec(default_classification_step = "notastep")
+    synth_spec(default_classification_step = "notastep"),
+    regexp = "`default_classification_steps` must be a function, if specified",
+    fixed = TRUE
   )
   
   expect_error(
-    synth_spec(default_regression_sampler = "notasampler")
+    synth_spec(default_regression_sampler = "notasampler"),
+    regexp = "`default_regression_sampler` must be a function, if specified",
+    fixed = TRUE
   )
   
   expect_error(
-    synth_spec(default_classification_sampler = "notasampler")
+    synth_spec(default_classification_sampler = "notasampler"),
+    regexp = "`default_classification_sampler` must be a function, if specified",
+    fixed = TRUE
   )
   
   expect_error(
-    synth_spec(default_regression_noise = "notnoise")
+    synth_spec(default_regression_noise = "notnoise"),
+    regexp = "`default_regression_noise` must be a noise object, if specified",
+    fixed = TRUE
   )
   
   expect_error(
-    synth_spec(default_classification_noise = "notnoise")
+    synth_spec(default_classification_noise = "notnoise"),
+    regexp = "`default_classification_noise` must be a noise object, if specified",
+    fixed = TRUE
   )
   
   expect_error(
-    synth_spec(default_regression_tuner = "notatuner")
+    synth_spec(default_regression_tuner = "notatuner"),
+    regexp = "`default_regression_tuner` must be a list, if specified",
+    fixed = TRUE
   )
   
   expect_error(
-    synth_spec(default_classification_tuner = "notatuner")
+    synth_spec(default_classification_tuner = "notatuner"),
+    regexp = "`default_classification_tuner` must be a list, if specified",
+    fixed = TRUE
   )
   
   expect_error(
-    synth_spec(default_extractor = "notanextractor")
+    synth_spec(default_extractor = "notanextractor"),
+    regexp = "`default extractor` must be a function, if specified",
+    fixed = TRUE
   )
   
   expect_error(
-    synth_spec(invert_transformations = "no")
+    synth_spec(invert_transformations = "no"),
+    regexp = "`invert_transformations` must be logical",
+    fixed = TRUE
   )
   
   expect_error(
-    synth_spec(enforce_na = "no")
+    synth_spec(enforce_na = "no"),
+    regexp = "`enforce_na` must be logical",
+    fixed = TRUE
   )
   
 })
@@ -118,37 +144,59 @@ test_that("update_synth_spec", {
   expect_false(new_ss1[["enforce_na"]])
   
   # invalid argument names
-  expect_error(update_synth_spec(old_ss, not_an_arg = TRUE))
-  expect_error(update_synth_spec(old_ss,
-                                 not_an_arg = TRUE,
-                                 enforce_na = FALSE))
   expect_error(
-    expect_warning(update_synth_spec(old_ss, custom_models = list()))
+    update_synth_spec(old_ss, not_an_arg = TRUE),
+    regexp = "Unexpected argument(s) to update_synth_spec(): not_an_arg",
+    fixed = TRUE
+  )
+  expect_error(
+    update_synth_spec(old_ss,
+                      not_an_arg = TRUE,
+                      enforce_na = FALSE),
+    regexp = "Unexpected argument(s) to update_synth_spec(): not_an_arg",
+    fixed = TRUE
+  )
+  expect_error(
+    expect_warning(update_synth_spec(old_ss, custom_models = list())),
+    regexp = "Unexpected argument(s) to update_synth_spec(): custom_models",
+    fixed = TRUE
   )
   
   # invalid inpupt types
   expect_error(
-    update_synth_spec(old_ss, default_regression_model = "notamodel")
+    update_synth_spec(old_ss, default_regression_model = "notamodel"),
+    regexp = "Default model parameter must be a parsnip model_spec",
+    fixed = TRUE
   )
   
   expect_error(
-    update_synth_spec(old_ss, default_regression_steps = "notastep")
+    update_synth_spec(old_ss, default_regression_steps = "notastep"),
+    regexp = "Default steps parameter must be a function",
+    fixed = TRUE
   )
   
   expect_error(
-    update_synth_spec(old_ss, default_regression_sampler = "notasampler")
+    update_synth_spec(old_ss, default_regression_sampler = "notasampler"),
+    regexp = "Default sampler parameter must be a function",
+    fixed = TRUE
   )
   
   expect_error(
-    update_synth_spec(old_ss, default_regression_noise = "notnoise")
+    update_synth_spec(old_ss, default_regression_noise = "notnoise"),
+    regexp = "Default noise parameter must be a noise object",
+    fixed = TRUE
   )
   
   expect_error(
-    update_synth_spec(old_ss, default_regression_tuner = "notatuner")
+    update_synth_spec(old_ss, default_regression_tuner = "notatuner"),
+    regexp = "Default tuner parameter must be a list",
+    fixed = TRUE
   )
   
   expect_error(
-    update_synth_spec(old_ss, default_regression_extractor = "notanextractor")
+    update_synth_spec(old_ss, default_regression_extractor = "notanextractor"),
+    regexp = "Unexpected argument(s) to update_synth_spec(): default_regression_extractor",
+    fixed = TRUE
   )
   
 })
@@ -172,7 +220,9 @@ test_that("add_custom_models", {
         "invalid" = c("a", "b", "c"),
         "model" = dt_reg_mod
       )
-    )
+    ),
+    regexp = "Some custom model elements are missing the two required \n         sublist names, 'vars' and 'model'",
+    fixed = TRUE
   )
   
 })
@@ -230,7 +280,9 @@ test_that("add_custom_steps", {
         "invalid" = c("a", "b", "c"),
         "steps" = step1
       )
-    )
+    ),
+    regexp = "Some custom model elements are missing the two required \n         sublist names, 'vars' and 'model'",
+    fixed = TRUE
   )
   
 })
@@ -290,7 +342,9 @@ test_that("add_custom_samplers", {
         "invalid" = c("a", "b", "c"),
         "sampler" = sample_rpart
       )
-    )
+    ),
+    regexp = "Some custom sampler elements are missing the two required \n         sublist names, 'vars' and 'sampler'",
+    fixed = TRUE
   )
   
 })
@@ -351,7 +405,9 @@ test_that("add_custom_noises", {
         "invalid" = c("a", "b", "c"),
         "noise" = noise1
       )
-    )
+    ),
+    regexp = "Some custom noise elements are missing the two required \n         sublist names, 'vars' and 'noise'",
+    fixed = TRUE
   )
   
 })
@@ -410,7 +466,9 @@ test_that("add_custom_tuners", {
         "invalid" = c("a", "b", "c"),
         "tuner" = tuner1
       )
-    )
+    ),
+    regexp = "Some custom tuner elements are missing the two required \n         sublist names, 'vars' and 'tuner'",
+    fixed = TRUE
   )
   
 })
@@ -471,7 +529,9 @@ test_that("add_custom_extractors", {
         "invalid" = c("a", "b", "c"),
         "extractor" = extractor1
       )
-    )
+    ),
+    regexp = "Some custom extractor elements are missing the two required \n         sublist names, 'vars' and 'extractor'",
+    fixed = TRUE
   )
   
 })

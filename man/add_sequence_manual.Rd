@@ -19,3 +19,15 @@ An updated \code{roadmap} object.
 \description{
 Add to visit sequence using a manual method
 }
+\examples{
+
+roadmap(
+  conf_data = acs_conf_nw, 
+  start_data = acs_start_nw
+) |>
+  add_sequence_manual(
+    c("inctot", "hcovany", "empstat",  "classwkr",  "age",   "famsize",  
+      "transit_time")
+  )
+
+}

@@ -20,6 +20,7 @@
 #' @param p A function for tracking progress created with progressr
 #'
 #' @return A list with an estimated model and a data frame of predictions
+#' @noRd
 #' 
 #' @importFrom rlang :=
 #'
@@ -57,7 +58,7 @@ synthesize_j <- function(conf_data,
     
     predictions <- tibble::tibble(
       .pred = rep(unique(dplyr::pull(conf_data, outcome_var)), nrow(synth_data))
-    ) %>%
+    ) |>
       dplyr::rename(!!outcome_var := ".pred")
     
     # calculate the synthesis time for the jth variable
@@ -93,14 +94,14 @@ synthesize_j <- function(conf_data,
   }
   
   # create a workflow with the model and recipe
-  model_wf <- workflows::workflow() %>%
-    workflows::add_model(spec = model) %>%
+  model_wf <- workflows::workflow() |>
+    workflows::add_model(spec = model) |>
     workflows::add_recipe(recipe = recipe)
   
   if (is.null(tuner)) {
     
     # estimate the specified model using the confidential data
-    estimated_model <- model_wf %>%
+    estimated_model <- model_wf |>
       parsnip::fit(data = conf_model_data)
     
   } else {
@@ -122,11 +123,11 @@ synthesize_j <- function(conf_data,
     # select best/finalize workflow
     # add the tuned hyperparameters to the workflow
     tuned_wf <- 
-      model_wf %>% 
+      model_wf |> 
       tune::finalize_workflow(tune::select_best(x = tuning_results))
     
     # fit the model with the best hyperparameters on all of the training data
-    estimated_model <- tuned_wf %>%
+    estimated_model <- tuned_wf |>
       parsnip::fit(data = conf_model_data) 
     
   }
@@ -219,7 +220,7 @@ synthesize_j <- function(conf_data,
   predictions <- predictions$ysyn
   
   # rename the vector of predictions
-  predictions <- tibble::tibble(.pred = predictions) %>%
+  predictions <- tibble::tibble(.pred = predictions) |>
     dplyr::rename(!!outcome_var := ".pred")
   
   # calculate jth variable synthesis time

@@ -17,3 +17,38 @@ A postsynth object.
 \description{
 Synthesize a data set
 }
+\examples{
+
+# create roadmap
+rm <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+) 
+
+rpart_mod_reg <- parsnip::decision_tree() |>
+  parsnip::set_engine(engine = "rpart") |>
+  parsnip::set_mode(mode = "regression")
+
+rpart_mod_class <- parsnip::decision_tree() |>
+  parsnip::set_engine(engine = "rpart") |>
+  parsnip::set_mode(mode = "classification")
+
+synth_spec1 <- synth_spec(
+  default_regression_model = rpart_mod_reg,
+  default_regression_sampler = sample_rpart,
+  default_classification_model = rpart_mod_class,
+  default_classification_sampler = sample_rpart
+)
+
+# create a presynth object
+# use defaults for noise, constraints, and replicates
+presynth1 <- presynth(
+  roadmap = rm,
+  synth_spec = synth_spec1
+)
+
+# synthesize!
+set.seed(1)
+postsynth1 <- synthesize(presynth = presynth1)
+
+}

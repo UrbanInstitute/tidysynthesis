@@ -2,8 +2,6 @@
 #' Add or reset a `visit_sequence` object within an existing `roadmap`.
 #'
 #' @param roadmap A `roadmap` object
-#' @param visit_sequence A `visit_sequence` object. 
-#' @param ... Optional additional parameters.
 #' 
 #' @return A new `roadmap` object.
 #'
@@ -15,7 +13,10 @@ NULL
 
 #'
 #' @rdname visit_sequence_api
-#' @export 
+#' 
+#' @param visit_sequence A `visit_sequence` object. 
+#' 
+#' @noRd
 #' 
 add_visit_sequence <- function(roadmap, visit_sequence) {
   
@@ -39,8 +40,25 @@ add_visit_sequence <- function(roadmap, visit_sequence) {
 
 #'
 #' @rdname visit_sequence_api
-#' @export
 #' 
+#' @param ... Optional additional parameters.
+#' 
+#' @return A roadmap with an updated visit_sequence.
+#' 
+#' @examples
+#' 
+#' rm <- roadmap(
+#'   conf_data = acs_conf_nw, 
+#'   start_data = acs_start_nw
+#' ) 
+#' 
+#' rm |>
+#'   update_visit_sequence(
+#'     weight_var = wgt,
+#'     synthesize_weight = TRUE
+#'   )
+#' 
+#' @export
 update_visit_sequence <- function(roadmap, ...) {
   
   stopifnot("`roadmap` must be a roadmap object" = { is_roadmap(roadmap) })
@@ -98,8 +116,25 @@ update_visit_sequence <- function(roadmap, ...) {
 
 #'
 #' @rdname visit_sequence_api
-#' @export 
+#'
+#' @return A new `roadmap` object with reset visit_sequence.
 #' 
+#' @examples
+#' 
+#' rm <- roadmap(
+#'   conf_data = acs_conf_nw, 
+#'   start_data = acs_start_nw
+#' ) 
+#' 
+#' rm <- rm |>
+#'   update_visit_sequence(
+#'     weight_var = wgt,
+#'     synthesize_weight = TRUE
+#'   )
+#' 
+#' reset_visit_sequence(roadmap = rm)
+#' 
+#' @export
 reset_visit_sequence <- function(roadmap) {
   
   stopifnot("`roadmap` must be a roadmap object" = { is_roadmap(roadmap) })
@@ -127,8 +162,18 @@ reset_visit_sequence <- function(roadmap) {
 #'
 #' @return An updated `roadmap` object.
 #' 
-#' @export
+#' @examples
 #' 
+#' roadmap(
+#'   conf_data = acs_conf_nw, 
+#'   start_data = acs_start_nw
+#' ) |>
+#'   add_sequence_manual(
+#'     c("inctot", "hcovany", "empstat",  "classwkr",  "age",   "famsize",  
+#'       "transit_time")
+#'   )
+#' 
+#' @export
 add_sequence_manual <- function(roadmap, ...) {
   
   stopifnot("`roadmap` must be a roadmap object" = { is_roadmap(roadmap) })
@@ -137,8 +182,8 @@ add_sequence_manual <- function(roadmap, ...) {
   visit_sequence <- roadmap[["visit_sequence"]]
   
   # use tidyselect to select and reorder desired variables
-  manual_order <- roadmap[["conf_data"]] %>%
-    dplyr::select(...) %>%
+  manual_order <- roadmap[["conf_data"]] |>
+    dplyr::select(...) |>
     names()
   
   # add sequence method to existing vector of sequence methods
@@ -176,8 +221,20 @@ add_sequence_manual <- function(roadmap, ...) {
 #'
 #' @return An updated visit_sequence
 #' 
-#' @export
+#' @examples
 #' 
+#' roadmap(
+#'   conf_data = acs_conf_nw, 
+#'   start_data = acs_start_nw
+#' ) |>
+#'   add_sequence_numeric(
+#'     dplyr::where(is.numeric), 
+#'     method = "correlation", 
+#'     cor_var = "age",
+#'     na.rm = TRUE
+#'   )
+#'
+#' @export
 add_sequence_numeric <- function(
     roadmap, 
     ..., 
@@ -198,7 +255,7 @@ add_sequence_numeric <- function(
   conf_data <- roadmap[["conf_data"]]
   
   # calc_data can include start_data and weight_var for calculations
-  calc_data <- conf_data %>%
+  calc_data <- conf_data |>
     dplyr::select(..., dplyr::any_of(rlang::quo_name(weight_var)))
   
   # edit_data only include variables that can be changed in the visit_sequence
@@ -231,9 +288,9 @@ add_sequence_numeric <- function(
   
   # throw an error if target data contain NA and unsupported method is specified
   
-  contains_na <- roadmap[["conf_data"]] %>%
-    dplyr::select(..., dplyr::any_of(rlang::quo_name(weight_var))) %>%
-    purrr::map_lgl(.f = \(x) any(is.na(x))) %>%
+  contains_na <- roadmap[["conf_data"]] |>
+    dplyr::select(..., dplyr::any_of(rlang::quo_name(weight_var))) |>
+    purrr::map_lgl(.f = \(x) any(is.na(x))) |>
     any()
   
   if (contains_na & 
@@ -283,12 +340,12 @@ add_sequence_numeric <- function(
       
     }
     
-    cor_order <- calc_data %>%
-      stats::cor(use = cor_use) %>%
-      tibble::as_tibble(rownames = "var") %>%
-      dplyr::select("var", cors = dplyr::any_of(cor_var)) %>%
-      dplyr::mutate(cors = abs(.data$cors)) %>%
-      dplyr::arrange(dplyr::desc(.data$cors)) %>%
+    cor_order <- calc_data |>
+      stats::cor(use = cor_use) |>
+      tibble::as_tibble(rownames = "var") |>
+      dplyr::select("var", cors = dplyr::any_of(cor_var)) |>
+      dplyr::mutate(cors = abs(.data$cors)) |>
+      dplyr::arrange(dplyr::desc(.data$cors)) |>
       dplyr::pull("var")
     
     # add correlation sequence sequence to existing built sequence
@@ -297,21 +354,21 @@ add_sequence_numeric <- function(
     
   } else if (method == "proportion") {
     
-    prop_order <- calc_data %>%
+    prop_order <- calc_data |>
       dplyr::mutate(
         dplyr::across(
           .cols = dplyr::everything(), 
           .fns = ~ as.numeric(.x != 0)
         )
-      ) %>%
+      ) |>
       dplyr::summarise(
         dplyr::across(
           .cols = dplyr::everything(), 
           .fns = ~ mean(.x, na.rm = na.rm)
         )
-      ) %>%
-      tidyr::gather(key = "variable", value = "prop") %>%
-      dplyr::arrange(dplyr::desc(.data$prop)) %>%
+      ) |>
+      tidyr::gather(key = "variable", value = "prop") |>
+      dplyr::arrange(dplyr::desc(.data$prop)) |>
       dplyr::pull("variable")
     
     # add prop sequence to existing built sequence
@@ -320,15 +377,15 @@ add_sequence_numeric <- function(
     
   } else if (method == "weighted total") {
     
-    weighted_total_order <- calc_data %>%
+    weighted_total_order <- calc_data |>
       dplyr::summarize(
         dplyr::across(
           .cols = dplyr::everything(),
           .fns = ~sum(.x * !!weight_var, na.rm = na.rm)
         )
-      ) %>%
-      tidyr::gather(key = "variable", value = "weighted_sum") %>%
-      dplyr::arrange(dplyr::desc(.data$weighted_sum)) %>%
+      ) |>
+      tidyr::gather(key = "variable", value = "weighted_sum") |>
+      dplyr::arrange(dplyr::desc(.data$weighted_sum)) |>
       dplyr::pull("variable")
     
     # add weighted total sequence sequence to existing built sequence
@@ -337,15 +394,15 @@ add_sequence_numeric <- function(
     
   } else if (method == "absolute weighted total") {
     
-    weighted_total_order <- calc_data %>%
+    weighted_total_order <- calc_data |>
       dplyr::summarize(
         dplyr::across(
           .cols = dplyr::everything(),
           .fns = ~ abs(sum(.x * !!weight_var, na.rm = na.rm))
         )
-      ) %>%
-      tidyr::gather(key = "variable", value = "weighted_sum") %>%
-      dplyr::arrange(dplyr::desc(.data$weighted_sum)) %>%
+      ) |>
+      tidyr::gather(key = "variable", value = "weighted_sum") |>
+      dplyr::arrange(dplyr::desc(.data$weighted_sum)) |>
       dplyr::pull("variable")
     
     # add absolute weighted total sequence sequence to existing built sequence
@@ -354,15 +411,15 @@ add_sequence_numeric <- function(
     
   } else if (method == "weighted absolute total") {
     
-    weighted_total_order <- calc_data %>%
+    weighted_total_order <- calc_data |>
       dplyr::summarize(
         dplyr::across(
           .cols = dplyr::everything(),
           .fns = ~ sum(abs(.x) * !!weight_var, na.rm = na.rm)
         )
-      ) %>%
-      tidyr::gather(key = "variable", value = "weighted_sum") %>%
-      dplyr::arrange(dplyr::desc(.data$weighted_sum)) %>%
+      ) |>
+      tidyr::gather(key = "variable", value = "weighted_sum") |>
+      dplyr::arrange(dplyr::desc(.data$weighted_sum)) |>
       dplyr::pull("variable")
     
     # add absolute weighted total sequence sequence to existing built sequence
@@ -407,8 +464,15 @@ add_sequence_numeric <- function(
 #'
 #' @return An updated visit_sequence
 #' 
-#' @export 
+#' @examples
 #' 
+#' roadmap(
+#'   conf_data = acs_conf_nw, 
+#'   start_data = acs_start_nw
+#' ) |>
+#'   add_sequence_factor(dplyr::where(is.factor), method = "gini")
+#' 
+#' @export 
 add_sequence_factor <- function(
     roadmap, 
     ..., 
@@ -426,9 +490,9 @@ add_sequence_factor <- function(
   weight_var <- visit_sequence[["weight_var"]]
   
   # calc_data can include start_data and weight_var for calculations
-  calc_data <- roadmap[["conf_data"]] %>%
+  calc_data <- roadmap[["conf_data"]] |>
     dplyr::select(dplyr::any_of(roadmap[["schema"]][["synth_vars"]]),
-                  dplyr::any_of(rlang::quo_name(weight_var))) %>%
+                  dplyr::any_of(rlang::quo_name(weight_var))) |>
     dplyr::select(..., dplyr::any_of(rlang::quo_name(weight_var)))
   
   # edit_data only include variables that can be changed in the visit_sequence

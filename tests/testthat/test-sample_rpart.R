@@ -10,21 +10,21 @@ roadmap <- roadmap(
   start_data = acs_start
 )
 
-rpart_mod_reg <- parsnip::decision_tree() %>%
-  parsnip::set_engine("rpart") %>%
+rpart_mod_reg <- parsnip::decision_tree() |>
+  parsnip::set_engine("rpart") |>
   parsnip::set_mode(mode = "regression")
 
-rpart_mod_class <- parsnip::decision_tree() %>%
-  parsnip::set_engine("rpart") %>%
+rpart_mod_class <- parsnip::decision_tree() |>
+  parsnip::set_engine("rpart") |>
   parsnip::set_mode(mode = "classification")
 
 test_that("sample_rpart() works with regression", {
 
   regression_rec <- recipes::recipe(inctot ~ ., data = acs_conf)
   
-  model_reg <- workflows::workflow() %>%
-    workflows::add_model(spec = rpart_mod_reg) %>%
-    workflows::add_recipe(recipe = regression_rec) %>%
+  model_reg <- workflows::workflow() |>
+    workflows::add_model(spec = rpart_mod_reg) |>
+    workflows::add_recipe(recipe = regression_rec) |>
     parsnip::fit(data = acs_conf)
   
   set.seed(1)
@@ -50,9 +50,9 @@ test_that("sample_rpart() works with classification", {
 
   classification_rec <- recipes::recipe(hcovany ~ ., data = acs_conf)
   
-  model_reg <- workflows::workflow() %>%
-    workflows::add_model(spec = rpart_mod_class) %>%
-    workflows::add_recipe(recipe = classification_rec) %>%
+  model_reg <- workflows::workflow() |>
+    workflows::add_model(spec = rpart_mod_class) |>
+    workflows::add_recipe(recipe = classification_rec) |>
     parsnip::fit(data = acs_conf)
   
   set.seed(1)
@@ -117,9 +117,9 @@ test_that("synthesize() with sample_rpart() reproduces with set.seed()", {
 test_that("sample_rpart() works with rpart::LAD", {
   
   # rpart model
-  rpart_lad <- parsnip::decision_tree() %>% 
-    parsnip::set_engine(engine = "rpart") %>%
-    parsnip::set_mode(mode = "regression") %>%
+  rpart_lad <- parsnip::decision_tree() |> 
+    parsnip::set_engine(engine = "rpart") |>
+    parsnip::set_mode(mode = "regression") |>
     parsnip::set_args(method = rpart.LAD::LAD)
   
   # synth_spec
@@ -184,7 +184,7 @@ test_that("sample_rpart() works with noise and constraints", {
   # presynth
   expect_warning(
     presynth <- presynth(
-      roadmap = mtcars_roadmap %>%
+      roadmap = mtcars_roadmap |>
         add_constraints(constraints),
       synth_spec = synth_spec
     )
@@ -202,8 +202,8 @@ acs_rec <- recipes::recipe(inctot ~ ., data = acs_conf)
 # acs_rec <- construct_recipes(roadmap = roadmap)
 
 # create model workflow
-model_wf <- workflows::workflow() %>%
-  workflows::add_model(rpart_mod_reg) %>%
+model_wf <- workflows::workflow() |>
+  workflows::add_model(rpart_mod_reg) |>
   workflows::add_recipe(acs_rec) #acs_rec[["inctot"]])
 
 test_that("Test sample_rpart() with no variation in outcome", {
@@ -213,7 +213,7 @@ test_that("Test sample_rpart() with no variation in outcome", {
   roadmap[["conf_data"]]$inctot <- 10
   
   # fit the model with the edited confidential data
-  fitted_model <- model_wf %>%
+  fitted_model <- model_wf |>
     parsnip::fit(data = roadmap[["conf_data"]])
   
   # sample values
@@ -234,7 +234,7 @@ test_that("Test sample_rpart() with no variation in outcome and all equal 0", {
   roadmap[["conf_data"]]$inctot <- 0
   
   # fit the model with the edited confidential data
-  fitted_model <- model_wf %>%
+  fitted_model <- model_wf |>
     parsnip::fit(data = roadmap[["conf_data"]])
   
   # sample values
@@ -255,7 +255,7 @@ test_that("Test sample_rpart()", {
   roadmap[["conf_data"]]$inctot <- rep(c(10, 20), times = 750)
   
   # fit the model with the edited confidential data
-  fitted_model <- model_wf %>%
+  fitted_model <- model_wf |>
     parsnip::fit(data = roadmap[["conf_data"]])
   
   # sample values
@@ -282,7 +282,7 @@ test_that("Test sample_rpart() with perfect model", {
   )
   
   # fit the model with the edited confidential data
-  fitted_model <- model_wf %>%
+  fitted_model <- model_wf |>
     parsnip::fit(data = roadmap[["conf_data"]])
   
   # sample values

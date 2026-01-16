@@ -4,6 +4,8 @@
 #' @param y function
 #' @return Logical
 #' 
+#' @noRd
+#' 
 .identical_funcs <- function(x, y) { 
   
   stopifnot(is.function(x) & is.function(y))
@@ -24,41 +26,44 @@ NULL
 #'
 #' @rdname synth_spec_is_component
 #' 
+#' @noRd
+#' 
 .is_model <- function(z) { "model_spec" %in% class(z) }
 
-# todo: better inspection
 #'
 #' @rdname synth_spec_is_component
+#' 
+#' @noRd
 #' 
 .is_recipe <- function(z) { is.function(z) } 
 
-# todo: better inspection
 #'
 #' @rdname synth_spec_is_component
+#' @noRd
 #' 
 .is_steps <- function(z) { is.function(z) } 
 
-# todo: replace with new sampler object
 #'
 #' @rdname synth_spec_is_component
+#' @noRd
 #' 
 .is_sampler <- function(z) { is.function(z) } 
 
-# todo: better inspection
 #'
 #' @rdname synth_spec_is_component
+#' @noRd
 #' 
 .is_tuner <- function(z) { "list" %in% class(z) | all(is.na(z)) }
 
-# todo: replace with new noise object
 #'
 #' @rdname synth_spec_is_component
+#' @noRd
 #' 
 .is_noise <- function(z) { is_noise(z) } 
 
-# todo: better inspection
 #'
 #' @rdname synth_spec_is_component
+#' @noRd
 #' 
 .is_extractor <- function(z) { is.function(z) }
 
@@ -80,6 +85,7 @@ NULL
 #' 
 #' @param custom_components A named list of lists
 #' @param component_name String, one of the names in `names(.name_to_inspect)`
+#' @noRd
 #' 
 .validate_custom_components <- function(custom_components, component_name) {
   
@@ -138,6 +144,7 @@ NULL
 #' @param model A `parsnip::model_spec` object
 #' 
 #' @return A sampler function
+#' @noRd
 #'
 #' 
 .map_model_to_default_sampler <- function(model) {
@@ -185,7 +192,8 @@ NULL
 #' @param component_name String, one of the names in `names(.name_to_inspect)`
 #' @param custom_name String, name for `custom_<>` components
 #' @param ... Optional named lists with two elements, `vars` and `<component_name>`
-#' mapping variable names to their corresponding `synth_spec` objects 
+#' mapping variable names to their corresponding `synth_spec` objects
+#' @noRd
 #' 
 .update_custom_components <- function(
     synth_spec, 
@@ -211,7 +219,7 @@ NULL
     .f = \(x, idx) { 
       stats::setNames(rep(list(idx), length(x[["vars"]])), x[["vars"]])
     }
-  ) %>% unlist()
+  ) |> unlist()
   
   # for each custom entry
   for (i in seq_along(custom_comps)) {

@@ -87,31 +87,35 @@ recipes need ids that begin with "outcome".}
 synthetic data with \code{enforce_na()} during synthesis. An alternative approach
 is to add the NA values after synthesis}
 }
+\value{
+A \code{synth_spec} object
+}
 \description{
 The \code{synth_spec} object holds specifications for modeling and sampling components
 for sequential synthetic data generation. Each component has an associated
 \verb{construct_*} function called when creating a \code{presynth} object.
 }
 \examples{
-rpart_mod <- parsnip::decision_tree() \%>\%
-  parsnip::set_engine(engine = "rpart") \%>\%
+
+rpart_mod <- parsnip::decision_tree() |>
+  parsnip::set_engine(engine = "rpart") |>
   parsnip::set_mode(mode = "regression")
 
-lm_mod <- parsnip::linear_reg() \%>\% 
-  parsnip::set_engine("lm") \%>\%
+lm_mod <- parsnip::linear_reg() |> 
+  parsnip::set_engine("lm") |>
   parsnip::set_mode(mode = "regression")
 
 step1 <- function(x) {
- x \%>\%
+ x |>
    recipes::step_center(recipes::all_predictors(), id = "center")
 }
 
 step2 <- function(x) {
-  x \%>\%
+  x |>
     recipes::step_scale(recipes::all_predictors(), id = "scale")
 }
 
-step3 <- function(x) { x \%>\% step1 \%>\% step2 }
+step3 <- function(x) { x |> step1() |> step2() }
 
 
 synth_spec(

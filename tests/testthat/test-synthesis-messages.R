@@ -1,5 +1,5 @@
 # roadmap 
-data <- dplyr::select(mtcars, cyl, mpg, disp, hp) %>%
+data <- dplyr::select(mtcars, cyl, mpg, disp, hp) |>
   dplyr::mutate(
     low_var = rep(c(1, 2), times = 16),
     identity_var = 1
@@ -7,8 +7,8 @@ data <- dplyr::select(mtcars, cyl, mpg, disp, hp) %>%
 
 start_data <- dplyr::select(data, cyl)
 
-roadmap <- roadmap(conf_data = data, start_data = start_data) %>%
-  add_sequence_numeric(dplyr::everything(), method = "proportion") %>%
+roadmap <- roadmap(conf_data = data, start_data = start_data) |>
+  add_sequence_numeric(dplyr::everything(), method = "proportion") |>
   update_constraints(
     constraints_df_num = tibble::tribble(
       ~var, ~min, ~max, ~conditions,
@@ -27,11 +27,11 @@ step3 <- function(x) recipes::step_YeoJohnson(
   x, recipes::all_outcomes(), id = "outcome yj", skip = TRUE
 )
 
-rpart_mod <- parsnip::decision_tree() %>%
-  parsnip::set_engine(engine = "rpart") %>%
+rpart_mod <- parsnip::decision_tree() |>
+  parsnip::set_engine(engine = "rpart") |>
   parsnip::set_mode(mode = "regression")
 
-lm_mod <- parsnip::linear_reg() %>%
+lm_mod <- parsnip::linear_reg() |>
   parsnip::set_engine(engine = "lm")
 
 synth_spec <- synth_spec(

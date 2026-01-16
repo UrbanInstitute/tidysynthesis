@@ -22,7 +22,46 @@ reset_replicates(roadmap)
 }
 \value{
 A new \code{roadmap} object.
+
+A new \code{roadmap} object with the added \code{replicates}.
+
+A new \code{roadmap} object with updated \code{replicates}.
+
+A new \code{roadmap} object with reset \code{replicates}.
 }
 \description{
 Add, update, or reset a \code{replicates} object within an existing \code{roadmap}.
+}
+\examples{
+
+rm <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+)
+
+new_replicates <- replicates(end_to_end_replicates = 2)
+
+rm |>
+  add_replicates(new_replicates)
+
+
+rm <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+)
+
+rm |>
+  update_replicates(start_data_replicates = 3)
+
+
+rm <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+)
+
+rm <- rm |>
+  add_replicates(replicates(start_data_replicates = 3))
+  
+ reset_replicates(roadmap = rm)
+
 }

@@ -19,3 +19,25 @@ A numeric vector of predictions
 \description{
 Sample the conditional distribution created by a ranger rf model
 }
+\examples{
+
+rf_mod_regression <- parsnip::rand_forest(trees = 500, min_n = 1) |>
+  parsnip::set_engine(engine = "ranger") |>
+  parsnip::set_mode(mode = "regression") |>
+  parsnip::set_args(quantreg = TRUE)
+
+regression_rec <- recipes::recipe(age ~ ., data = acs_conf)
+
+model_reg <- workflows::workflow() |>
+  workflows::add_model(spec = rf_mod_regression) |>
+  workflows::add_recipe(recipe = regression_rec) |>
+  parsnip::fit(data = acs_conf)
+
+set.seed(1)
+sample1 <- sample_ranger(
+  model = model_reg, 
+  new_data = acs_conf[1:3, ], 
+  conf_data = acs_conf
+)
+
+}

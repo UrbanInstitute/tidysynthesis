@@ -14,8 +14,25 @@
 \item{...}{Other arguments}
 }
 \value{
-A tibble with Yeo_johnson transformation inverted for .pred
+A tibble with the Yeo_johnson transformation inverted for .pred
 }
 \description{
 Invert a Yeo-Johnson transformation
+}
+\examples{
+
+data <- tibble::tibble(
+  y = rlnorm(n = 1000, meanlog = 0, sdlog = 1),
+  x = rnorm(n = 1000)
+)
+
+adj <- recipes::recipe(y ~ x, data = data) |>
+  recipes::step_YeoJohnson(recipes::all_outcomes()) |>
+  recipes::prep()
+  
+invert(
+  object = adj$steps[[1]], 
+  predictions = tibble::tibble(.pred = adj[["template"]][["y"]])
+)
+
 }

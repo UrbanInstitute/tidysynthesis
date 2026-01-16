@@ -22,3 +22,43 @@ A numeric vector of predictions
 \description{
 Sample the conditional distribution created by a CART model
 }
+\examples{
+
+rpart_mod_reg <- parsnip::decision_tree() |>
+  parsnip::set_engine("rpart") |>
+  parsnip::set_mode(mode = "regression")
+
+ regression_rec <- recipes::recipe(inctot ~ ., data = acs_conf)
+ 
+ model_reg <- workflows::workflow() |>
+   workflows::add_model(spec = rpart_mod_reg) |>
+   workflows::add_recipe(recipe = regression_rec) |>
+   parsnip::fit(data = acs_conf)
+ 
+ set.seed(1)
+ sample1 <- sample_rpart(
+   model = model_reg, 
+   new_data = acs_conf[1:3, ], 
+   conf_data = acs_conf
+ )
+ 
+
+rpart_mod_class <- parsnip::decision_tree() |>
+  parsnip::set_engine("rpart") |>
+  parsnip::set_mode(mode = "classification")
+
+classification_rec <- recipes::recipe(hcovany ~ ., data = acs_conf)
+
+model_reg <- workflows::workflow() |>
+  workflows::add_model(spec = rpart_mod_class) |>
+  workflows::add_recipe(recipe = classification_rec) |>
+  parsnip::fit(data = acs_conf)
+
+set.seed(1)
+sample1 <- sample_rpart(
+  model = model_reg, 
+  new_data = acs_conf[1:10, ], 
+  conf_data = acs_conf
+)
+
+}

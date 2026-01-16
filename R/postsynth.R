@@ -8,8 +8,8 @@
 #' @param ldiversity A vector or dataframe of ldiversity stats. 
 #'
 #' @return A `postsynth` object.
+#' @noRd
 #' 
-#' @export
 postsynth <- function(synthetic_data,
                       jth_preprocessing,
                       total_synthesis_time,
@@ -24,8 +24,6 @@ postsynth <- function(synthetic_data,
                              jth_synthesis_time = jth_synthesis_time,
                              extractions = extractions,
                              ldiversity = ldiversity)
-  
-  # todo(aaron): add validator
   
   return(postsynth)    
   
@@ -71,6 +69,50 @@ is_postsynth <- function(x) {
 #   
 # }
 
+#' Print the postsynth object to the console with formatting
+#'
+#' @param x A `postsynth` object
+#' @param ... further arguments passed to or from other methods (not currently
+#'   used).
+#' 
+#' @return Invisibly returns the input `postsynth` object.
+#'
+#' @examples
+#' 
+#' # create roadmap
+#' rm <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' ) 
+#' 
+#' rpart_mod_reg <- parsnip::decision_tree() |>
+#'   parsnip::set_engine(engine = "rpart") |>
+#'   parsnip::set_mode(mode = "regression")
+#' 
+#' rpart_mod_class <- parsnip::decision_tree() |>
+#'   parsnip::set_engine(engine = "rpart") |>
+#'   parsnip::set_mode(mode = "classification")
+#' 
+#' synth_spec1 <- synth_spec(
+#'   default_regression_model = rpart_mod_reg,
+#'   default_regression_sampler = sample_rpart,
+#'   default_classification_model = rpart_mod_class,
+#'   default_classification_sampler = sample_rpart
+#' )
+#' 
+#' # create a presynth object
+#' # use defaults for noise, constraints, and replicates
+#' presynth1 <- presynth(
+#'   roadmap = rm,
+#'   synth_spec = synth_spec1
+#' )
+#' 
+#' # synthesize!
+#' set.seed(1)
+#' postsynth1 <- synthesize(presynth = presynth1)
+#'
+#' print(postsynth1)
+#'
 #' @export
 print.postsynth <- function(x, ...) {
 

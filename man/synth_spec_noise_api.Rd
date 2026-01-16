@@ -2,7 +2,11 @@
 % Please edit documentation in R/synth_spec.R
 \name{synth_spec_noise_api}
 \alias{synth_spec_noise_api}
+\alias{add_custom_noise}
 \title{Add, update, or remove noise from a \code{synth_spec} object}
+\usage{
+add_custom_noise(synth_spec, ...)
+}
 \arguments{
 \item{synth_spec}{A \code{synth_spec} object}
 
@@ -11,7 +15,27 @@ mapping variable names to samplers.}
 }
 \value{
 A new \code{synth_spec} object.
+
+A new \code{synth_spec} object with added custom noise.
 }
 \description{
 Add, update, or remove noise from a \code{synth_spec} object
+}
+\examples{
+
+synth_spec <- synth_spec()
+
+noise1 <- noise(
+  add_noise = TRUE, 
+  noise_func = add_noise_kde,
+  noise_params = list(
+    n_ntiles = 2
+  )
+)
+
+add_custom_noise(
+  synth_spec = synth_spec, 
+  list("vars" = c("a", "b", "c"), "noise" = noise1)
+)
+
 }

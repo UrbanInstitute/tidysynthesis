@@ -2,7 +2,7 @@ test_that("start_resample basic functionality", {
   
   # specify an example resampling with no warnings
   start_result <- start_resample(
-    acs_start_nw %>% dplyr::select(county, gq), 
+    acs_start_nw |> dplyr::select(county, gq), 
     n = 100, 
     inv_noise_scale = 1.0,
     support = "all")
@@ -51,14 +51,18 @@ test_that("start_resample error handling", {
     start_resample(acs_start_nw, 
                    n = 100,
                    inv_noise_scale = 0,
-                   support = "all")
+                   support = "all"),
+    regexp = "inv_noise_scale > 0 is not TRUE",
+    fixed = TRUE
   )
   
   expect_error(
     start_resample(acs_start_nw, 
                    n = 100,
                    inv_noise_scale = NULL,
-                   support = "all")
+                   support = "all"),
+    regexp = "Cannot resample from complete support with unspecified inv_noise_scale.",
+    fixed = TRUE
   )
   
 })
@@ -66,12 +70,12 @@ test_that("start_resample error handling", {
 test_that("start_resample support options", {
   
   # add empty level
-  start_w_empty_levels <- acs_start_nw %>%
+  start_w_empty_levels <- acs_start_nw |>
     dplyr::mutate(county = factor(county, levels = c("Other", 
                                                      "Douglas",
                                                      "Lancaster", 
                                                      "Sarpy",
-                                                     "Empty"))) %>%
+                                                     "Empty"))) |>
     dplyr::select(county, gq)
   
   # observed support should raise a message
@@ -107,22 +111,22 @@ test_that("start_resample inv_noise_scale", {
   # calculate resampled counts at two different inv_noise_scales with 
   # 100 replicates 
   s1 <- purrr::map_int(1:100, \(x) {
-    start_resample(acs_start_nw %>% dplyr::select(county, gq), 
+    start_resample(acs_start_nw |> dplyr::select(county, gq), 
                    n = 1000, 
                    inv_noise_scale = 1.0,
-                   support = "all") %>% 
-      dplyr::mutate(ct = as.integer(county == "Douglas")) %>% 
-      dplyr::pull("ct") %>% 
+                   support = "all") |> 
+      dplyr::mutate(ct = as.integer(county == "Douglas")) |> 
+      dplyr::pull("ct") |> 
       sum()
     })
   
   s2 <- purrr::map_int(1:100, \(x) {
-    start_resample(acs_start_nw %>% dplyr::select(county, gq), 
+    start_resample(acs_start_nw |> dplyr::select(county, gq), 
                    n = 1000, 
                    inv_noise_scale = 0.1,
-                   support = "all") %>% 
-      dplyr::mutate(ct = as.integer(county == "Douglas")) %>% 
-      dplyr::pull("ct") %>% 
+                   support = "all") |> 
+      dplyr::mutate(ct = as.integer(county == "Douglas")) |> 
+      dplyr::pull("ct") |> 
       sum()
   })
   
@@ -138,13 +142,13 @@ test_that("start_resample observed support", {
   # generate random uniform samples from observed support
   samples <- purrr::map(1:100, \(x) {
     suppressMessages({
-      start_resample(acs_start_nw %>% dplyr::select(county, gq), 
+      start_resample(acs_start_nw |> dplyr::select(county, gq), 
                      n = 1000, 
                      inv_noise_scale = 0)
     })
-  }) %>% 
-    dplyr::bind_rows() %>%
-    dplyr::group_by(county, gq) %>% 
+  }) |> 
+    dplyr::bind_rows() |>
+    dplyr::group_by(county, gq) |> 
     dplyr::tally()
   
   expect_true(nrow(samples) == 10)
@@ -153,9 +157,9 @@ test_that("start_resample observed support", {
   expected_value <- 1000 * 100 / nrow(samples)
   
   # expect approximately uniform samples
-  sample_err <- samples %>%
+  sample_err <- samples |>
     dplyr::mutate(err = (n - expected_value) / expected_value, 
-                  .keep = "none") %>%
+                  .keep = "none") |>
     dplyr::pull(err)
   
   expect_true(max(abs(sample_err)) <= .05)
@@ -171,13 +175,13 @@ test_that("start_resample uniform observed support", {
   # generate random uniform samples from observed support
   samples <- purrr::map(1:100, \(x) {
     suppressMessages({
-      start_resample(acs_start_nw %>% dplyr::select(county, gq), 
+      start_resample(acs_start_nw |> dplyr::select(county, gq), 
                      n = 1000, 
                      inv_noise_scale = 0)
     })
-  }) %>% 
-    dplyr::bind_rows() %>%
-    dplyr::group_by(county, gq) %>% 
+  }) |> 
+    dplyr::bind_rows() |>
+    dplyr::group_by(county, gq) |> 
     dplyr::tally()
   
   # expect only observed support 
@@ -186,8 +190,8 @@ test_that("start_resample uniform observed support", {
   expected_value <- 1000 * 100 / nrow(samples)
   
   # expect approximately uniform samples
-  sample_err <- samples %>%
-    dplyr::transmute(err = (n - expected_value) / expected_value) %>%
+  sample_err <- samples |>
+    dplyr::transmute(err = (n - expected_value) / expected_value) |>
     dplyr::pull(err)
   
   expect_true(max(abs(sample_err)) <= .05)
@@ -202,7 +206,7 @@ test_that("start_resample uniform from observed support", {
   # generate random uniform samples from observed support
   expect_message(
     rs1 <- start_resample(
-      acs_start_nw %>% dplyr::select(county, gq), 
+      acs_start_nw |> dplyr::select(county, gq), 
       n = 1000, 
       support = "observed",
       inv_noise_scale = NULL
@@ -216,8 +220,8 @@ test_that("start_resample uniform from observed support", {
 test_that("start_resample from full support with numeric casting", {
   
   rs2 <- start_resample(
-    acs_start_nw %>% 
-      dplyr::select(county, gq) %>%
+    acs_start_nw |> 
+      dplyr::select(county, gq) |>
       dplyr::mutate(gq = as.integer(gq)), 
     n = 1000, 
     support = "all",

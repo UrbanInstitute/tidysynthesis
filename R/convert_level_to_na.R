@@ -4,8 +4,18 @@
 #'
 #' @return A data frame or tibble with `"NA"` converted to `NA`
 #' 
-#' @export
+#' @examples
 #' 
+#' data <- data.frame(
+#'   x1 = c(1, 2, NA),  
+#'   x2 = c("1", "2", "NA"),
+#'   x3 = factor(c("1", "2", "NA")),
+#'   x4 = factor(c("b", "NA", "a"), ordered = TRUE)
+#' )
+#' 
+#' convert_level_to_na(data)
+#' 
+#' @export
 convert_level_to_na <- function(data) {
   
   level_to_na <- function(x) {
@@ -44,7 +54,7 @@ convert_level_to_na <- function(data) {
     
   }
 
-  data_converted <- data %>%
+  data_converted <- data |>
     dplyr::mutate(dplyr::across(.cols = dplyr::everything(), .fns = level_to_na))
   
   return(data_converted)

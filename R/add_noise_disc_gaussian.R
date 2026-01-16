@@ -18,8 +18,19 @@
 #'
 #' @return A numeric vector with noise added to each prediction
 #' 
-#' @export
+#' @examples
 #' 
+#' add_noise_disc_gaussian(
+#'   model = NULL,
+#'   new_data = NULL,
+#'   conf_model_data = NULL,
+#'   outcome_var = NULL,
+#'   col_schema = NULL,
+#'   pred = 1:100,
+#'   variance = 3
+#' )
+#' 
+#' @export
 add_noise_disc_gaussian <- function(
     model,
     new_data,

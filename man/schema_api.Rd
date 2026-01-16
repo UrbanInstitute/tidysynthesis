@@ -22,7 +22,50 @@ reset_schema(roadmap)
 }
 \value{
 A new \code{roadmap} object.
+
+A roadmap object with added schema.
+
+A roadmap object with updated schema.
+
+A roadmap object with reset schema.
 }
 \description{
 Add, update, or reset a \code{schema} object within an existing \code{roadmap}.
+}
+\examples{
+
+rm <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+)
+
+acs_schema <- schema(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw,
+  na_numeric_to_ind = TRUE
+)
+
+rm |>
+  add_schema(schema = acs_schema)
+
+
+rm <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+)
+
+rm |>
+  update_schema(na_numeric_to_ind = TRUE)
+
+
+rm <- roadmap(
+  conf_data = acs_conf_nw,
+  start_data = acs_start_nw
+)
+
+rm <- rm |>
+  update_schema(na_numeric_to_ind = TRUE)
+
+reset_schema(roadmap = rm)
+  
 }
