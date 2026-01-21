@@ -50,7 +50,27 @@ synthesize <- function(presynth,
                        keep_workflows = FALSE,
                        keep_partial = FALSE) {
   
-  # this block is exclusively used to handle end-to-end replicates
+  # handling postsynth-to-presynth restarting for partially completed synthesis
+  if (is_postsynth(presynth)) {
+    
+    if (all(presynth$roles != "unsynthesized")) {
+      
+      warning("Synthesis already completed, returning input postsynth.")
+      
+      return(presynth)
+      
+    } 
+    
+    # reconstruct roadmap and synth_spec from defaults
+    new_roadmap <- postsynth_to_roadmap(presynth)
+    new_synth_spec <- postsynth_to_synth_spec(presynth)
+    
+    presynth <- presynth(roadmap = new_roadmap, 
+                         synth_spec = new_synth_spec)
+    
+  }
+  
+  # handling end-to-end replicates
   # all main functionality occurs below in .synthesize()
   end2end_reps <- presynth$roadmap$replicates$end_to_end_replicates
   
