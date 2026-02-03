@@ -1,7 +1,12 @@
 #' Synthesize a data set
 #'
 #' @param presynth A `presynth` object created by `presynth()`.
-#' @param progress A single logical. Should a progress be displayed?
+#' @param progress Logical, if TRUE, displays progress. Default is `FALSE`, no 
+#' progress displayed.
+#' @param keep_workflows Logical, if TRUE, returns derived roadmap components 
+#' in `postsynth`(s). Default is `FALSE`. 
+#' @param keep_partial Logical, if TRUE, saves partial synthesis to output. 
+#' Default is `FALSE`, no intermediate outputs saved. 
 #'
 #' @return A postsynth object.
 #' 
@@ -40,7 +45,10 @@
 #' postsynth1 <- synthesize(presynth = presynth1)
 #' 
 #' @export
-synthesize <- function(presynth, progress = FALSE) {
+synthesize <- function(presynth, 
+                       progress = FALSE,
+                       keep_workflows = FALSE,
+                       keep_partial = FALSE) {
   
   # this block is exclusively used to handle end-to-end replicates
   # all main functionality occurs below in .synthesize()
@@ -50,7 +58,10 @@ synthesize <- function(presynth, progress = FALSE) {
   if (end2end_reps == 1) {
     
     # use default synthesis
-    return(.synthesize(presynth = presynth, progress = progress))
+    return(.synthesize(presynth = presynth, 
+                       progress = progress,
+                       keep_workflows = keep_workflows,
+                       keep_partial = keep_partial))
     
   } else {
     
@@ -59,7 +70,10 @@ synthesize <- function(presynth, progress = FALSE) {
       purrr::map(
         .x = 1:end2end_reps,
         .f = \(x) {
-          .synthesize(presynth = presynth, progress = progress)
+          .synthesize(presynth = presynth, 
+                      progress = progress,
+                      keep_workflows = keep_workflows,
+                      keep_partial = keep_partial)
         }
       )
     )
@@ -68,7 +82,10 @@ synthesize <- function(presynth, progress = FALSE) {
   
 }
 
-.synthesize <- function(presynth, progress = FALSE) {
+.synthesize <- function(presynth, 
+                        progress = FALSE,
+                        keep_workflows = FALSE,
+                        keep_partial = FALSE) {
   
   # start overall synthesis time
   synth_start_time <- Sys.time()
@@ -180,53 +197,93 @@ synthesize <- function(presynth, progress = FALSE) {
     
     for (var_j in seq_along(models)) {
       
-      message(paste0("Synthesizing ", var_j, "/", length(vs_names), " ", vs_names[[var_j]], "... "))
+      message(paste0("Synthesizing ", 
+                     var_j, 
+                     "/", 
+                     length(vs_names), 
+                     " ", 
+                     vs_names[[var_j]], 
+                     "... "))
       
-      jth_variable <- synthesize_j(
-        conf_data = conf_data,
-        synth_data = engine_output$synth_data,
-        col_schema = col_schema[[var_j]], 
-        model = models[[var_j]],
-        recipe = recipes[[var_j]],
-        sampler = samplers[[var_j]],
-        noise = noises[[var_j]],
-        tuner = tuners[[var_j]],
-        extractor = extractors[[var_j]],
-        constraints = constraints[[var_j]],
-        invert_transformations = invert_transformations,
-        p = p
+      tryCatch(
+        expr = {
+          jth_variable <- synthesize_j(
+            conf_data = conf_data,
+            synth_data = engine_output$synth_data,
+            col_schema = col_schema[[var_j]], 
+            model = models[[var_j]],
+            recipe = recipes[[var_j]],
+            sampler = samplers[[var_j]],
+            noise = noises[[var_j]],
+            tuner = tuners[[var_j]],
+            extractor = extractors[[var_j]],
+            constraints = constraints[[var_j]],
+            invert_transformations = invert_transformations,
+            p = p
+          )
+          
+          # put together synthetic data set
+          engine_output$synth_data <- dplyr::bind_cols(
+            engine_output$synth_data, jth_variable$predictions
+          )
+          
+          # use _NA variables to add NA to their corresponding variables
+          if (presynth$synth_spec$enforce_na) {
+            
+            engine_output$synth_data <- enforce_na(data = engine_output$synth_data)
+            
+          }
+          
+          # add estimated model for the jth variable
+          engine_output$jth_preprocessing[[var_j]] <- (
+            jth_variable[["estimated_model"]][["pre"]][["mold"]][[
+              "blueprint"]][["recipe"]]
+          )
+          
+          # add synthesis time for the jth variable
+          engine_output$jth_synthesis_time[var_j] <- jth_variable$jth_synthesis_time
+          
+          engine_output$extractions[[var_j]] <- jth_variable$extraction
+          
+          # add ldiversity for the jth variable
+          if (!is.null(jth_variable$ldiversity)) {
+            
+            engine_output$ldiversity[[var_j]] <- jth_variable$ldiversity
+            
+          }
+          
+        },
+        error = \(e) {
+          
+          if (keep_partial) {
+            
+            force({
+              error_var_name <- vs_names[var_j]
+            })
+            
+            warning(
+              paste0("Error encountered in variable '", error_var_name, "'. \n",
+                     as.character(e))
+            )
+            
+            return(
+              list(synth_data = synth_data,
+                   jth_preprocessing = jth_preprocessing,
+                   jth_synthesis_time = jth_synthesis_time,
+                   extractions = extractions,
+                   ldiversity = ldiversity)
+            )
+            
+          } else {
+            
+            stop(e)
+            
+          }
+          
+        }
+        
       )
       
-      # put together synthetic data set
-      engine_output$synth_data <- dplyr::bind_cols(
-        engine_output$synth_data, jth_variable$predictions
-      )
-      
-      # use _NA variables to add NA to their corresponding variables
-      if (presynth$synth_spec$enforce_na) {
-        
-        engine_output$synth_data <- enforce_na(data = engine_output$synth_data)
-        
-      }
-      
-      # add estimated model for the jth variable
-      engine_output$jth_preprocessing[[var_j]] <- (
-        jth_variable[["estimated_model"]][["pre"]][["mold"]][[
-          "blueprint"]][["recipe"]]
-      )
-      
-      # add synthesis time for the jth variable
-      engine_output$jth_synthesis_time[var_j] <- jth_variable$jth_synthesis_time
-      
-      engine_output$extractions[[var_j]] <- jth_variable$extraction
-      
-      # add ldiversity for the jth variable
-      if (!is.null(jth_variable$ldiversity)) {
-        
-        engine_output$ldiversity[[var_j]] <- jth_variable$ldiversity
-        
-      }
-        
     }
     
     return(engine_output)
@@ -327,6 +384,19 @@ synthesize <- function(presynth, progress = FALSE) {
     
   }
   
+  # caching workflows logic 
+  keep_roadmap <- NULL
+  keep_synth_spec <- NULL
+  keep_workflow <- NULL
+  
+  if (keep_workflows) {
+    
+    keep_roadmap <- presynth$roadmap
+    keep_synth_spec <- presynth$synth_spec
+    keep_workflow <- presynth$workflows
+    
+  }
+  
   # if only one replicate, return a postsynth object directly
   if (length(syntheses) == 1) {
     
@@ -342,6 +412,10 @@ synthesize <- function(presynth, progress = FALSE) {
       synthesis_time = unname(syntheses$jth_synthesis_time)
     )
     
+    # update roles
+    output_roles <- presynth$roles 
+    output_roles[colnames(syntheses$synth_data)] <- "synthesized"
+    
     # create postsynth object
     postsynth <- postsynth(
       synthetic_data = syntheses$synth_data,
@@ -350,7 +424,11 @@ synthesize <- function(presynth, progress = FALSE) {
                                         units = "secs"),
       jth_synthesis_time = jth_synthesis_time,
       extractions = syntheses$extractions,
-      ldiversity = tibble::as_tibble(data.frame(syntheses$ldiversity))
+      ldiversity = tibble::as_tibble(data.frame(syntheses$ldiversity)),
+      roadmap = keep_roadmap,
+      synth_spec = keep_synth_spec,
+      workflows = keep_workflow,
+      roles = output_roles
     )
     
     return(postsynth)
@@ -367,6 +445,11 @@ synthesize <- function(presynth, progress = FALSE) {
       synth_end_time <- Sys.time()
       as.numeric(synth_end_time - synth_start_time, units = "secs")
       
+      # update roles
+      output_roles <- presynth$roles 
+      output_roles[
+        colnames(syntheses[[replicate_number]]$synth_data)] <- "synthesized"
+      
       # create the postsynth object
       postsynths[[replicate_number]] <- postsynth(
         synthetic_data = syntheses[[replicate_number]]$synth_data,
@@ -377,7 +460,11 @@ synthesize <- function(presynth, progress = FALSE) {
         extractions = syntheses[[replicate_number]]$extractions,
         ldiversity = tibble::as_tibble(
           data.frame(syntheses[[replicate_number]]$ldiversity)
-        )
+        ),
+        roadmap = keep_roadmap,
+        synth_spec = keep_synth_spec,
+        workflows = keep_workflow,
+        roles = output_roles
       )
 
     }
@@ -387,3 +474,4 @@ synthesize <- function(presynth, progress = FALSE) {
   }
 
 }
+

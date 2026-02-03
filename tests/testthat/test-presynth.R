@@ -66,6 +66,27 @@ test_that("presynth() creates a basic presynth object", {
 
 })
 
+test_that("presynth() creates expected roles", {
+  
+  expect_warning(
+    presynth <- presynth(roadmap = roadmap,
+                         synth_spec = synth_spec)
+  )
+  
+  expect_true(
+    all(presynth[["roles"]][names(roadmap[["start_data"]])] == "start")
+  )
+  
+  expect_true(
+    all(
+      presynth[["roles"]][
+        roadmap[["visit_sequence"]][["visit_sequence"]]] == "unsynthesized"
+    )
+  )
+  
+  
+})
+
 test_that("presynth input errors", {
   
   expect_error(
