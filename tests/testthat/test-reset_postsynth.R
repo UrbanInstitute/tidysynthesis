@@ -168,3 +168,79 @@ test_that("postsynth_to_* behavior for completed synthesis", {
 })
 
 
+test_that(".remove_custom_vars removes all elements when all vars removed", {                                     
+  
+  custom <- list(                                                                                                 
+    list(vars = c("a", "b"), model = "1")                                                                         
+  )                                                                                                               
+  
+  result <- .remove_custom_vars(custom, c("a", "b"))                                                              
+  
+  expect_null(result)                                                                                             
+  
+})
+
+
+test_that(".remove_custom_vars handles multiple removals", { 
+  
+  # Element with multiple vars, remove several 
+  custom <- list(
+    list(vars = c("a", "b", "c"), model = "1"), 
+    list(vars = c("d", "e"), model = "2"), 
+    list(vars = c("a"), model = "3") 
+  )  
+  
+  result <- .remove_custom_vars(custom, c("a", "b")) 
+  
+  # First element should retain only "c" 
+  expect_identical(result[[1]][["vars"]], "c")
+  
+  # Second element unchanged 
+  expect_identical(result[[2]][["vars"]], c("d", "e"))
+
+  # Third element removed entirely (only had "a")
+  expect_length(result, 2)
+  
+})   
+
+test_that("postsynth_to_roadmap errors without keep_workflows", { 
+  
+  # Create a partial postsynth WITHOUT keep_workflows
+  suppressWarnings({ 
+    failing_presynth2 <- presynth(roadmap = roadmap1, synth_spec = synth_spec1)
+  }) 
+  
+  failing_presynth2$roadmap$conf_data$carb[1] <- "not_a_float"
+  
+  suppressWarnings({
+    partial_no_workflows <- synthesize(
+      failing_presynth2,
+      keep_workflows = FALSE,
+      keep_partial = TRUE
+    )
+  })
+  
+  # Verify roadmap and synth_spec are NULL 
+  
+  expect_null(partial_no_workflows$roadmap)
+  expect_null(partial_no_workflows$synth_spec) 
+  
+  # Expect clear error when trying to convert  
+  
+  expect_error(
+    postsynth_to_roadmap(partial_no_workflows),
+    regexp = "keep_workflows" 
+  ) 
+  
+  expect_error( 
+    postsynth_to_synth_spec(partial_no_workflows),
+    regexp = "keep_workflows"
+  ) 
+  
+  # Expect clear error when trying to restart via synthesize()
+  expect_error(
+    synthesize(partial_no_workflows), 
+    regexp = "keep_workflows"
+  )
+  
+})     

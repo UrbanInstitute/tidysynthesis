@@ -14,6 +14,18 @@ postsynth_to_roadmap(postsynth)
 A \code{roadmap} object.
 }
 \description{
-Convert a incompletely synthesized \code{postsynth} into a new \code{roadmap} using
-the same \code{roadmap} settings from the incomplete synthesis.
+In the new \code{roadmap}, \code{start_data} will now include the initial starting
+data along with the previously synthesized variables. The \code{visit_sequence}
+will consist of, in the same order as the original visit sequence, all
+unsynthesized variables. The schema will reflect the original schema but
+with an updated set of \code{synth_vars}. The constraints will be similar to
+those initially inputted, but all rows in the constraints data frames for
+already synthesized variables will be excluded.
+}
+\details{
+To update components of the \code{roadmap} use the \verb{reset_*} and \verb{add_*}
+functions. For example, to change the \code{visit_sequence} which by default
+follows the same order as the initial visit sequence, apply
+\code{reset_visit_sequence()} and then \verb{add_sequence_*()} to the newly created
+roadmap.
 }

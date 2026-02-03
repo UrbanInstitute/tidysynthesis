@@ -11,7 +11,8 @@ postsynth_to_synth_spec(postsynth)
 \item{postsynth}{A \code{postsynth} object generated with \code{keep_workflows == TRUE}}
 }
 \value{
-A \code{synth_spec} object.
+A \code{synth_spec} object that is similar to the initial \code{synth_spec}
+but updated to remove information about already-synthesized variables.
 }
 \description{
 Convert a incompletely synthesized \code{postsynth} into a new \code{synth_spec} using

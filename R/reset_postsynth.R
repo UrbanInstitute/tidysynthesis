@@ -38,6 +38,20 @@
 #' Convert a incompletely synthesized `postsynth` into a new `roadmap` using 
 #' the same `roadmap` settings from the incomplete synthesis.
 #' 
+#' In the new `roadmap`, `start_data` will now include the initial starting 
+#' data along with the previously synthesized variables. The `visit_sequence` 
+#' will consist of, in the same order as the original visit sequence, all 
+#' unsynthesized variables. The schema will reflect the original schema but 
+#' with an updated set of `synth_vars`. The constraints will be similar to 
+#' those initially inputted, but all rows in the constraints data frames for 
+#' already synthesized variables will be excluded. 
+#' 
+#' To update components of the `roadmap` use the `reset_*` and `add_*` 
+#' functions. For example, to change the `visit_sequence` which by default 
+#' follows the same order as the initial visit sequence, apply 
+#' `reset_visit_sequence()` and then `add_sequence_*()` to the newly created 
+#' roadmap.   
+#' 
 #' @param postsynth A `postsynth` object generated with `keep_workflows == TRUE`
 #' 
 #' @return A `roadmap` object.
@@ -201,7 +215,8 @@ postsynth_to_roadmap <- function(postsynth) {
 #' 
 #' @param postsynth A `postsynth` object generated with `keep_workflows == TRUE`
 #' 
-#' @return A `synth_spec` object.
+#' @return A `synth_spec` object that is similar to the initial `synth_spec` 
+#' but updated to remove information about already-synthesized variables. 
 #' 
 #' @export 
 #' 
