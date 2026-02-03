@@ -1,3 +1,11 @@
+# tidysynthesis 0.1.3
+
+* Add additional arguments to `synthesize()` for saving incomplete syntheses.
+* Redesign `postsynth` to inherit from `presynth` for retaining incomplete 
+  synthesis specifications.
+* Add `postsynth_to_roadmap()` and `postsynth_to_synth_spec()` for restarting
+  incomplete syntheses. 
+
 # tidysynthesis 0.1.2
 
 * Prepare tidysynthesis for CRAN release (#26).

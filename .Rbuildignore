@@ -10,3 +10,4 @@
 ^data-raw/
 README.qmd
 ^\.github$
+.vscode
