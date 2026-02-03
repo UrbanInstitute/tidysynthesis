@@ -56,6 +56,46 @@
 #' 
 #' @return A `roadmap` object.
 #' 
+#' @examples
+#' 
+#' # create roadmap
+#' rm <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' ) 
+#' 
+#' rpart_mod_reg <- parsnip::decision_tree() |>
+#'   parsnip::set_engine(engine = "rpart") |>
+#'   parsnip::set_mode(mode = "regression")
+#' 
+#' rpart_mod_class <- parsnip::decision_tree() |>
+#'   parsnip::set_engine(engine = "rpart") |>
+#'   parsnip::set_mode(mode = "classification")
+#' 
+#' synth_spec1 <- synth_spec(
+#'   default_regression_model = rpart_mod_reg,
+#'   default_regression_sampler = sample_rpart,
+#'   default_classification_model = rpart_mod_class,
+#'   default_classification_sampler = sample_rpart
+#' )
+#' 
+#' # create a presynth object
+#' # use defaults for noise, constraints, and replicates
+#' presynth1 <- presynth(
+#'   roadmap = rm,
+#'   synth_spec = synth_spec1
+#' )
+#' 
+#' # synthesize with keep_workflows = TRUE
+#' set.seed(1)
+#' postsynth1 <- synthesize(
+#'   presynth = presynth1, 
+#'   keep_workflows = TRUE
+#' )
+#' 
+#' # return roadmap (will return original roadmap if synthesis completes).
+#' new_rmap <- postsynth_to_roadmap(postsynth1)
+#' 
 #' @export 
 #' 
 postsynth_to_roadmap <- function(postsynth) {
@@ -217,6 +257,47 @@ postsynth_to_roadmap <- function(postsynth) {
 #' 
 #' @return A `synth_spec` object that is similar to the initial `synth_spec` 
 #' but updated to remove information about already-synthesized variables. 
+#' 
+#' 
+#' @examples
+#' 
+#' # create roadmap
+#' rm <- roadmap(
+#'   conf_data = acs_conf_nw,
+#'   start_data = acs_start_nw
+#' ) 
+#' 
+#' rpart_mod_reg <- parsnip::decision_tree() |>
+#'   parsnip::set_engine(engine = "rpart") |>
+#'   parsnip::set_mode(mode = "regression")
+#' 
+#' rpart_mod_class <- parsnip::decision_tree() |>
+#'   parsnip::set_engine(engine = "rpart") |>
+#'   parsnip::set_mode(mode = "classification")
+#' 
+#' synth_spec1 <- synth_spec(
+#'   default_regression_model = rpart_mod_reg,
+#'   default_regression_sampler = sample_rpart,
+#'   default_classification_model = rpart_mod_class,
+#'   default_classification_sampler = sample_rpart
+#' )
+#' 
+#' # create a presynth object
+#' # use defaults for noise, constraints, and replicates
+#' presynth1 <- presynth(
+#'   roadmap = rm,
+#'   synth_spec = synth_spec1
+#' )
+#' 
+#' # synthesize with keep_workflows = TRUE
+#' set.seed(1)
+#' postsynth1 <- synthesize(
+#'   presynth = presynth1, 
+#'   keep_workflows = TRUE
+#' )
+#' 
+#' # return roadmap (will return original roadmap if synthesis completes).
+#' new_spec <- postsynth_to_synth_spec(postsynth1)
 #' 
 #' @export 
 #' 
