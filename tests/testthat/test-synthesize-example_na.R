@@ -127,7 +127,7 @@ test_that("postsynth_to_roadmap works with partial synthesis containing _NA vari
  # where _NA variables remain unsynthesized. The error was thrown in 
  # constraints.R when calling schema[["col_schema"]][[x]][["dtype"]]. 
 
-  # Setup: use data with missing values (wages has NAs, so wages_NA will be created)
+  # Setup: use data with missing values 
   starting_data <- example_na |>
     dplyr::select(age)
 
