@@ -249,8 +249,13 @@ enforce_schema <- function(roadmap) {
     
     # Update the col_schema to include _NA variables
     for (var in names(conf_data)) {                                                                                     
-      if (endsWith(var, "_NA") && is.null(col_schema[[var]])) {                                                         
-        col_schema[[var]] <- list(dtype = "fct", levels = NULL, na_value = NA, na_prop = 0)                             
+      if (endsWith(var, "_NA")) { 
+        
+        col_schema[[var]] <- list(
+          "dtype" = "fct",
+          "na_prop" = 0., 
+          "levels" = c("missing value", "nonmissing value")
+        )
       }                                                                                                                 
     }           
   }
