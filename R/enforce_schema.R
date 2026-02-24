@@ -247,6 +247,17 @@ enforce_schema <- function(roadmap) {
                            types = c("int", "dbl"),
                            skip_vars = names(start_data))
     
+    # Update the col_schema to include _NA variables
+    for (var in names(conf_data)) {                                                                                     
+      if (endsWith(var, "_NA")) { 
+        
+        col_schema[[var]] <- list(
+          "dtype" = "fct",
+          "na_prop" = 0., 
+          "levels" = c("missing value", "nonmissing value")
+        )
+      }                                                                                                                 
+    }           
   }
   
   # if flagged, convert missing factor values into a new factor level

@@ -116,5 +116,53 @@ test_that("synthesis with enforce_na = FALSE", {
     unname()
   
   expect_equal(missing_values2,  c(0, 23, 20, 13, 122))
-  
+
+})
+
+test_that("postsynth_to_roadmap works with partial synthesis containing _NA variables", {
+
+ # This test checks that {variable}_NA columns are added the schema in roadmap. 
+ # It is important that they are added because they are considered in 
+ # constraints.R when calling schema[["col_schema"]][[x]][["dtype"]]. 
+
+  # Setup: use data with missing values 
+  starting_data <- example_na |>
+    dplyr::select(age)
+
+  roadmap_test <- roadmap(
+    conf_data = dplyr::select(example_na, -health),
+    start_data = starting_data
+  )
+
+  synth_spec_test <- synth_spec(
+    default_regression_model = rpart_mod,
+    default_classification_model = rpart_mod_cat,
+    default_regression_sampler = sample_rpart,
+    default_classification_sampler = sample_rpart
+  )
+
+  expect_warning(
+    presynth_test <- presynth(
+      roadmap = roadmap_test,
+      synth_spec = synth_spec_test
+    )
+  )
+
+  # Corrupt age (early in visit sequence) to cause synthesis failure
+  presynth_test$roadmap$conf_data$age[1:5] <- "corrupted"
+
+  # Synthesize with keep_partial = TRUE and keep_workflows = TRUE
+  # This will produce warnings but continue
+  expect_warning(
+    result <- synthesize(presynth_test, 
+                         keep_partial = TRUE, 
+                         keep_workflows = TRUE)
+  )
+
+  # This should give us the returned roadmap and work successfully to return a value
+  expect_no_error(
+    new_roadmap <- postsynth_to_roadmap(result)
+  )
+
+
 })
