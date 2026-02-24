@@ -121,10 +121,8 @@ test_that("synthesis with enforce_na = FALSE", {
 
 test_that("postsynth_to_roadmap works with partial synthesis containing _NA variables", {
 
- # This test addresses a bug where _NA indicator variables are added to
- # synth_vars but not to col_schema in enforce_schema(). This causes
- # postsynth_to_roadmap() to fail when called on a partial synthesis result
- # where _NA variables remain unsynthesized. The error was thrown in 
+ # This test checks that {variable}_NA columns are added the schema in roadmap. 
+ # It is important that they are added because they are considered in 
  # constraints.R when calling schema[["col_schema"]][[x]][["dtype"]]. 
 
   # Setup: use data with missing values 
