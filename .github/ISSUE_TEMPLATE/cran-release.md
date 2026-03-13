@@ -22,6 +22,7 @@ Prepare for release
 - [ ] `devtools::build_readme()` (we need to manually render for now since we use Quarto instead of R Markdown)
 - [ ] Add GitHub actions to check the package on macOS, Windows, and Linux. Eliminate all errors, warnings, and notes.
 - [ ] Go through [Davis Vaughn's extrachecks](https://github.com/DavisVaughan/extrachecks)
+- [ ] Run `devtools::revdep()`
 - [ ] Polish NEWS.md
 
 Submit to CRAN
