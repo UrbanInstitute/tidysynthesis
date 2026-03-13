@@ -10,3 +10,7 @@
 ^data-raw/
 README.qmd
 ^\.github$
+.vscode
+
+^cran-comments\.md$
+^CRAN-SUBMISSION$
