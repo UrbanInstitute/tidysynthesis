@@ -17,7 +17,7 @@ Prepare for release
 - [ ] Check that Authors@R: includes a copyright holder (role ‘cph’).
 - [ ] Double check to see if any third-party code is included. 
 - [ ] Add aspirational installation instructions to the README. 
-- [ ] Run `devtools::check()`. Eliminate all errors, warnings, and notes.
+- [ ] Run `devtools::check(cran = TRUE)`. Eliminate all errors, warnings, and notes.
 - [ ] `urlchecker::url_check()`
 - [ ] `devtools::build_readme()` (we need to manually render for now since we use Quarto instead of R Markdown)
 - [ ] Add GitHub actions to check the package on macOS, Windows, and Linux. Eliminate all errors, warnings, and notes.
