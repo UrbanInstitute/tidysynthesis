@@ -1,6 +1,6 @@
 
 
-# tidysynthesis <a href="https://dplyr.tidyverse.org"><img src="man/figures/logo.png" align="right" height="138" /></a>
+# tidysynthesis <a href="man/figures/logo.png"><img src="man/figures/logo.png" align="right" height="138" /></a>
 
 This repository contains the tidysynthesis R package for generating
 synthetic data. Complete documentation is available is available at the
