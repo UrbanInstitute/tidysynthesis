@@ -1,3 +1,5 @@
+
+
 # tidysynthesis <a href="man/figures/logo.png"><img src="man/figures/logo.png" align="right" height="138" /></a>
 
 This repository contains the tidysynthesis R package for generating
@@ -521,14 +523,3 @@ glimpse(synth5[[3]]$synthetic_data)
     #> $ flipper_length_mm <dbl> 220, 225, 210, 230, 220, 200, 192, 189, 200, 195, 17…
     #> $ body_mass_g       <dbl> 5800, 5050, 4950, 5600, 3950, 3000, 3500, 4100, 2700…
     #> $ bill_depth_mm     <dbl> 15.6, 16.3, 13.1, 17.0, 14.0, 18.9, 17.3, 17.5, 16.9…
-
-## Getting help
-
-Contact [Aaron R. Williams](awilliams@urban.org) with feedback or
-questions.
-
-## Code of conduct
-
-Please note that this project is released with a [Contributor Code of
-Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree
-to abide by its terms.
