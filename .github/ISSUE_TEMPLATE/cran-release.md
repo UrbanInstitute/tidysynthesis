@@ -28,7 +28,7 @@ Prepare for release
 Submit to CRAN
 
 - [ ] Create communications for submitting a package. Start with `usethis::use_cran_comments()`.
-- [ ] Submit to CRAN using the web application
+- [ ] Submit to CRAN using `devtools::submit_cran()` and the web application
 - [ ] Approve email
 
 Wait for CRAN
