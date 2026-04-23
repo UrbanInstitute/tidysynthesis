@@ -322,13 +322,3 @@ glimpse(synth5[[1]]$synthetic_data)
 glimpse(synth5[[2]]$synthetic_data)
 glimpse(synth5[[3]]$synthetic_data)
 ```
-
-## Getting help
-
-Contact [Aaron R. Williams](awilliams@urban.org) with feedback or questions. 
-
-## Code of conduct
-
-Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
-
-
