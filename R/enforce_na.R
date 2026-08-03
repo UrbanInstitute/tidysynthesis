@@ -20,7 +20,6 @@ enforce_na <- function(data) {
   #   var_names_NA: var_names that end in _NA
   #   var_names_missing_values: var_names for variables with missing values
   var_names <- names(data)
-  
   var_names_NA <- var_names[stringr::str_detect(var_names, pattern = "_NA$")]
   
   # stop if there are no _NA variables
@@ -31,32 +30,25 @@ enforce_na <- function(data) {
   # stop if the relevant variable isn't present yet
   if (any(!var_names_missing_values %in% var_names)) return(data)
   
-  # create a helper function to inject NA into locations where the _NA var says 
-  # there should be an NA
-  inject_na <- function(data, x) {
-    
-    x_NA <- paste0(x, "_NA")
-    
-    for (row in 1:nrow(data)) {
-      
-      data[row, x] <- dplyr::if_else(
-        condition = data[row, x_NA, drop = TRUE] == "missing value", 
-        true = NA, 
-        false = data[row, x, drop = TRUE]
-      )
-      
-    }
-    
-    return(data)
-    
-  }
+  # Process:
+  #(1) Create a mask matrix with nrow(data) rows and columns for each of the
+  #.      columns with NA values. This is mask
+  #(2) Extract columns with relevant values to be replaced with NA. This is values 
+  #(3) Use mask to update values to NA where mask says so
+  #(4) Update data's relevant columns with values
   
-  # iterate inject_na over variables that should have NA
-  for (var in var_names_missing_values) {
-    
-    data <- inject_na(data = data, x = var)
-    
-  }
+  
+  # Step 1: Create mask
+  mask <- as.matrix(data[var_names_NA] == "missing value")
+  
+  # Step 2: Extract columns 
+  values <- data[var_names_missing_values]
+  
+  # Step 3: Apply the mask to update values to NA
+  values[mask] <- NA
+  
+  # Step 4: Write the updated columns back
+  data[var_names_missing_values] <- values
   
   return(data)
   
