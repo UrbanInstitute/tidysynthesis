@@ -304,3 +304,41 @@ test_that("schema_updates with NA indicators in first position", {
   
 })
 
+
+test_that("schema_updates with NA indicators in middle position", {
+  
+  # mirrors the reproducer in issue #52: a heterogeneous visit_method where
+  # inctot_NA must be inserted mid-sequence
+  old_roadmap <- roadmap(
+    conf_data = acs_conf_nw,
+    start_data = dplyr::select(acs_conf_nw, dplyr::all_of("county"))
+  ) |>
+    add_sequence_factor(where(is.factor), method = "entropy") |>
+    add_sequence_numeric(where(is.numeric), method = "proportion", na.rm = TRUE) |>
+    update_schema(na_numeric_to_ind = TRUE)
+  
+  new_roadmap <- enforce_schema(old_roadmap)
+  
+  visit_sequence <- new_roadmap[["visit_sequence"]][["visit_sequence"]]
+  visit_method <- new_roadmap[["visit_sequence"]][["visit_method"]]
+  
+  # the indicator is inserted in the middle, not at either end
+  inctot_ix <- match("inctot", visit_sequence)
+  expect_true(inctot_ix > 2 & inctot_ix < length(visit_sequence))
+  
+  # visit_sequence and visit_method must stay aligned
+  expect_equal(length(visit_sequence), length(visit_method))
+  expect_false(anyNA(visit_method))
+  
+  # indicator must be visited immediately before its variable
+  expect_equal(visit_sequence[inctot_ix - 1], "inctot_NA")
+  
+  # the indicator inherits the visit_method of its variable, which differs
+  # from the methods of the variables it is inserted between
+  expect_equal(visit_method[inctot_ix - 1], "proportion")
+  expect_true("entropy" %in% visit_method)
+  
+  # printing the visit_sequence requires equal-length columns
+  expect_no_error(print(new_roadmap[["visit_sequence"]]))
+  
+})

@@ -1,3 +1,8 @@
+# tidysynthesis (development version)
+
+* Fix mismatched `visit_sequence` and `visit_method` lengths when `enforce_schema()`
+  inserts an `_NA` indicator in the middle of the visit sequence (#52).
+
 # tidysynthesis 0.1.3
 
 * Add additional arguments to `synthesize()` for saving incomplete syntheses.

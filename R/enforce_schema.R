@@ -286,34 +286,18 @@ enforce_schema <- function(roadmap) {
   )
   orig_vms <- purrr::map_chr(
     .x = orig_na_vars,
-    .f = \(x) { vm[[which(!is.na(match(vs, x)))]] }
+    .f = \(x) { vm[[match(x, vs)]] }
   )
   
-  # for each NA variable
+  # for each NA variable, insert the indicator immediately before its
+  # corresponding variable, keeping visit_sequence and visit_method aligned
   for (i in seq_along(na_vars)) {
     
     # find index at which to insert indicator
-    insert_ix <- which(!is.na(match(vs, orig_na_vars[[i]])))
+    insert_ix <- match(orig_na_vars[[i]], vs)
     
-    # if indicator at beginning...
-    if (insert_ix == 1) {
-      
-      vs <- c(na_vars[[i]], vs)
-      vm <- c(orig_vms[[i]], vm)
-    
-    # else if indicator at the end...
-    } else if (insert_ix == length(vs)) {
-      
-      vs <- c(vs[1:insert_ix - 1], na_vars[[i]], vs[insert_ix])
-      vm <- c(vm[1:insert_ix - 1], orig_vms[[i]], vm[insert_ix])
-    
-    # else indicator in the middle...
-    } else {
-      
-      vs <- c(vs[1:insert_ix - 1], na_vars[[i]], vs[insert_ix:length(vs)])
-      vm <- c(vm[1:insert_ix - 1], orig_vms[[i]], vm[insert_ix:length(vs)])
-      
-    }
+    vs <- append(vs, na_vars[[i]], after = insert_ix - 1)
+    vm <- append(vm, orig_vms[[i]], after = insert_ix - 1)
     
   }
   
