@@ -342,3 +342,27 @@ test_that("schema_updates with NA indicators in middle position", {
   expect_no_error(print(new_roadmap[["visit_sequence"]]))
   
 })
+
+
+test_that("schema_updates with _NA inside a variable name", {
+  
+  # expand_na() only rejects names that end in "_NA", so a name that merely
+  # contains it must still resolve back to its original variable
+  old_roadmap <- roadmap(
+    conf_data = acs_conf |>
+      dplyr::rename(inc_NAtive = "inctot") |>
+      dplyr::relocate(dplyr::all_of("inc_NAtive"), .before = "age"), 
+    start_data = acs_start
+  ) |>
+    update_schema(na_numeric_to_ind = TRUE)
+  
+  new_roadmap <- enforce_schema(old_roadmap)
+  
+  visit_sequence <- new_roadmap[["visit_sequence"]][["visit_sequence"]]
+  
+  expect_equal(
+    visit_sequence[match("inc_NAtive", visit_sequence) - 1],
+    "inc_NAtive_NA"
+  )
+  
+})

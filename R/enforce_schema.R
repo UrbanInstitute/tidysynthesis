@@ -280,10 +280,7 @@ enforce_schema <- function(roadmap) {
   
   # first, get variable names with and without NA values and their indices
   na_vars <- synth_vars[endsWith(synth_vars, "_NA")]
-  orig_na_vars <- purrr::map_chr(
-    .x = na_vars, 
-    .f = \(x) { stringr::str_replace(x, '_NA', '') } 
-  )
+  orig_na_vars <- stringr::str_remove(na_vars, pattern = "_NA$")
   orig_vms <- purrr::map_chr(
     .x = orig_na_vars,
     .f = \(x) { vm[[match(x, vs)]] }
