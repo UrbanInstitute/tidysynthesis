@@ -57,7 +57,7 @@ sample_rpart <- function(model, new_data, conf_data, ignore_zeros = TRUE) {
     # ignore vectors that are all zeros
     if (ignore_zeros) {
       
-      if (all(x == 0)) {
+      if (all(x == 0, na.rm = TRUE)) {
         
         return(NA)
         
