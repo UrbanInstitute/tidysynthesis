@@ -1,0 +1,73 @@
+/* TidySynthesis Synth Spec Styles */
+
+.tidysynthesis-synth-spec {
+    display: inline-block;
+    border: 1px dashed #333;
+    border-radius: 8px;
+    padding: 1rem;
+    background: #ffffff;
+}
+
+.tidysynthesis-synth-spec-title {
+    font-weight: bold;
+    cursor: pointer;
+    color: #1696d2;
+}
+
+.tidysynthesis-synth-spec-body {
+    border: 1px dashed #333;
+    border-radius: 8px;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
+}
+
+.tidysynthesis-synth-spec-group {
+    border: 1px dashed #bbb;
+    border-radius: 6px;
+    padding: 0.5rem;
+    background: #fdf1e0;
+    font-family: sans-serif;
+    font-size: 14px;
+    color: #333;
+}
+
+.tidysynthesis-synth-spec-group-title {
+    font-weight: 600;
+    cursor: pointer;
+    color: #1696d2;
+}
+
+.tidysynthesis-synth-spec-group-body {
+    margin-top: 0.4rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+}
+
+.tidysynthesis-synth-spec-item-wrapper {
+    display: flex;
+    flex-direction: column;
+    border: 1px dotted #333;
+    border-radius: 6px;
+    padding: 0.4rem;
+    width: 220px;
+}
+
+.tidysynthesis-synth-spec-item-toggle {
+    cursor: pointer;
+}
+
+.tidysynthesis-synth-spec-item {
+    background: #fdf1e0;
+    border: 1px dotted #333;
+    border-radius: 6px;
+    padding: 0.35rem 0.6rem;
+    margin-top: 0.3rem;
+    font-family: sans-serif;
+    font-size: 14px;
+}
