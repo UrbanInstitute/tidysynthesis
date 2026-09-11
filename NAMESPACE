@@ -91,5 +91,7 @@ export(update_start_method)
 export(update_synth_spec)
 export(update_visit_sequence)
 export(visit_sequence)
-importFrom(rlang,":=")
-importFrom(rlang,.data)
+importFrom(rlang,
+  ":=",
+  .data
+)
