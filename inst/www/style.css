@@ -1,0 +1,175 @@
+/* TidySynthesis Synth Spec Styles */
+
+:root {
+    --ts-color-blue: #1696d2;
+    --ts-color-text: #0e0c0d;
+    --ts-color-border: #333;
+    --ts-color-bg-base: #ffffff;
+    --ts-color-bg-body: #fce39e;
+    --ts-color-bg-group: #fff2cf;
+    --ts-item-width: 220px;
+    --ts-item-min-width: 200px;
+}
+
+.tidysynthesis-synth-spec {
+    display: inline-block;
+    border: 1px dashed var(--ts-color-border);
+    border-radius: 2px;
+    padding: 0.75rem;
+    background: var(--ts-color-bg-base);
+}
+
+.tidysynthesis-synth-spec-title {
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--ts-color-blue);
+    font-size: 12px;
+    margin-bottom: 0.5rem;
+}
+
+.tidysynthesis-synth-spec-body {
+    background: var(--ts-color-bg-body);
+    border: 1px dashed var(--ts-color-border);
+    border-radius: 2px;
+    padding: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 0.25rem;
+}
+
+.tidysynthesis-synth-spec-group {
+    border: 1px dashed var(--ts-color-border);
+    border-radius: 2px;
+    padding: 0.5rem;
+    background: var(--ts-color-bg-group);
+    font-size: 12px;
+    color: var(--ts-color-text);
+}
+
+.tidysynthesis-synth-spec-group-title {
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--ts-color-blue);
+}
+
+.tidysynthesis-synth-spec-group-body {
+    margin-top: 0.25rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    width: 100%;
+}
+
+.tidysynthesis-synth-spec-item-wrapper {
+    display: flex;
+    background: var(--ts-color-bg-group);
+    flex-direction: column;
+    border: 1px dotted var(--ts-color-border);
+    border-radius: 2px;
+    width: var(--ts-item-width);
+    flex: 1 1 var(--ts-item-min-width);
+    min-width: var(--ts-item-min-width);
+    max-width: 100%;
+}
+
+.tidysynthesis-synth-spec-item-toggle {
+    cursor: pointer;
+    padding: 0.35rem 0.35rem;
+    font-weight: 600;
+    color: var(--ts-color-text);
+}
+
+.tidysynthesis-synth-spec-item {
+    background: var(--ts-color-bg-base);
+    border: 1px dotted var(--ts-color-border);
+    border-radius: 2px;
+    padding: 0.25rem 0.5rem;
+    font-size: 11px;
+    margin: 0.35rem;
+}
+
+.tidysynthesis-synth-spec-columns {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 0.25rem;
+    width: 100%;
+}
+
+.tidysynthesis-synth-spec-columns>.tidysynthesis-synth-spec-body {
+    flex: 1 1 0;
+    min-width: 252px;
+    max-width: 100%;
+}
+
+.tidysynthesis-synth-spec-secondary-row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0.25rem;
+    width: 100%;
+    margin-top: 0.25rem;
+}
+
+.tidysynthesis-synth-spec-extractors,
+.tidysynthesis-synth-spec-settings-row {
+    flex: 1 1 0;
+    min-width: 0;
+    margin-top: 0;
+}
+
+.tidysynthesis-synth-spec-parameter-title {
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--ts-color-text);
+    padding: 0.25rem;
+    font-size: 12px;
+}
+
+.tidysynthesis-synth-spec-parameter-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 0.25rem;
+}
+
+.tidysynthesis-synth-spec-settings-row .tidysynthesis-synth-spec-group-body {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    align-items: flex-start;
+}
+
+.tidysynthesis-synth-spec-secondary-row .tidysynthesis-synth-spec-group-title {
+    color: var(--ts-color-text);
+}
+
+.tidysynthesis-synth-spec-secondary-row .tidysynthesis-synth-spec-item-toggle {
+    color: var(--ts-color-blue);
+
+}
+
+.tidysynthesis-synth-spec-secondary-row .tidysynthesis-synth-spec-group {
+    background: var(--ts-color-bg-body);
+}
+
+.tidysynthesis-synth-spec-settings-row>.tidysynthesis-synth-spec-item-wrapper {
+    width: var(--ts-item-width);
+    flex: 1 1 var(--ts-item-min-width);
+    min-width: var(--ts-item-min-width);
+    max-width: 100%;
+    margin-bottom: 0;
+}
+
+.tidysynthesis-synth-spec-columns .tidysynthesis-synth-spec-group-body {
+    margin-top: 0.55rem;
+}
+
+.tidysynthesis-synth-spec-settings-row .tidysynthesis-synth-spec-item {
+    margin: 0;
+}

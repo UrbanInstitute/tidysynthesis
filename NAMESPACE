@@ -3,6 +3,7 @@
 S3method(invert,step_BoxCox)
 S3method(invert,step_YeoJohnson)
 S3method(invert,step_log)
+S3method(knitr::knit_print,synth_spec)
 S3method(ks_distance,data.frame)
 S3method(print,constraints)
 S3method(print,noise)
@@ -91,5 +92,7 @@ export(update_start_method)
 export(update_synth_spec)
 export(update_visit_sequence)
 export(visit_sequence)
-importFrom(rlang,":=")
-importFrom(rlang,.data)
+importFrom(rlang,
+  ":=",
+  .data
+)

@@ -2,26 +2,32 @@
 % Please edit documentation in R/synth_spec.R
 \name{print.synth_spec}
 \alias{print.synth_spec}
-\title{Print the replicates object to the console with formatting}
+\title{Print the \code{synth_spec} object to the console with formatting}
 \usage{
-\method{print}{synth_spec}(x, ...)
+\method{print}{synth_spec}(x, ..., display = c("text", "html"))
 }
 \arguments{
-\item{x}{A \code{replicates} object}
+\item{x}{A \code{synth_spec} object}
 
 \item{...}{further arguments passed to or from other methods (not currently
 used).}
+
+\item{display}{Character string specifying the display format. Either \code{"text"} (default) or \code{"html"}.}
 }
 \value{
-A \code{synth_spec} object
+A \code{synth_spec} object. If \code{display = "html"}, the object is printed in HTML format.
 }
 \description{
-Print the replicates object to the console with formatting
+Print the \code{synth_spec} object to the console with formatting
 }
 \examples{
 
 synth_spec <- synth_spec()
 
 print(synth_spec)
+
+print(synth_spec, display = "html")
+
+print(synth_spec, display = "text")
 
 }
