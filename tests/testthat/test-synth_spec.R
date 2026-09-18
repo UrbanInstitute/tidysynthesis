@@ -603,3 +603,63 @@ test_that("print.synth_spec", {
   }
   
 })
+
+test_that("print.synth_spec(display = 'text') prints text", {
+  spec <- synth_spec(default_regression_model = dt_reg_mod)
+
+  expect_output(
+    print(spec, display = "text"),
+    "* default_regression_model"
+  )
+})
+
+test_that("print.synth_spec() validates display", {
+  expect_error(
+    print(synth_spec(), display = "json"),
+    "'arg' should be one of"
+  )
+})
+
+test_that("synth_spec HTML display contains configured components", {
+  spec <- synth_spec(
+    default_regression_model = dt_reg_mod,
+    default_regression_sampler = sample_rpart
+  )
+
+  html <- as.character(.synth_spec_html(spec))
+
+  expect_true(grepl("synth_spec()", html, fixed = TRUE))
+  expect_true(grepl("default_regression_model", html, fixed = TRUE))
+  expect_true(grepl("decision_tree", html, fixed = TRUE))
+  expect_true(grepl("sample_rpart", html, fixed = TRUE))
+})
+
+test_that("print.synth_spec(display = 'html') calls html_print", {
+  spec <- synth_spec()
+
+  html_print_called <- FALSE
+
+  # Temporarily replace htmltools::html_print() with a test double and
+  # viewer/browser is not opened during the test
+  local_mocked_bindings(
+    html_print = function(x) {
+      html_print_called <<- TRUE
+      # Check .synth_spec_html(spec) produces a shiny.tag. when
+      # print.synth_spec() passes HTML tag object to html_print()
+      expect_s3_class(x, "shiny.tag")
+    },
+    .package = "htmltools"
+  )
+
+  expect_invisible(print(spec, display = "html"))
+  expect_true(html_print_called)
+})
+
+test_that("knit_print.synth_spec() returns HTML output", {
+  spec <- synth_spec(default_regression_model = dt_reg_mod)
+
+  result <- knit_print.synth_spec(spec)
+
+  expect_s3_class(result, "knit_asis")
+  expect_true(grepl("decision_tree", as.character(result), fixed = TRUE))
+})

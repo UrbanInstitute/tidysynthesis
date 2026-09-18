@@ -279,25 +279,36 @@ is_synth_spec <- function(z) {
   
 }
 
-#' Print the replicates object to the console with formatting
+#' Print the `synth_spec` object to the console with formatting
 #'
-#' @param x A `replicates` object
+#' @param x A `synth_spec` object
 #' @param ... further arguments passed to or from other methods (not currently
 #'   used).
-#' 
-#' @return A `synth_spec` object
+#' @param display Character string specifying the display format. Either `"text"` (default) or `"html"`.
+#' @return A `synth_spec` object. If `display = "html"`, the object is printed in HTML format.
 #'
 #' @examples
 #' 
 #' synth_spec <- synth_spec()
-#' 
+#'
 #' print(synth_spec)
-#' 
+#'
+#' print(synth_spec, display = "html")
+#'
+#' print(synth_spec, display = "text")
+#'
 #' @export 
-print.synth_spec <- function(x, ...) {
-  
+print.synth_spec <- function(x, ..., display = c("text", "html")) {
+
+  display <- match.arg(display)
+
+  if (display == "html") {
+    htmltools::html_print(.synth_spec_html(x))
+    return(invisible(x))
+  }
+
   cat("Synthesis specification with user-specified components: \n")
-  
+
   components <- c(
     "default_regression_model",
     "default_classification_model",
@@ -330,6 +341,22 @@ print.synth_spec <- function(x, ...) {
   
   invisible(x)
   
+}
+
+#' Knit print method for `synth_spec` objects
+#'
+#' @param x A `synth_spec` object
+#' @param ... Further arguments passed to the method
+#' @return HTML output for the `synth_spec` object
+#' @exportS3Method knitr::knit_print
+knit_print.synth_spec <- function(x, ...) {
+  # Guard against missing knitr namespace
+  if (!requireNamespace("knitr", quietly = TRUE)) {
+    print(x)
+    return(invisible(x))
+  }
+
+  knitr::knit_print(.synth_spec_html(x), ...)
 }
 
 #' Tidy API calls ----------------------------------------------------------

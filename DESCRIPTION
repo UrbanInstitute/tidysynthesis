@@ -67,6 +67,7 @@ Imports:
     htmltools
 Suggests:
     hardhat,
+    knitr,
     palmerpenguins,
     poissonreg,
     randomForest,
