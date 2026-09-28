@@ -120,7 +120,13 @@ postsynth_to_roadmap <- function(postsynth) {
   
   # new starting data is existing partially completed synthetic data
   new_start_data <- postsynth$synthetic_data
-  remaining_vars <- names(postsynth$roles[postsynth$roles == "unsynthesized"])
+  
+  # "fitted" variables (model fit but not yet sampled, per #65's fit/sample
+  # split) still need to be synthesized, so they must be included alongside
+  # "unsynthesized" variables here.
+  remaining_vars <- names(
+    postsynth$roles[postsynth$roles %in% c("unsynthesized", "fitted")]
+  )
   
   # update schema to reflect new synthesis variables
   new_schema <- postsynth$roadmap$schema
