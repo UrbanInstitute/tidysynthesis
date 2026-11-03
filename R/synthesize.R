@@ -53,7 +53,7 @@ synthesize <- function(presynth,
   # handling postsynth-to-presynth restarting for partially completed synthesis
   if (is_postsynth(presynth)) {
     
-    # "fitted" variables (model fit but not yet sampled, per #65's fit/sample
+    # "fitted" variables (model fit but not yet sampled, per the fit/sample
     # split) still need to be synthesized, so completion requires that no
     # "unsynthesized" or "fitted" variables remain.
     if (!any(presynth$roles %in% c("unsynthesized", "fitted"))) {
