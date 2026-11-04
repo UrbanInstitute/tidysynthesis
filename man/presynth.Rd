@@ -12,7 +12,8 @@ presynth(roadmap, synth_spec)
 \item{synth_spec}{A \code{synth_spec} object from \code{synth_spec()}.}
 }
 \value{
-A \code{presynth} object.
+A \code{synth} object with \code{state == "presynth"}, which also inherits
+from \code{presynth} and \code{postsynth}.
 }
 \description{
 Create a presynth object

@@ -56,9 +56,29 @@ new_postsynth <- function(roadmap,
                           extractions,
                           ldiversity) {
   
-  # test inputs
-
-  # create list of objects
+  # when the full set of components is retained, construct a fully-populated
+  # `synth`, which inherits from `postsynth` and `presynth`
+  if (!is.null(roadmap) && !is.null(synth_spec) && !is.null(workflows) &&
+      !is.null(roles)) {
+    
+    synth <- new_synth(
+      roadmap = roadmap,
+      synth_spec = synth_spec,
+      workflows = workflows,
+      roles = roles,
+      synthetic_data = synthetic_data,
+      jth_preprocessing = jth_preprocessing,
+      total_synthesis_time = total_synthesis_time,
+      jth_synthesis_time = jth_synthesis_time,
+      extractions = extractions,
+      ldiversity = ldiversity
+    )
+    
+    return(synth)
+    
+  }
+  
+  # otherwise (e.g., `keep_workflows = FALSE`), create a bare postsynth
   postsynth <- list(
     synthetic_data = synthetic_data,
     jth_preprocessing = jth_preprocessing,

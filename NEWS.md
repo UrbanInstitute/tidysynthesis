@@ -1,3 +1,11 @@
+# tidysynthesis (development version)
+
+* Add internal `synth` object, which inherits from `postsynth` and `presynth`.
+* `presynth()` now returns a `synth` object with `state = "presynth"`, and 
+  `postsynth` construction is folded into `synth` construction when workflows 
+  are retained. `synthesize()` behavior is unchanged, but these objects now 
+  print using the `synth` format (e.g., "Synth" and "State: presynth").
+
 # tidysynthesis 0.1.3
 
 * Add additional arguments to `synthesize()` for saving incomplete syntheses.

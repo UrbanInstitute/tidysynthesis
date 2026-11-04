@@ -80,7 +80,7 @@ tune_synthesis <- function(presynths,
   # check types and function arguments
   stopifnot(
     "`presynths` elements must be presynth objects" = {
-      all("presynth" %in% purrr::map(presynths, ~ class(.)))
+      all(purrr::map_lgl(presynths, is_presynth))
     }
   )
   
