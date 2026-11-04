@@ -14,7 +14,7 @@ update_presynth(presynth, roadmap = NULL, synth_spec = NULL)
 \item{synth_spec}{An optional \code{synth_spec} object}
 }
 \value{
-A \code{presynth} object.
+A \code{presynth} object (a \code{synth} object when \code{presynth} is one).
 }
 \description{
 Update \code{presynth} object

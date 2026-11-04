@@ -50,8 +50,11 @@ synthesize <- function(presynth,
                        keep_workflows = FALSE,
                        keep_partial = FALSE) {
   
-  # handling postsynth-to-presynth restarting for partially completed synthesis
-  if (is_postsynth(presynth)) {
+  # handling postsynth-to-presynth restarting for partially completed synthesis;
+  # a fresh `synth` (state "presynth") is ready to synthesize as-is
+  if (is_postsynth(presynth) && 
+      !(is_synth(presynth) && 
+        .derive_synth_state(presynth[["roles"]]) == "presynth")) {
     
     # "fitted" variables (model fit but not yet sampled, per the fit/sample
     # split) still need to be synthesized, so completion requires that no

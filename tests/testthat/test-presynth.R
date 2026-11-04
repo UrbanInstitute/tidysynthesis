@@ -60,6 +60,14 @@ test_that("presynth() creates a basic presynth object", {
 
   
   expect_s3_class(presynth, "presynth")
+  expect_true(is_synth(presynth))
+  expect_true(is_presynth(presynth))
+  expect_equal(presynth[["state"]], "presynth")
+  expect_equal(nrow(presynth[["synthetic_data"]]), 0)
+  
+  # presynth objects print using the `synth` format
+  expect_output(print(presynth), "Synth")
+  expect_output(print(presynth), "State: presynth")
   expect_s3_class(presynth$roadmap, "roadmap")
   expect_s3_class(presynth$synth_spec , "synth_spec")
   
@@ -147,6 +155,25 @@ test_that("update_presynth", {
   
 })
 
+
+test_that("update_presynth() resets a synthesized synth to the presynth state", {
+  
+  suppressWarnings({
+    ps <- presynth(roadmap = roadmap, synth_spec = synth_spec)
+    
+    done <- synthesize(ps, keep_workflows = TRUE)
+    
+    updated <- update_presynth(done, synth_spec = synth_spec)
+  })
+  
+  expect_equal(done[["state"]], "postsynth")
+  
+  expect_true(is_synth(updated))
+  expect_equal(updated[["state"]], "presynth")
+  expect_equal(nrow(updated[["synthetic_data"]]), 0)
+  expect_true(all(purrr::map_lgl(updated[["fitted_models"]], is.null)))
+  
+})
 
 test_that("variable location by type validation", {
   
