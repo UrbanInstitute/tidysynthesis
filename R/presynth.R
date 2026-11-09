@@ -106,7 +106,8 @@
 #' @param roadmap A `roadmap` object from `roadmap()`.
 #' @param synth_spec A `synth_spec` object from `synth_spec()`.
 #' 
-#' @return A `presynth` object.
+#' @return A `synth` object with `state == "presynth"`, which also inherits 
+#'   from `presynth` and `postsynth`.
 #' 
 #' @examples
 #'
@@ -142,7 +143,7 @@
 presynth <- function(roadmap,
                      synth_spec) {
   
-  # create new presynth
+  # create new synth, validated like a presynth
   presynth <- new_presynth(roadmap = roadmap,
                            synth_spec = synth_spec)
   
@@ -179,17 +180,16 @@ new_presynth <- function(roadmap,
   # create role
   roles <- .init_roles(roadmap)
   
-  # create presynth
-  presynth <- list(
+  # create synth (empty synthetic data, state == "presynth")
+  presynth <- new_synth(
     roadmap = roadmap,
     synth_spec = synth_spec,
     workflows = workflows,
     roles = roles
   )
-  presynth <- structure(presynth, class = "presynth")
   
   # validate and return
-  .validate_presynth(presynth)
+  .validate_synth(presynth)
   return(presynth)
   
 }
@@ -375,7 +375,7 @@ print.presynth <- function(x, ...) {
 #' @param roadmap An optional `roadmap` object
 #' @param synth_spec An optional `synth_spec` object
 #' 
-#' @return A `presynth` object.
+#' @return A `presynth` object (a `synth` object when `presynth` is one).
 #' 
 #' @examples
 #' 
@@ -468,6 +468,26 @@ update_presynth <- function(presynth,
   
   # finally, reconstruct roles
   presynth[["roles"]] <- .init_roles(presynth[["roadmap"]])
+  
+  # a rebuilt `synth` discards any fitted models and synthetic results, so it
+  # returns to the "presynth" state; cache settings are retained
+  if (is_synth(presynth)) {
+    
+    presynth <- new_synth(
+      roadmap = presynth[["roadmap"]],
+      synth_spec = presynth[["synth_spec"]],
+      workflows = presynth[["workflows"]],
+      roles = presynth[["roles"]],
+      cache_path = presynth[["cache_path"]],
+      cache_valid = presynth[["cache_valid"]],
+      discard_after_cache = presynth[["discard_after_cache"]]
+    )
+    
+    .validate_synth(presynth)
+    
+    return(presynth)
+    
+  }
   
   # validate
   .validate_presynth(presynth)

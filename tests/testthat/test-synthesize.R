@@ -44,6 +44,29 @@ test_that("synthesize() returns data.frame of proper size", {
   
 })
 
+test_that("synthesize() returns a synth only when workflows are kept", {
+  
+  suppressWarnings(
+    presynth1 <- presynth(roadmap = roadmap,
+                          synth_spec = synth_spec)
+  )
+  
+  # synthesizing a fresh synth takes no restart path and does not warn
+  expect_no_warning(
+    kept <- synthesize(presynth1, keep_workflows = TRUE)
+  )
+  
+  expect_true(is_synth(kept))
+  expect_equal(kept[["state"]], "postsynth")
+  expect_equal(dim(kept[["synthetic_data"]]), c(32, 11))
+  
+  dropped <- synthesize(presynth1, keep_workflows = FALSE)
+  
+  expect_true(is_postsynth(dropped))
+  expect_false(is_synth(dropped))
+  
+})
+
 test_that("synthesize() works with extractors", {
   
   expect_warning(
