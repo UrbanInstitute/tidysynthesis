@@ -31,7 +31,8 @@
   
   if (col_schema[["na_prop"]] > 0 & col_schema[["dtype"]] == "dbl") {
     
-    conf_model_data <- conf_data[!is.na(conf_data[[outcome_var]]), ]
+    conf_model_data <- conf_data |>
+      dplyr::filter(!is.na(!!rlang::sym(outcome_var)))
     
   } else {
     

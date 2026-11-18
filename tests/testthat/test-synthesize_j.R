@@ -181,6 +181,11 @@ test_that(".fit_j() fits missing numeric outcomes on complete rows only ", {
   
   expect_true(workflows::is_trained_workflow(fit$fitted))
   
+  # the model is fit only on rows with non-missing outcomes
+  n_fit_rows <- nrow(workflows::extract_mold(fit$fitted)$outcomes)
+  
+  expect_equal(n_fit_rows, nrow(conf) - 4)
+  
 })
 
 test_that(".fit_j() and .sample_j() take the identity shortcut ", {
