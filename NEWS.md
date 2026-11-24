@@ -5,6 +5,11 @@
   `postsynth` construction is folded into `synth` construction when workflows 
   are retained. `synthesize()` behavior is unchanged, but these objects now 
   print using the `synth` format (e.g., "Synth" and "State: presynth").
+* Add `synth_fit()` for fitting the models of a `synth` object, one variable at 
+  a time, without sampling. Fitted models can be cached to disk with 
+  `cache_path`, one `.rds` file per variable, and are reused only if the 
+  `roadmap` and `synth_spec` are unchanged. `discard_after_cache` controls 
+  whether models are dropped from memory after being cached.
 
 # tidysynthesis 0.1.3
 
