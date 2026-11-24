@@ -20,7 +20,10 @@ fits every variable that has not yet been fitted, in visit sequence order.}
 
 \item{cache_path}{An optional directory path for caching fitted models, one
 file per variable. The directory is created if it does not exist. Defaults
-to \code{NULL}, which does no caching.}
+to \code{NULL}, which uses the \code{cache_path} already recorded on \code{synth}, if any,
+and otherwise does no caching. The path cannot be changed while fitted
+models exist only in the cache, and fitting errors if their cache files
+are missing.}
 
 \item{cache_valid}{A logical for whether existing cache files, if any,
 should be treated as valid. If \code{FALSE}, existing cache files are replaced.

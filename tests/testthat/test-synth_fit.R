@@ -334,7 +334,89 @@ test_that("synth_fit() trusts existing caches without a specification", {
   # without a cache file there is nothing to fit from
   expect_error(synth_fit(bare, cache_path = empty_dir), "roadmap")
   
+  # an explicitly invalidated cache is not trusted and is left on disk
+  expect_error(
+    synth_fit(bare, cache_path = cache_dir, cache_valid = FALSE), 
+    "roadmap"
+  )
+  expect_setequal(list.files(cache_dir), paste0(vs_names, ".rds"))
+  
   unlink(c(cache_dir, empty_dir), recursive = TRUE)
+  
+})
+
+test_that("synth_fit() reuses the recorded cache path when none is supplied", {
+  
+  cache_dir <- new_cache_dir("synth_fit_recorded")
+  synth <- new_test_synth()
+  
+  # fit one variable into the cache, then the rest without a path
+  fitted <- synth_fit(synth, j = vs_names[1], cache_path = cache_dir)
+  fitted2 <- synth_fit(fitted)
+  
+  # the recorded path is kept and used for the remaining variables
+  expect_equal(fitted2[["cache_path"]], cache_dir)
+  expect_setequal(list.files(cache_dir), paste0(vs_names, ".rds"))
+  expect_equal(fitted2[["state"]], "fitted")
+  
+  unlink(cache_dir, recursive = TRUE)
+  
+})
+
+test_that("synth_fit() errors when models that exist only in the cache are lost", {
+  
+  cache_dir <- new_cache_dir("synth_fit_lost")
+  synth <- new_test_synth()
+  
+  fitted <- synth_fit(synth, j = vs_names[1], cache_path = cache_dir)
+  
+  # deleting one cache file names that variable in the error
+  file.remove(file.path(cache_dir, paste0(vs_names[1], ".rds")))
+  
+  expect_error(synth_fit(fitted), vs_names[1])
+  
+  # refitting the lost variable explicitly recovers it
+  recovered <- synth_fit(fitted, j = vs_names[1])
+  
+  expect_true(file.exists(file.path(cache_dir, paste0(vs_names[1], ".rds"))))
+  expect_no_error(synth_fit(recovered))
+  
+  # deleting the whole directory is also detected
+  unlink(cache_dir, recursive = TRUE)
+  
+  expect_error(synth_fit(recovered), "Cache files are missing")
+  
+  # models discarded from memory need a recorded cache path
+  no_path <- recovered
+  no_path[["cache_path"]] <- NULL
+  
+  expect_error(synth_fit(no_path), "no `cache_path`")
+  
+})
+
+test_that("synth_fit() only changes cache path when no model depends on it", {
+  
+  cache_dir <- new_cache_dir("synth_fit_path")
+  other_dir <- new_cache_dir("synth_fit_path_other")
+  synth <- new_test_synth()
+  
+  # models exist only in the cache, so the path cannot change
+  discarded <- synth_fit(synth, j = vs_names[1], cache_path = cache_dir)
+  
+  expect_error(synth_fit(discarded, cache_path = other_dir), "cannot change")
+  
+  # models retained in memory do not depend on the cache, so it can change
+  retained <- synth_fit(
+    synth, 
+    j = vs_names[1], 
+    cache_path = cache_dir, 
+    discard_after_cache = FALSE
+  )
+  fitted <- synth_fit(retained, cache_path = other_dir)
+  
+  expect_equal(fitted[["cache_path"]], other_dir)
+  
+  unlink(c(cache_dir, other_dir), recursive = TRUE)
   
 })
 

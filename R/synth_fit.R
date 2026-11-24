@@ -26,7 +26,10 @@
 #'   fits every variable that has not yet been fitted, in visit sequence order.
 #' @param cache_path An optional directory path for caching fitted models, one
 #'   file per variable. The directory is created if it does not exist. Defaults
-#'   to `NULL`, which does no caching.
+#'   to `NULL`, which uses the `cache_path` already recorded on `synth`, if any,
+#'   and otherwise does no caching. The path cannot be changed while fitted
+#'   models exist only in the cache, and fitting errors if their cache files 
+#'   are missing.
 #' @param cache_valid A logical for whether existing cache files, if any, 
 #'   should be treated as valid. If `FALSE`, existing cache files are replaced.
 #'   Defaults to `TRUE`.
@@ -114,6 +117,15 @@ synth_fit <- function(synth,
     
   }
   
+  # default to the cache path already recorded on `synth`
+  if (is.null(cache_path)) {
+    
+    cache_path <- synth[["cache_path"]]
+    
+  }
+  
+  .validate_synth_cache(synth = synth, j = j, cache_path = cache_path)
+  
   if (!is.null(cache_path) && length(j) > 0) {
     
     dir.create(cache_path, recursive = TRUE, showWarnings = FALSE)
@@ -151,7 +163,12 @@ synth_fit <- function(synth,
       
       if (!has_spec) {
         
-        cached <- readRDS(cache_file)
+        # without a specification, an invalidated cache cannot be refit
+        if (cache_valid) {
+          
+          cached <- readRDS(cache_file)
+          
+        }
         
       } else if (cache_valid) {
         
@@ -165,7 +182,8 @@ synth_fit <- function(synth,
         
       }
       
-      if (is.null(cached)) {
+      # stale or invalidated caches are deleted before refitting
+      if (is.null(cached) && has_spec) {
         
         unlink(cache_file)
         
@@ -203,6 +221,9 @@ synth_fit <- function(synth,
         saveRDS(cached, file = cache_file)
         
       }
+      
+      # `cached` holds the model now, so drop `fit` to avoid a second reference
+      rm(fit)
       
     }
     
